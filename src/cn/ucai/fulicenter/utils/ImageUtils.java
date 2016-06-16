@@ -1,10 +1,10 @@
 /**
  * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,6 +22,7 @@ import com.easemob.util.PathUtil;
 
 import java.io.File;
 
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.data.RequestManager;
@@ -34,20 +35,19 @@ public class ImageUtils {
 //		EMLog.d("msg", "thum image path:" + path);
 //		return path;
 //	}
-	
-	public static String getImagePath(String remoteUrl)
-	{
-		String imageName= remoteUrl.substring(remoteUrl.lastIndexOf("/") + 1, remoteUrl.length());
-		String path =PathUtil.getInstance().getImagePath()+"/"+ imageName;
+
+    public static String getImagePath(String remoteUrl) {
+        String imageName = remoteUrl.substring(remoteUrl.lastIndexOf("/") + 1, remoteUrl.length());
+        String path = PathUtil.getInstance().getImagePath() + "/" + imageName;
         EMLog.d("msg", "image path:" + path);
         return path;
-		
-	}
-	
-	
-	public static String getThumbnailImagePath(String thumbRemoteUrl) {
-		String thumbImageName= thumbRemoteUrl.substring(thumbRemoteUrl.lastIndexOf("/") + 1, thumbRemoteUrl.length());
-		String path =PathUtil.getInstance().getImagePath()+"/"+ "th"+thumbImageName;
+
+    }
+
+
+    public static String getThumbnailImagePath(String thumbRemoteUrl) {
+        String thumbImageName = thumbRemoteUrl.substring(thumbRemoteUrl.lastIndexOf("/") + 1, thumbRemoteUrl.length());
+        String path = PathUtil.getInstance().getImagePath() + "/" + "th" + thumbImageName;
         EMLog.d("msg", "thum image path:" + path);
         return path;
     }
@@ -59,20 +59,33 @@ public class ImageUtils {
      * @param path
      * @return
      */
-	public static String getAvatarPath(Context context, String path){
-		File dir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-		File folder = new File(dir,path);
-		if(!folder.exists()){
-			folder.mkdir();
-		}
-		return folder.getAbsolutePath();
-	}
+    public static String getAvatarPath(Context context, String path) {
+        File dir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File folder = new File(dir, path);
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+        return folder.getAbsolutePath();
+    }
 
-	public static void setNewGoodThumb(String thumb, NetworkImageView imageView) {
-		String path = I.DOWNLOAD_BOUTIQUE_IMG_URL + thumb;
-		imageView.setImageUrl(path, RequestManager.getImageLoader());
-		imageView.setDefaultImageResId(R.drawable.nopic);
-		imageView.setErrorImageResId(R.drawable.nopic);
-	}
-	
+    public static void setNewGoodThumb(String thumb, NetworkImageView imageView) {
+        String path = I.DOWNLOAD_BOUTIQUE_IMG_URL + thumb;
+        imageView.setImageUrl(path, RequestManager.getImageLoader());
+        imageView.setDefaultImageResId(R.drawable.nopic);
+        imageView.setErrorImageResId(R.drawable.nopic);
+    }
+
+    //商品详情相册加载
+    public static void setGoodDetailsThumb(String colorImg, NetworkImageView ivColor) {
+        String url = FuLiCenterApplication.SERVER_ROOT
+                + "?" + I.KEY_REQUEST + "=" + I.REQUEST_DOWNLOAD_COLOR_IMG
+                + "&" + I.Color.COLOR_IMG + "=" + colorImg;
+        setThumb(url, ivColor);
+    }
+
+    private static void setThumb(String url, NetworkImageView imageView) {
+        imageView.setImageUrl(url, RequestManager.getImageLoader());
+        imageView.setDefaultImageResId(R.drawable.nopic);
+        imageView.setErrorImageResId(R.drawable.nopic);
+    }
 }
