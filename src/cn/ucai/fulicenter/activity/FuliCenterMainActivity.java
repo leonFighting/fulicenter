@@ -2,6 +2,7 @@ package cn.ucai.fulicenter.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -10,8 +11,9 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.fragment.NewGoodFragment;
 
 public class FuliCenterMainActivity extends BaseActivity {
-    Fragment[] mFragments = new Fragment[1];
+    Fragment[] mFragments = new Fragment[2];
     NewGoodFragment mNewGoodFragment;
+    BoutiqueFragment mBoutiqueFragment;
 
     TextView mtvCartHint;
     RadioButton mRadioNewGood;
@@ -33,6 +35,8 @@ public class FuliCenterMainActivity extends BaseActivity {
         initFragment();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mNewGoodFragment)
+                .add(R.id.fragment_container,mBoutiqueFragment)
+                .hide(mBoutiqueFragment)
 //                .add(R.id.fragment_container, contactListFragment)
 //                .hide(contactListFragment)
                 .show(mNewGoodFragment)
@@ -41,7 +45,9 @@ public class FuliCenterMainActivity extends BaseActivity {
 
     private void initFragment() {
         mNewGoodFragment = new NewGoodFragment();
+        mBoutiqueFragment = new BoutiqueFragment();
         mFragments[0] = mNewGoodFragment;
+        mFragments[1] = mBoutiqueFragment;
 
     }
 
@@ -80,9 +86,15 @@ public class FuliCenterMainActivity extends BaseActivity {
                 break;
         }
         if (currentTabIndex != index) {
-            setRadioChecked(index);
-            currentTabIndex = index;
+            FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+            trx.hide(mFragments[currentTabIndex]);
+            if (!mFragments[index].isAdded()) {
+                trx.add(R.id.fragment_container, mFragments[index]);
+            }
+            trx.show(mFragments[index]).commit();
         }
+        setRadioChecked(index);
+        currentTabIndex = index;
     }
 
     private void setRadioChecked(int index) {

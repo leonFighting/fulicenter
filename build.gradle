@@ -25,7 +25,7 @@ android {
     compileSdkVersion 19
     buildToolsVersion "23.0.2"
 
-    defaultConfig{
+    defaultConfig {
         applicationId "cn.ucai.fulicenter"
     }
 
