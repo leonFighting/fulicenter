@@ -157,7 +157,6 @@ public class NewGoodFragment extends Fragment {
                     mSwipeRefreshLayout.setRefreshing(false);
                     mtvHint.setVisibility(View.GONE);
                     mAdapter.setFooterText(getResources().getString(R.string.load_more));
-                    //将数组转换为集合
                     ArrayList<NewGoodBean> list = Utils.array2List(newGoodBeen);
                     if (action == ACTION_DOWNLOAD || action == ACTION_PULL_DOWN) {
                         mAdapter.initList(list);
