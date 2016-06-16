@@ -34,8 +34,6 @@ import com.easemob.chat.EMGroupManager;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,19 +42,16 @@ import java.util.Map;
 
 import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import cn.ucai.fulicenter.bean.Message;
 import cn.ucai.fulicenter.bean.User;
-import cn.ucai.fulicenter.data.ApiParams;
-import cn.ucai.fulicenter.data.GsonRequest;
 import cn.ucai.fulicenter.data.OkHttpUtils;
 import cn.ucai.fulicenter.db.EMUserDao;
 import cn.ucai.fulicenter.db.UserDao;
 import cn.ucai.fulicenter.domain.EMUser;
-import cn.ucai.fulicenter.listener.OnSetAvatarListener;
 import cn.ucai.fulicenter.task.DownloadAllGroupTask;
 import cn.ucai.fulicenter.task.DownloadContactListTask;
 import cn.ucai.fulicenter.task.DownloadPublicGroupTask;
@@ -214,32 +209,7 @@ public class LoginActivity extends BaseActivity {
 	}
 
     private void loginAppServer() {
-        UserDao dao = new UserDao(mContext);
-        User user = dao.findUserByUserName(currentUsername);
-        if(user!=null) {
-            if(user.getMUserPassword().equals(MD5.getData(currentPassword))){
-                saveUser(user);
-                loginSuccess();
-            } else {
-                pd.dismiss();
-                Toast.makeText(getApplicationContext(), getString(R.string.Login_failed),
-                        Toast.LENGTH_SHORT).show();
-            }
-        }else{
-            //volley login server
-            try {
-                String path = new ApiParams()
-                        .with(I.User.USER_NAME,currentUsername)
-                        .with(I.User.PASSWORD,currentPassword)
-                        .getRequestUrl(I.REQUEST_LOGIN);
-                Log.e(TAG,"path = "+ path);
-                executeRequest(new GsonRequest<User>(path, User.class,
-                        responseListener(), errorListener()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
-        }
     }
 
     private Response.Listener<User> responseListener() {
@@ -250,7 +220,6 @@ public class LoginActivity extends BaseActivity {
 					saveUser(userBean);
 					userBean.setMUserPassword(MD5.getData(userBean.getMUserPassword()));
 					UserDao dao = new UserDao(mContext);
-					dao.addUser(userBean);
 					loginSuccess();
 				}else{
 					pd.dismiss();
@@ -289,12 +258,6 @@ public class LoginActivity extends BaseActivity {
 
                 @Override
                 public void onResponse(com.squareup.okhttp.Response response) throws IOException {
-                    String avatarPath = I.AVATAR_TYPE_USER_PATH + I.BACKSLASH
-                            + currentUsername + I.AVATAR_SUFFIX_JPG;
-                    File file = OnSetAvatarListener.getAvatarFile(mContext,avatarPath);
-                    FileOutputStream out = null;
-                    out = new FileOutputStream(file);
-                    utils.downloadFile(response,file,false);
                 }
             }).execute(null);
             runOnUiThread(new Runnable() {

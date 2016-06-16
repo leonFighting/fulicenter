@@ -28,11 +28,8 @@ import com.easemob.chat.EMGroupManager;
 import com.easemob.exceptions.EaseMobException;
 
 import cn.ucai.fulicenter.FuLiCenterApplication;
-import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.Group;
-import cn.ucai.fulicenter.data.ApiParams;
-import cn.ucai.fulicenter.data.GsonRequest;
 
 public class GroupSimpleDetailActivity extends BaseActivity {
 	private Button btn_add_group;
@@ -76,11 +73,6 @@ public class GroupSimpleDetailActivity extends BaseActivity {
 		    return;
 		}
         try {
-            String path = new ApiParams()
-                    .with(I.Group.HX_ID,groupid)
-                    .getRequestUrl(I.REQUEST_FIND_PUBLIC_GROUP_BY_HXID);
-            executeRequest(new GsonRequest<Group>(path,Group.class,
-                    responseFindGroupListener(),errorListener()));
         } catch (Exception e) {
             e.printStackTrace();
         }

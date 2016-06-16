@@ -13,11 +13,8 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.toolbox.NetworkImageView;
 
-import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.Group;
-import cn.ucai.fulicenter.data.ApiParams;
-import cn.ucai.fulicenter.data.GsonRequest;
 
 public class PublicGroupsSeachActivity extends BaseActivity{
     private RelativeLayout containerLayout;
@@ -54,11 +51,6 @@ public class PublicGroupsSeachActivity extends BaseActivity{
         pd.setCancelable(false);
         pd.show();
         try {
-            String path = new ApiParams()
-                    .with(I.Group.HX_ID,idET.getText().toString())
-                    .getRequestUrl(I.REQUEST_FIND_PUBLIC_GROUP_BY_HXID);
-            executeRequest(new GsonRequest<Group>(path,Group.class,
-                    responseFindGroupListener(),errorListener()));
         } catch (Exception e) {
             e.printStackTrace();
         }

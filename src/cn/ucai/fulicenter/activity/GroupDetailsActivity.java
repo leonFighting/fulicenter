@@ -50,15 +50,12 @@ import com.easemob.util.NetUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.ucai.fulicenter.I;
-import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.FuLiCenterApplication;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.Contact;
 import cn.ucai.fulicenter.bean.Group;
 import cn.ucai.fulicenter.bean.Member;
 import cn.ucai.fulicenter.bean.Message;
-import cn.ucai.fulicenter.data.ApiParams;
-import cn.ucai.fulicenter.data.GsonRequest;
 import cn.ucai.fulicenter.data.RequestManager;
 import cn.ucai.fulicenter.task.DownloadAllGroupMembersTask;
 import cn.ucai.fulicenter.utils.UserUtils;
@@ -234,7 +231,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			case REQUEST_CODE_EXIT: // 退出群
 				progressDialog.setMessage(st2);
 				progressDialog.show();
-				exitGrop();
 				break;
 			case REQUEST_CODE_EXIT_DELETE: // 解散群
 				progressDialog.setMessage(st3);
@@ -253,7 +249,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				if(!TextUtils.isEmpty(returnData)){
 					progressDialog.setMessage(st5);
 					progressDialog.show();
-                    updateGroupNameToServer(returnData);
 				}
 				break;
 			case REQUEST_CODE_ADD_TO_BALCKLIST:
@@ -289,18 +284,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		}
 	}
 
-    private void updateGroupNameToServer(final String newGroupName) {
-        try {
-            String path = new ApiParams()
-                    .with(I.Group.GROUP_ID,mGroup.getMGroupId()+"")
-                    .with(I.Group.NAME,newGroupName)
-                    .getRequestUrl(I.REQUEST_UPDATE_GROUP_NAME);
-            executeRequest(new GsonRequest<Group>(path,Group.class,
-                    responseUpdateGroupNameListener(newGroupName),errorListener()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     private Response.Listener<Group> responseUpdateGroupNameListener(final String newGroupName) {
         return new Response.Listener<Group>() {
@@ -405,29 +388,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	 * 退出群组
 	 *
 	 */
-	private void exitGrop() {
-		String st1 = getResources().getString(R.string.Exit_the_group_chat_failure);
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-                    String path = new ApiParams()
-                            .with(I.Member.GROUP_ID,mGroup.getMGroupId()+"")
-                            .with(I.Member.USER_NAME,currentUserName)
-                            .getRequestUrl(I.REQUEST_DELETE_GROUP_MEMBER);
-                    executeRequest(new GsonRequest<Message>(path,Message.class,
-                            responseExitGroupListener(),errorListener()));
-
-				} catch (final Exception e) {
-					runOnUiThread(new Runnable() {
-						public void run() {
-							progressDialog.dismiss();
-							Toast.makeText(getApplicationContext(), getResources().getString(R.string.Exit_the_group_chat_failure) + " " + e.getMessage(), Toast.LENGTH_LONG).show();
-						}
-					});
-				}
-			}
-		}).start();
-	}
 
     private Response.Listener<Message> responseExitGroupListener() {
         return new Response.Listener<Message>() {
@@ -459,11 +419,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 
     private void deleteGroupFromServer(){
         try {
-            String path = new ApiParams()
-                    .with(I.Group.GROUP_ID,mGroup.getMGroupId()+"")
-                    .getRequestUrl(I.REQUEST_DELETE_GROUP);
-            executeRequest(new GsonRequest<Message>(path,Message.class,
-                    responseDeleteGroupListener(),errorListener()));
         } catch (Exception e) {
             final String st5 = getResources().getString(R.string.Dissolve_group_chat_tofail);
             e.printStackTrace();
@@ -539,13 +494,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
             }
         }
         try {
-            String path = new ApiParams()
-                    .with(I.Member.USER_ID,userIds)
-                    .with(I.Member.USER_NAME,userNames)
-                    .with(I.Member.GROUP_HX_ID,groupId)
-                    .getRequestUrl(I.REQUEST_ADD_GROUP_MEMBERS);
-            executeRequest(new GsonRequest<Message>(path,Message.class,
-                    responseAddGroupMemberListener(memberNames),errorListener()));
         } catch (Exception e) {
             final String st6 = getResources().getString(R.string.Add_group_members_fail);
             e.printStackTrace();
@@ -856,12 +804,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
                         progressDialog.setMessage(st13);
                         progressDialog.show();
                         try {
-                            String path = new ApiParams()
-                                    .with(I.Member.GROUP_ID,mGroup.getMGroupId()+"")
-                                    .with(I.Member.USER_NAME,user.getMUserName())
-                                    .getRequestUrl(I.REQUEST_DELETE_GROUP_MEMBER);
-                            executeRequest(new GsonRequest<Message>(path,Message.class,
-                                    responseDeleteMemberListener(user),errorListener()));
                         } catch (Exception e) {
                             progressDialog.dismiss();
                             e.printStackTrace();

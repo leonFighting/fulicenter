@@ -556,12 +556,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
             for(String name:toAddUserNames){
                 if(isAdd){
                     try {
-                        String path = new ApiParams()
-                                .with(I.Contact.USER_NAME, FuLiCenterApplication.getInstance().getUserName())
-                                .with(I.Contact.CU_NAME,name)
-                                .getRequestUrl(I.REQUEST_ADD_CONTACT);
-                        executeRequest(new GsonRequest<Contact>(path,Contact.class,
-                                responseAddContactListener(),errorListener()));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -606,20 +600,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
                     toDeleteUserNames.add(username);
                 }
 			}
-            if(toDeleteUserNames.size()>0){
-                for(String name:toDeleteUserNames){
-                    try {
-                        String path = new ApiParams()
-                                .with(I.Contact.USER_NAME, FuLiCenterApplication.getInstance().getUserName())
-                                .with(I.Contact.CU_NAME,name)
-                                .getRequestUrl(I.REQUEST_DELETE_CONTACT);
-                        executeRequest(new GsonRequest<Boolean>(path,Boolean.class,
-                                responseDeleteContactListener(name),errorListener()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
 			runOnUiThread(new Runnable() {
 				public void run() {
 					// 如果正在与此用户的聊天页面

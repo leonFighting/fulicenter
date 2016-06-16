@@ -55,9 +55,8 @@ import java.util.List;
 
 import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
-import cn.ucai.fulicenter.I;
-import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.FuLiCenterApplication;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.AddContactActivity;
 import cn.ucai.fulicenter.activity.ChatActivity;
 import cn.ucai.fulicenter.activity.GroupsActivity;
@@ -68,8 +67,6 @@ import cn.ucai.fulicenter.activity.RobotsActivity;
 import cn.ucai.fulicenter.adapter.ContactAdapter;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import cn.ucai.fulicenter.bean.Contact;
-import cn.ucai.fulicenter.data.ApiParams;
-import cn.ucai.fulicenter.data.GsonRequest;
 import cn.ucai.fulicenter.db.EMUserDao;
 import cn.ucai.fulicenter.db.InviteMessgeDao;
 import cn.ucai.fulicenter.domain.EMUser;
@@ -362,13 +359,6 @@ public class ContactlistFragment extends Fragment {
 		pd.setCanceledOnTouchOutside(false);
 		pd.show();
         try {
-            String path = new ApiParams()
-                    .with(I.Contact.USER_NAME,tobeDeleteUser.getMContactUserName())
-                    .with(I.Contact.CU_NAME,tobeDeleteUser.getMContactCname())
-                    .getRequestUrl(I.REQUEST_DELETE_CONTACT);
-            ((MainActivity)getActivity()).executeRequest(new GsonRequest<Boolean>(path,
-                    Boolean.class,responseDeleteContactListener(tobeDeleteUser),
-                    ((MainActivity)getActivity()).errorListener()));
         } catch (Exception e) {
             e.printStackTrace();
         }

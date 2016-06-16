@@ -17,7 +17,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -27,26 +26,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.android.volley.Response;
 import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.exceptions.EaseMobException;
 
-import java.io.File;
-
-import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.Contact;
-import cn.ucai.fulicenter.bean.Group;
-import cn.ucai.fulicenter.bean.Message;
-import cn.ucai.fulicenter.bean.User;
-import cn.ucai.fulicenter.data.ApiParams;
-import cn.ucai.fulicenter.data.GsonRequest;
-import cn.ucai.fulicenter.data.OkHttpUtils;
 import cn.ucai.fulicenter.listener.OnSetAvatarListener;
-import cn.ucai.fulicenter.utils.ImageUtils;
-import cn.ucai.fulicenter.utils.Utils;
 
 public class NewGroupActivity extends BaseActivity {
     public static final String TAG = NewGroupActivity.class.getName();
@@ -76,17 +62,8 @@ public class NewGroupActivity extends BaseActivity {
     private void setListener() {
         setOnCheckchangedListener();
         setSaveGroupClickListener();
-        setGroupIconClickListener();
     }
 
-    private void setGroupIconClickListener() {
-        findViewById(R.id.layout_group_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnSetAvatarListener = new OnSetAvatarListener(mContext,R.id.layout_new_group,getGroupAvatarName(), I.AVATAR_TYPE_GROUP_PATH);
-            }
-        });
-    }
 
     private String getGroupAvatarName() {
         avatarName = System.currentTimeMillis()+"";
@@ -151,7 +128,6 @@ public class NewGroupActivity extends BaseActivity {
 	}
 
     private void createNewGroup(final Intent data) {
-        setProgressDialog();
         final String st2 = getResources().getString(R.string.Failed_to_create_groups);
         //新建群组
         runOnUiThread(new Runnable() {
@@ -195,103 +171,7 @@ public class NewGroupActivity extends BaseActivity {
         //注册环信的服务器 registerEMServer
         //先注册本地的服务器并上传头像 REQUEST_CREATE_GROUP -->okhttp
         //添加群成员
-        boolean isPublic = checkBox.isChecked();
-        boolean isExam = !memberCheckbox.isChecked();
-        File file = new File(ImageUtils.getAvatarPath(activity, I.AVATAR_TYPE_GROUP_PATH),
-                avatarName + I.AVATAR_SUFFIX_JPG);
-        User user = FuLiCenterApplication.getInstance().getUser();
-        OkHttpUtils<Group> utils = new OkHttpUtils<Group>();
-        utils.url(FuLiCenterApplication.SERVER_ROOT)//设置服务端根地址
-                .addParam(I.KEY_REQUEST, I.REQUEST_CREATE_GROUP)//添加上传的请求参数
-                .addParam(I.Group.HX_ID,hxid)
-                .addParam(I.Group.NAME,groupName)
-                .addParam(I.Group.DESCRIPTION,desc)
-                .addParam(I.Group.OWNER,user.getMUserName())
-                .addParam(I.Group.IS_PUBLIC,isPublic+"")
-                .addParam(I.Group.ALLOW_INVITES,isExam+"")
-                .addParam(I.User.USER_ID,user.getMUserId()+"")
-                .targetClass(Group.class)//设置服务端返回json数据的解析类型
-                .addFile(file)//添加上传的文件
-                .execute(new OkHttpUtils.OnCompleteListener<Group>() {//执行请求，并处理返回结果
-                    @Override
-                    public void onSuccess(Group group) {
-                        if(group.isResult()){
-                            if(contacts!=null) {
-                                addGroupMembers(group, contacts);
-                            }else{
-                                FuLiCenterApplication.getInstance().getGroupList().add(group);
-                                Intent intent = new Intent("update_group_list").putExtra("group",group);
-                                setResult(RESULT_OK,intent);
-                                progressDialog.dismiss();
-                                Utils.showToast(mContext,R.string.Create_groups_Success,Toast.LENGTH_SHORT);
-                                finish();
-                            }
-                        }else{
-                            progressDialog.dismiss();
-                            Utils.showToast(mContext,Utils.getResourceString(mContext,group.getMsg()),Toast.LENGTH_SHORT);
-                            Log.e(TAG, Utils.getResourceString(mContext,group.getMsg()));
-                        }
-                    }
 
-                    @Override
-                    public void onError(String error) {
-                        progressDialog.dismiss();
-                        Utils.showToast(mContext,R.string.Failed_to_create_groups,Toast.LENGTH_SHORT);
-                        Log.e(TAG, error);
-                    }
-                });
+
     }
-
-    private void addGroupMembers(Group group,Contact[] members) {
-        try {
-            String userIds="";
-            String userNames="";
-            for(int i=0;i<members.length;i++){
-                userIds+=members[i].getMContactCid()+",";
-                userNames+=members[i].getMContactCname()+",";
-            }
-            String path = new ApiParams()
-                    .with(I.Member.GROUP_HX_ID,group.getMGroupHxid())
-                    .with(I.Member.USER_ID,userIds)
-                    .with(I.Member.USER_NAME,userNames)
-                    .getRequestUrl(I.REQUEST_ADD_GROUP_MEMBERS);
-            Log.e(TAG,"path = "+ path);
-            executeRequest(new GsonRequest<Message>(path, Message.class,
-                    responseListener(group), errorListener()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private Response.Listener<Message> responseListener(final Group group) {
-        return new Response.Listener<Message>() {
-            @Override
-            public void onResponse(Message message) {
-                if(message.isResult()){
-                    progressDialog.dismiss();
-                    Utils.showToast(mContext,Utils.getResourceString(mContext,I.MSG_GROUP_CREATE_SCUUESS),Toast.LENGTH_LONG);
-                    FuLiCenterApplication.getInstance().getGroupList().add(group);
-                    Intent intent = new Intent("update_group_list").putExtra("group",group);
-                    Utils.showToast(mContext,Utils.getResourceString(mContext,group.getMsg()),Toast.LENGTH_SHORT);
-                    setResult(RESULT_OK,intent);
-                } else {
-                    progressDialog.dismiss();
-                    Utils.showToast(mContext,R.string.Failed_to_create_groups,Toast.LENGTH_SHORT);
-                }
-                finish();
-            }
-        };
-    }
-
-    private void setProgressDialog() {
-        String st1 = getResources().getString(R.string.Is_to_create_a_group_chat);
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(st1);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
-    }
-
-    public void back(View view) {
-		finish();
-	}
 }

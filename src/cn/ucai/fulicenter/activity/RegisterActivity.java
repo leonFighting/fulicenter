@@ -27,15 +27,12 @@ import com.easemob.EMError;
 import com.easemob.chat.EMChatManager;
 import com.easemob.exceptions.EaseMobException;
 
-import java.io.File;
-
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.Message;
 import cn.ucai.fulicenter.data.OkHttpUtils;
 import cn.ucai.fulicenter.listener.OnSetAvatarListener;
-import cn.ucai.fulicenter.utils.ImageUtils;
 import cn.ucai.fulicenter.utils.Utils;
 
 /**
@@ -72,17 +69,8 @@ public class RegisterActivity extends BaseActivity {
     private void setListener() {
 		setLoginClickListener();
         setRegisterClickListener();
-        setAvatarClickListener();
     }
 
-    private void setAvatarClickListener() {
-        findViewById(R.id.layout_user_avatar).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnSetAvatarListener = new OnSetAvatarListener(mContext,R.id.layout_register,getUserName(), I.AVATAR_TYPE_USER_PATH);
-            }
-        });
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -169,33 +157,7 @@ public class RegisterActivity extends BaseActivity {
         //先注册本地的服务器并上传头像 REQUEST_REGISTER -->okhttp
         //注册环信的服务器 registerEMServer
         //如果环信的服务器注册失败，删除服务器上面的账号和头像 unRegister-->okhttp
-        File file = new File(ImageUtils.getAvatarPath(mContext,I.AVATAR_TYPE_USER_PATH),
-                avatarName + I.AVATAR_SUFFIX_JPG);
         OkHttpUtils<Message> utils = new OkHttpUtils<Message>();
-        utils.url(FuLiCenterApplication.SERVER_ROOT)//设置服务端根地址
-                .addParam(I.KEY_REQUEST, I.REQUEST_REGISTER)//添加上传的请求参数
-                .addParam(I.User.USER_NAME, username)//添加用户的账号
-                .addParam(I.User.NICK,nick)//添加用户的昵称
-                .addParam(I.User.PASSWORD,pwd)//添加用户的密码
-                .targetClass(Message.class)//设置服务端返回json数据的解析类型
-                .addFile(file)//添加上传的文件
-                .execute(new OkHttpUtils.OnCompleteListener<Message>() {
-                    @Override
-                    public void onSuccess(Message result) {
-                        if(result.isResult()){
-                            registerEMServer();
-                        } else {
-                            Utils.showToast(mContext,Utils.getResourceString(mContext,result.getMsg()),Toast.LENGTH_SHORT);
-                            pd.dismiss();
-                        }
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        pd.dismiss();
-                        Log.e(TAG,"register fail,error:" + error);
-                    }
-                });
 
     }
 

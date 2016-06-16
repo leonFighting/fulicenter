@@ -13,9 +13,8 @@ import java.util.ArrayList;
 
 import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
-import cn.ucai.fulicenter.I;
-import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.FuLiCenterApplication;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import cn.ucai.fulicenter.bean.Contact;
 import cn.ucai.fulicenter.bean.Group;
@@ -66,12 +65,10 @@ public class UserUtils {
     public static void setUserBeanAvatar(String username, NetworkImageView imageView) {
         Contact contact = getUserBeanInfo(username);
         if(contact != null && contact.getMContactCname() != null){
-            setUserAvatar(getAvatarPath(username),imageView);
         }
     }
     public static void setUserBeanAvatar(User user, NetworkImageView imageView) {
         if(user!=null && user.getMUserName()!=null) {
-            setUserAvatar(getAvatarPath(user.getMUserName()), imageView);
         }
     }
 
@@ -82,20 +79,8 @@ public class UserUtils {
         imageView.setErrorImageResId(R.drawable.default_avatar);
     }
 
-    public static void setAvatar(String username, NetworkImageView imageView){
-        RequestManager.loadImage(getAvatarPath(username),imageView,
-                R.drawable.default_avatar,R.drawable.default_avatar);
-    }
 
-    public static String getAvatarPath(String username) {
-        if(username==null || username.isEmpty())return null;
-        return I.DOWNLOAD_USER_AVATAR_URL + username;
-    }
 
-    public static void setUserAvatarByUserName(String username,NetworkImageView imageView) {
-        if(username==null)return;
-        setUserAvatar(getAvatarPath(username), imageView);
-    }
 
     /**
      * 设置当前用户头像
@@ -112,7 +97,6 @@ public class UserUtils {
     public static void setCurrentUserAvatar(NetworkImageView imageView) {
         User user = FuLiCenterApplication.getInstance().getUser();
         if(user!=null){
-            setUserAvatar(getAvatarPath(user.getMUserName()),imageView);
         }
     }
 

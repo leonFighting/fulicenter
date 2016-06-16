@@ -23,11 +23,10 @@ import com.baidu.mapapi.utils.DistanceUtil;
 
 import java.util.ArrayList;
 
-import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.FuLiCenterApplication;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.utils.ImageLoader;
-import cn.ucai.fulicenter.utils.UserUtils;
 import cn.ucai.fulicenter.utils.Utils;
 
 public class NearPeopleActivity extends BaseActivity {
@@ -188,7 +187,6 @@ public class NearPeopleActivity extends BaseActivity {
             NearUserBean user=getItem(position);
             holder.tvNick.setText(user.getUser().getMUserNick());
             holder.tvDistance.setText(user.getDistance()+"米");
-            UserUtils.setUserAvatar(UserUtils.getAvatarPath(user.getUser().getMUserName()),holder.ivAvatar);
             return convertView;
         }
         class ViewHolder{

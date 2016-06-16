@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import cn.ucai.fulicenter.I;
-
 /**
  * Created by clawpo on 16/3/28.
  */
@@ -51,8 +49,17 @@ public class Utils {
     public static String getResourceString(Context context, int msg){
         if(msg<=0) return null;
         String msgStr = msg+"";
-        msgStr = I.MSG_PREFIX_MSG + msgStr;
         int resId = context.getResources().getIdentifier(msgStr, "string", context.getPackageName());
         return context.getResources().getString(resId);
+    }
+
+    public static int px2dp(Context context,int px){
+        int density = (int) context.getResources().getDisplayMetrics().density;
+        return px/density;
+    }
+
+    public static int dp2px(Context context,int dp){
+        int density = (int) context.getResources().getDisplayMetrics().density;
+        return dp*density;
     }
 }

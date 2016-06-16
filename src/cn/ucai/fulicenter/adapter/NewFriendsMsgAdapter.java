@@ -135,7 +135,6 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			}
 
 			// 设置用户头像
-            UserUtils.setUserAvatar(UserUtils.getAvatarPath(msg.getFrom()),holder.avator);
             try {
                 String path = new ApiParams()
                         .with(I.User.USER_NAME,msg.getFrom())
@@ -200,13 +199,6 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
                         });
                     }
 					else { //同意加群申请
-                        String path = new ApiParams()
-                                .with(I.Member.USER_NAME,msg.getFrom())
-                                .with(I.Member.GROUP_HX_ID,msg.getGroupId())
-                                .getRequestUrl(I.REQUEST_ADD_GROUP_MEMBER_BY_USERNAME);
-                        ((NewFriendsMsgActivity) context).executeRequest(new GsonRequest<Group>(path, Group.class,
-                                responseAddGroupMemberListener(button,msg),((NewFriendsMsgActivity) context).errorListener()));
-                        EMGroupManager.getInstance().acceptApplication(msg.getFrom(), msg.getGroupId());
                     }
 				} catch (final Exception e) {
 					((Activity) context).runOnUiThread(new Runnable() {

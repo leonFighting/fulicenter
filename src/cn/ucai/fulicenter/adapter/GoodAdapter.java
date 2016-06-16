@@ -11,7 +11,10 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
+import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.NewGoodBean;
 import cn.ucai.fulicenter.utils.ImageUtils;
@@ -29,13 +32,61 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     GoodItemViewHolder mGoodItemViewHolder;
     FooterViewHolder mFooterViewHolder;
 
-    public GoodAdapter(Context mContext, ArrayList<NewGoodBean> mGoodList) {
+    int sortBy;
+
+    public GoodAdapter(Context mContext, ArrayList<NewGoodBean> mGoodList, int sortBy) {
         this.mContext = mContext;
         this.mGoodList = mGoodList;
+        this.sortBy = sortBy;
     }
+
+    public void setSortBy(int sortBy) {
+        this.sortBy = sortBy;
+        sort(sortBy);
+        notifyDataSetChanged();
+    }
+
+    private void sort(final int sortBy) {
+        Collections.sort(mGoodList, new Comparator<NewGoodBean>() {
+            @Override
+            public int compare(NewGoodBean n1, NewGoodBean n2) {
+                int result = 0;
+                switch (sortBy) {
+                    case I.SORT_BY_ADDTIME_ASC:
+                        result = (int) (n1.getAddTime() - n2.getAddTime());
+                        break;
+                    case I.SORT_BY_ADDTIME_DESC:
+                        result = (int) (n2.getAddTime() - n1.getAddTime());
+                        break;
+                    case I.SORT_BY_PRICE_ASC: {
+                        int p1 = convertPrice(n1.getCurrencyPrice());
+                        int p2 = convertPrice(n2.getCurrencyPrice());
+                        result = p1 - p2;
+                    }
+                    break;
+                    case I.SORT_BY_PRICE_DESC: {
+                        int p1 = convertPrice(n1.getCurrencyPrice());
+                        int p2 = convertPrice(n2.getCurrencyPrice());
+                        result = p2 - p1;
+                    }
+                    break;
+
+                }
+                return result;
+            }
+
+            private int convertPrice(String price) {
+                price = price.substring(price.indexOf("￥") + 1);
+                int p1 = Integer.parseInt(price);
+                return p1;
+            }
+        });
+    }
+
 
     private String footerText;
     private boolean isMore;
+
     public void setFooterText(String footerText) {
         this.footerText = footerText;
         notifyDataSetChanged();
@@ -55,7 +106,7 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 holder = new FooterViewHolder(inflate);
                 break;
             case TYPE_ITEM:
-                View inflate2 = inflater.inflate(R.layout.item_new_good,parent,false);
+                View inflate2 = inflater.inflate(R.layout.item_new_good, parent, false);
                 holder = new GoodItemViewHolder(inflate2);
                 break;
         }
@@ -77,18 +128,18 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             NewGoodBean newGoodBean = mGoodList.get(position);
             mGoodItemViewHolder.tvGoodPrice.setText(newGoodBean.getPromotePrice());
             mGoodItemViewHolder.tvGoodName.setText(newGoodBean.getGoodsName());
-            ImageUtils.setNewGoodThumb(newGoodBean.getGoodsThumb(),mGoodItemViewHolder.nivGoodThumb);
+            ImageUtils.setNewGoodThumb(newGoodBean.getGoodsThumb(), mGoodItemViewHolder.nivGoodThumb);
         }
     }
 
     @Override
     public int getItemCount() {
-        return mGoodList==null?1:mGoodList.size()+1;
+        return mGoodList == null ? 1 : mGoodList.size() + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == getItemCount()-1) {
+        if (position == getItemCount() - 1) {
             return TYPE_FOOTER;
         } else {
             return TYPE_ITEM;
@@ -100,10 +151,13 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mGoodList.clear();
         }
         mGoodList.addAll(list);
+        sort(sortBy);
         notifyDataSetChanged();
     }
+
     public void addItem(ArrayList<NewGoodBean> list) {
         mGoodList.addAll(list);
+        sort(sortBy);
         notifyDataSetChanged();
     }
 
@@ -116,6 +170,7 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         NetworkImageView nivGoodThumb;
         TextView tvGoodName;
         TextView tvGoodPrice;
+
         public GoodItemViewHolder(View itemView) {
             super(itemView);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.layout_good);
@@ -127,6 +182,7 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     class FooterViewHolder extends RecyclerView.ViewHolder {
         TextView tvFooter;
+
         public FooterViewHolder(View itemView) {
             super(itemView);
             tvFooter = (TextView) itemView.findViewById(R.id.tv_footer);

@@ -9,11 +9,9 @@ import com.android.volley.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.activity.BaseActivity;
 import cn.ucai.fulicenter.bean.Member;
-import cn.ucai.fulicenter.data.ApiParams;
 import cn.ucai.fulicenter.data.GsonRequest;
 import cn.ucai.fulicenter.utils.Utils;
 
@@ -29,19 +27,9 @@ public class DownloadAllGroupMembersTask extends BaseActivity {
     public DownloadAllGroupMembersTask(Context context, String groupId) {
         this.mContext = context;
         this.groupId = groupId;
-        initPath();
 
     }
 
-    private void initPath(){
-        try {
-            path = new ApiParams()
-                    .with(I.Member.GROUP_HX_ID, groupId)
-                    .getRequestUrl(I.REQUEST_DOWNLOAD_GROUP_MEMBERS_BY_HXID);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public void execute(){
         executeRequest(new GsonRequest<Member[]>(path,Member[].class,

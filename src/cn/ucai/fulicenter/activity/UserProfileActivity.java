@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -26,22 +25,16 @@ import com.easemob.EMValueCallBack;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 
 import cn.ucai.fulicenter.DemoHXSDKHelper;
-import cn.ucai.fulicenter.I;
-import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.FuLiCenterApplication;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import cn.ucai.fulicenter.bean.Message;
 import cn.ucai.fulicenter.bean.User;
-import cn.ucai.fulicenter.data.ApiParams;
-import cn.ucai.fulicenter.data.GsonRequest;
 import cn.ucai.fulicenter.data.MultipartRequest;
-import cn.ucai.fulicenter.data.RequestManager;
 import cn.ucai.fulicenter.domain.EMUser;
 import cn.ucai.fulicenter.listener.OnSetAvatarListener;
-import cn.ucai.fulicenter.utils.ImageUtils;
 import cn.ucai.fulicenter.utils.UserUtils;
 import cn.ucai.fulicenter.utils.Utils;
 
@@ -113,8 +106,6 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.user_head_avatar:
-            mOnSetAvatarListener = new OnSetAvatarListener(mContext,R.id.layout_user_profile,
-                    getUserName(),I.AVATAR_TYPE_USER_PATH);
 //			uploadHeadPhoto();
 			break;
 		case R.id.rl_nickname:
@@ -192,12 +183,6 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	private void updateUserNick(String nickName) {
         dialog = ProgressDialog.show(this, getString(R.string.dl_update_nick), getString(R.string.dl_waiting));
         try {
-            String path = new ApiParams()
-                .with(I.User.USER_NAME, FuLiCenterApplication.getInstance().getUserName())
-                .with(I.User.NICK,nickName)
-                .getRequestUrl(I.REQUEST_UPDATE_USER_NICK);
-            executeRequest(new GsonRequest<User>(path,User.class,
-                    responseUpdateUserNickListener(),errorListener()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -258,8 +243,6 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
         mOnSetAvatarListener.setAvatar(requestCode,data,headAvatar);
         if(resultCode==RESULT_OK && requestCode == OnSetAvatarListener.REQUEST_CROP_PHOTO){
             dialog = ProgressDialog.show(this, getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
-            RequestManager.getRequestQueue().getCache()
-                    .remove(UserUtils.getAvatarPath(FuLiCenterApplication.getInstance().getUserName()));
             uploadAvatarByMultipart();
             dialog.show();
         }
@@ -269,17 +252,9 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
     private byte[] multipartBody;
     private Bitmap bitmap;
     private void uploadAvatarByMultipart(){
-        File file = new File(ImageUtils.getAvatarPath(mContext,I.AVATAR_TYPE_USER_PATH),
-                avatarName + I.AVATAR_SUFFIX_JPG);
-        String path = file.getAbsolutePath();
-        bitmap = BitmapFactory.decodeFile(path);
         multipartBody = getImageBytes(bitmap);
         String url = null;
         try {
-            url = new ApiParams()
-                    .with(I.User.USER_NAME, FuLiCenterApplication.getInstance().getUserName())
-                    .with(I.AVATAR_TYPE,I.AVATAR_TYPE_USER_PATH)
-                    .getRequestUrl(I.REQUEST_UPLOAD_AVATAR);
         } catch (Exception e) {
             e.printStackTrace();
         }
