@@ -1,8 +1,11 @@
 package cn.ucai.fulicenter.activity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -21,9 +24,11 @@ import cn.ucai.fulicenter.view.SlideAutoLoopView;
  * Created by leon on 2016/6/16.
  */
 public class GoodDetailActivity extends BaseActivity {
+    public static final String TAG = GoodDetailActivity.class.getName();
     GoodDetailActivity mContext;
-    GoodDetailsBean mGood;
+    GoodDetailsBean mGoodDetails;
 
+    LinearLayout mLayoutColors;
     ImageView mivAddCart;
     ImageView mivShare;
     ImageView mivCollect;
@@ -52,6 +57,7 @@ public class GoodDetailActivity extends BaseActivity {
             String path = new ApiParams()
                     .with(D.NewGood.KEY_GOODS_ID, goodId + "")
                     .getRequestUrl(I.REQUEST_FIND_GOOD_DETAILS);
+            Log.e(TAG,"path="+path);
             executeRequest(new GsonRequest<GoodDetailsBean>(path,GoodDetailsBean.class,
                     responseDownloadGoodDetailsListener(),errorListener()));
         } catch (Exception e) {
@@ -65,9 +71,13 @@ public class GoodDetailActivity extends BaseActivity {
             @Override
             public void onResponse(GoodDetailsBean goodDetailsBean) {
                 if (goodDetailsBean != null) {
-                    mGood = goodDetailsBean;
+                    mGoodDetails = goodDetailsBean;
                     //设置商品名称，价格，webView简介
                     DisplayUtils.initBackWithTitle(GoodDetailActivity.this, getResources().getString(R.string.title_good_details));
+                    mtvGoodEnglishName.setText(mGoodDetails.getGoodsEnglishName());
+                    mtvGoodName.setText(mGoodDetails.getGoodsName());
+                    mtvCurrencyPrice.setText(mGoodDetails.getCurrencyPrice());
+                    mWebView.loadDataWithBaseURL(null, mGoodDetails.getGoodsBrief().trim(), D.TEXT_HTML, D.UTF_8, null);
 
                 }
             }
@@ -79,6 +89,7 @@ public class GoodDetailActivity extends BaseActivity {
         mivShare = (ImageView) findViewById(R.id.ivShare);
         mivCollect = (ImageView) findViewById(R.id.ivCollect);
         mtvCartCount = (TextView) findViewById(R.id.tvCartCount);
+        mLayoutColors = (LinearLayout) findViewById(R.id.layoutColorSelector);
         mtvGoodEnglishName = (TextView) findViewById(R.id.tvGoodEnglishName);
         mtvGoodName = (TextView) findViewById(R.id.tvGoodName);
         mtvShopPrice = (TextView) findViewById(R.id.tvShopPrice);
@@ -86,5 +97,8 @@ public class GoodDetailActivity extends BaseActivity {
         mSlideAutoLoopView = (SlideAutoLoopView) findViewById(R.id.salv);
         mFlowIndicator = (FlowIndicator) findViewById(R.id.indicator);
         mWebView = (WebView) findViewById(R.id.wvGoodBrief);
+        WebSettings settings = mWebView.getSettings();
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        settings.setBuiltInZoomControls(true);
     }
 }
