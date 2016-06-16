@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,16 +30,19 @@ import cn.ucai.fulicenter.utils.Utils;
  * Created by clawpo on 16/4/16.
  */
 public class NewGoodFragment extends Fragment {
-    public static int ACTION_DOWNLOAD = 1;
-    public static int ACTION_PULL_UP = 2;
-    public static int ACTION_PULL_DOWN = 3;
+    //下载数据
+    public static int ACTION_DOWNLOAD = 0;
+    //上拉刷新
+    public static int ACTION_PULL_UP = 1;
+    //下拉刷新
+    public static int ACTION_PULL_DOWN = 2;
     public static final String TAG = NewGoodFragment.class.getName();
 
     FuliCenterMainActivity mContext;
     ArrayList<NewGoodBean> mGoodList;
     GoodAdapter mAdapter;
-    private  int pageId = 0;
-    private int action = ACTION_DOWNLOAD;
+    int pageId = 0;
+    int action = ACTION_DOWNLOAD;
     String path;
 
     /** 下拉刷新控件*/
@@ -54,8 +58,8 @@ public class NewGoodFragment extends Fragment {
         View layout = View.inflate(mContext, R.layout.fragment_new_good,null);
         mGoodList = new ArrayList<NewGoodBean>();
         initView(layout);
-        setListener();
         initData();
+        setListener();
         return layout;
     }
     private void setListener() {
@@ -73,6 +77,7 @@ public class NewGoodFragment extends Fragment {
                     @Override
                     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                         super.onScrollStateChanged(recyclerView, newState);
+                        Log.e(TAG,"setPullUpRefreshListener,newState="+newState);
                         if(newState == RecyclerView.SCROLL_STATE_IDLE &&
                                 lastItemPosition == mAdapter.getItemCount()-1){
                             if(mAdapter.isMore()){
@@ -90,9 +95,7 @@ public class NewGoodFragment extends Fragment {
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                         super.onScrolled(recyclerView, dx, dy);
-                        //获取最后列表项的下标
                         lastItemPosition = mGridLayoutManager.findLastVisibleItemPosition();
-                        //解决RecyclerView和SwipeRefreshLayout共用存在的bug
                         mSwipeRefreshLayout.setEnabled(mGridLayoutManager
                                 .findFirstCompletelyVisibleItemPosition() == 0);
                     }
@@ -149,6 +152,7 @@ public class NewGoodFragment extends Fragment {
             @Override
             public void onResponse(NewGoodBean[] newGoodBeen) {
                 if(newGoodBeen!=null) {
+                    Log.e(TAG, "onResponse,action="+action);
                     mAdapter.setMore(true);
                     mSwipeRefreshLayout.setRefreshing(false);
                     mtvHint.setVisibility(View.GONE);

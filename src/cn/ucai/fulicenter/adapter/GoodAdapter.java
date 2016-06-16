@@ -27,7 +27,6 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     GoodItemViewHolder mGoodItemViewHolder;
     FooterViewHolder mFooterViewHolder;
-    private boolean more;
 
     public GoodAdapter(Context mContext, ArrayList<NewGoodBean> mGoodList) {
         this.mContext = mContext;
@@ -102,16 +101,12 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyDataSetChanged();
     }
     public void addItem(ArrayList<NewGoodBean> list) {
-        for (NewGoodBean newGoodBean : list) {
-            if (mGoodList.contains(newGoodBean)) {
-                mGoodList.add(newGoodBean);
-            }
-        }
+        mGoodList.addAll(list);
         notifyDataSetChanged();
     }
 
     public boolean isMore() {
-        return more;
+        return isMore;
     }
 
     class GoodItemViewHolder extends RecyclerView.ViewHolder {
