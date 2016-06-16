@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/nivBoutiqueImg"
+        android:src="@drawable/default_avatar"
+        android:layout_width="180dp"
+        android:layout_height="200dp" />
+    <LinearLayout
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:layout_toRightOf="@id/nivBoutiqueImg"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvBoutiqueTitle"
+            android:layout_marginTop="30dp"
+            android:textColor="#ff007b"
+            android:text="第一步，把冰箱门打开"
+            android:textSize="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tvBoutiqueName"
+            android:layout_marginTop="20dp"
+            android:text="第二步，把大象装进去"
+            android:textSize="22dp"
+            android:textColor="#000000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tvBoutiqueDesc"
+            android:text="第三步，把冰箱门关上"
+            android:textSize="18dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#605f5f"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</RelativeLayout>
