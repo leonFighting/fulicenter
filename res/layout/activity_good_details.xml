@@ -69,7 +69,7 @@
             android:id="@+id/tvGoodEnglishName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pencey"
+            android:text="zhuhuifei"
             android:textColor="#000" />
 
         <TextView
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvGoodEnglishName"
             android:layout_marginTop="5dp"
-            android:text="哇哇哇哇哇哇哇"
+            android:text="猪会飞~~"
             android:textColor="#000" />
 
         <TextView
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@id/tvShopPrice"
-            android:text="￥3,000,000"
+            android:text="￥250"
             android:textColor="@color/good_detail_currency_price" />
 
         <RelativeLayout
@@ -124,7 +124,7 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/layoutColor"
+            android:id="@+id/layout_Color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/layout_banner"
@@ -142,7 +142,7 @@
             android:id="@+id/wvGoodBrief"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/layoutColor"
+            android:layout_below="@id/layout_Color"
             android:layout_margin="10dp"
             android:background="@color/good_detail_bg_white" />
     </RelativeLayout>
