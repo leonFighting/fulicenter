@@ -2,20 +2,26 @@ package cn.ucai.fulicenter.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
+import com.android.volley.toolbox.NetworkImageView;
 
 import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.bean.AlbumBean;
 import cn.ucai.fulicenter.bean.GoodDetailsBean;
 import cn.ucai.fulicenter.data.ApiParams;
 import cn.ucai.fulicenter.data.GsonRequest;
+import cn.ucai.fulicenter.utils.ImageUtils;
+import cn.ucai.fulicenter.utils.Utils;
 import cn.ucai.fulicenter.view.DisplayUtils;
 import cn.ucai.fulicenter.view.FlowIndicator;
 import cn.ucai.fulicenter.view.SlideAutoLoopView;
@@ -41,7 +47,8 @@ public class GoodDetailActivity extends BaseActivity {
     FlowIndicator mFlowIndicator;
     WebView mWebView;
 
-
+    //当前轮播图片的颜色
+    int mCurrentColor;
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
@@ -79,9 +86,48 @@ public class GoodDetailActivity extends BaseActivity {
                     mtvCurrencyPrice.setText(mGoodDetails.getCurrencyPrice());
                     mWebView.loadDataWithBaseURL(null, mGoodDetails.getGoodsBrief().trim(), D.TEXT_HTML, D.UTF_8, null);
 
+                    //初始化颜色面板
+                    initColorsBanner();
+                } else {
+                    Utils.showToast(mContext, "商品详情下载失败", Toast.LENGTH_LONG);
+                    finish();
                 }
             }
         };
+    }
+
+    private void initColorsBanner() {
+        //设置第一个颜色的图片轮播
+        updateColor(0);
+        //设置商品属性,商品及颜色
+        for (int i = 0; i < mGoodDetails.getProperties().length; i++) {
+            mCurrentColor = i;
+            View layout = View.inflate(mContext, R.layout.layout_property_color, null);
+            NetworkImageView ivColor = (NetworkImageView) layout.findViewById(R.id.ivColorItem);
+            Log.e(TAG, "initColorsBanner.gooDetails=" + mGoodDetails.getProperties().toString());
+            String colorImg = mGoodDetails.getProperties()[i].getColorImg();
+            if (colorImg.isEmpty()) {
+                continue;
+            }
+            ImageUtils.setGoodDetailsThumb(colorImg,ivColor);
+            mLayoutColors.addView(layout);
+            layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    updateColor(mCurrentColor);
+                }
+            });
+        }
+    }
+
+    //设置指定属性的图片轮播
+    private void updateColor(int i) {
+        AlbumBean[] albums = mGoodDetails.getProperties()[i].getAlbums();
+        String[] albumImgUrl = new String[albums.length];
+        for (int j=0;j<albumImgUrl.length;j++) {
+            albumImgUrl[j] = albums[j].getImgUrl();
+        }
+        mSlideAutoLoopView.startPlayLoop(mFlowIndicator,albumImgUrl,albumImgUrl.length);
     }
 
     private void initView() {
