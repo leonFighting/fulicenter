@@ -101,7 +101,6 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 		String username = conversation.getUserName();
 		if (conversation.getType() == EMConversationType.GroupChat) {
 			// 群聊消息，显示群聊头像
-            UserUtils.setGroupBeanAvatar(username,holder.avatar);
 //			holder.avatar.setImageResource(R.drawable.group_icon);
             Group group = UserUtils.getGroupBeanFromHXID(username);
 //			EMGroup group = EMGroupManager.getInstance().getGroup(username);

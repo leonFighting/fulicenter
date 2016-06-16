@@ -27,13 +27,12 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.exceptions.EaseMobException;
 
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.SuperWeChatApplication;
 import cn.ucai.fulicenter.bean.Group;
 import cn.ucai.fulicenter.data.ApiParams;
 import cn.ucai.fulicenter.data.GsonRequest;
-import cn.ucai.fulicenter.utils.UserUtils;
 
 public class GroupSimpleDetailActivity extends BaseActivity {
 	private Button btn_add_group;
@@ -149,9 +148,8 @@ public class GroupSimpleDetailActivity extends BaseActivity {
      private void showGroupDetail() {
          progressBar.setVisibility(View.INVISIBLE);
          //获取详情成功，并且自己不在群中，才让加入群聊按钮可点击
-         if(!SuperWeChatApplication.getInstance().getGroupList().contains(group))
+         if(!FuLiCenterApplication.getInstance().getGroupList().contains(group))
              btn_add_group.setEnabled(true);
-         UserUtils.setGroupBeanAvatar(groupid,niv_avatar);
          tv_name.setText(group.getMGroupName());
          tv_admin.setText(group.getMGroupOwner());
          tv_introduction.setText(group.getMGroupDescription());

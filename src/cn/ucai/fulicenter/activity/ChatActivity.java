@@ -95,7 +95,7 @@ import java.util.Map;
 
 import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.SuperWeChatApplication;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.adapter.ExpressionAdapter;
 import cn.ucai.fulicenter.adapter.ExpressionPagerAdapter;
 import cn.ucai.fulicenter.adapter.MessageAdapter;
@@ -519,14 +519,14 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	}
 	
 	protected void onGroupViewCreation(){
-        ArrayList<Member> members = SuperWeChatApplication.getInstance().getGroupMembers().get(toChatUsername);
+        ArrayList<Member> members = FuLiCenterApplication.getInstance().getGroupMembers().get(toChatUsername);
         if(members==null){
             new DownloadAllGroupMembersTask(ChatActivity.this,toChatUsername).execute();
         }
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ArrayList<Group> groupList = SuperWeChatApplication.getInstance().getGroupList();
+                ArrayList<Group> groupList = FuLiCenterApplication.getInstance().getGroupList();
                 for (Group g:groupList){
                     if (g.getMGroupHxid().equals(toChatUsername)){
                         mGroup = g;
@@ -883,7 +883,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 			return;
 		}
 
-		cameraFile = new File(PathUtil.getInstance().getImagePath(), SuperWeChatApplication.getInstance().getUserName()
+		cameraFile = new File(PathUtil.getInstance().getImagePath(), FuLiCenterApplication.getInstance().getUserName()
 				+ System.currentTimeMillis() + ".jpg");
 		cameraFile.getParentFile().mkdirs();
 		startActivityForResult(

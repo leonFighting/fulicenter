@@ -24,7 +24,7 @@ import com.baidu.mapapi.utils.DistanceUtil;
 import java.util.ArrayList;
 
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.SuperWeChatApplication;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.utils.UserUtils;
@@ -93,7 +93,7 @@ public class NearPeopleActivity extends BaseActivity {
             }
             mCurrentLocation = location;
             //将当前用户的位置信息上传至服务器，然后从服务器再下载所有联系人的位置信息
-            User user = SuperWeChatApplication.getInstance().getUser();
+            User user = FuLiCenterApplication.getInstance().getUser();
             user.setMLocationLatitude(location.getLatitude());
             user.setMLocationLongitude(location.getLongitude());
             Log.i("main", "latitude:"+location.getLatitude()+",longitude:"+location.getLongitude());
@@ -137,7 +137,7 @@ public class NearPeopleActivity extends BaseActivity {
             super();
             this.context = context;
             imageLoader=ImageLoader.getInstance(context);
-            myUser=SuperWeChatApplication.getInstance().getUser();
+            myUser= FuLiCenterApplication.getInstance().getUser();
             ArrayList<NearUserBean> list = createNearUsers(users,myUser);
             this.nearUsers = new ArrayList<NearUserBean>();
             this.nearUsers.addAll(list);
@@ -267,7 +267,7 @@ public class NearPeopleActivity extends BaseActivity {
     class DownloadLocationTask extends AsyncTask<Void, Void, ArrayList<User>>{
         @Override
         protected ArrayList<User> doInBackground(Void... params) {
-            String userName=SuperWeChatApplication.getInstance().getUserName();
+            String userName= FuLiCenterApplication.getInstance().getUserName();
             ArrayList<User> users=null;//NetUtil.downloadLocation(userName, mPageId, PAGE_SIZE);
             return users;
         }

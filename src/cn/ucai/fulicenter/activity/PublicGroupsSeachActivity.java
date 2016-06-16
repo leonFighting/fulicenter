@@ -18,7 +18,6 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.Group;
 import cn.ucai.fulicenter.data.ApiParams;
 import cn.ucai.fulicenter.data.GsonRequest;
-import cn.ucai.fulicenter.utils.UserUtils;
 
 public class PublicGroupsSeachActivity extends BaseActivity{
     private RelativeLayout containerLayout;
@@ -74,7 +73,6 @@ public class PublicGroupsSeachActivity extends BaseActivity{
                     pd.dismiss();
                     containerLayout.setVisibility(View.VISIBLE);
                     nameText.setText(group.getMGroupName());
-                    UserUtils.setGroupBeanAvatar(group.getMGroupHxid(),nivAvatar);
                 }else{
                     pd.dismiss();
                     searchedGroup = null;

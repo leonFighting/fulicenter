@@ -52,7 +52,7 @@ import java.util.List;
 
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.SuperWeChatApplication;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.Contact;
 import cn.ucai.fulicenter.bean.Group;
 import cn.ucai.fulicenter.bean.Member;
@@ -118,8 +118,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
         groupId = getIntent().getStringExtra("groupId");
         mGroup = (Group) getIntent().getSerializableExtra("group");
         Log.e(TAG,"groupId="+groupId+",mGroup="+mGroup);
-        groupMembers = SuperWeChatApplication.getInstance().getGroupMembers().get(groupId);
-        currentUserName = SuperWeChatApplication.getInstance().getUserName();
+        groupMembers = FuLiCenterApplication.getInstance().getGroupMembers().get(groupId);
+        currentUserName = FuLiCenterApplication.getInstance().getUserName();
         group = EMGroupManager.getInstance().getGroup(groupId);
 
         // we are not supposed to show the group if we don't find the group
@@ -309,7 +309,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
                 if(group!=null && group.isResult()){
                     updateGroupName(newGroupName);
                     mGroup = group;
-                    ArrayList<Group> groupList = SuperWeChatApplication.getInstance().getGroupList();
+                    ArrayList<Group> groupList = FuLiCenterApplication.getInstance().getGroupList();
                     for (int i=0;i<groupList.size();i++){
                         if(groupList.get(i).getMGroupId()==group.getMGroupId()){
                             groupList.get(i).setMGroupName(group.getMGroupName());
@@ -357,7 +357,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
     private void refreshMembers(){
         String groupTitle = mGroup.getMGroupName() + "("+mGroup.getMGroupAffiliationsCount() + ")";
         ((TextView) findViewById(R.id.group_name)).setText(groupTitle);
-        ArrayList<Member> list = SuperWeChatApplication.getInstance().getGroupMembers().get(groupId);
+        ArrayList<Member> list = FuLiCenterApplication.getInstance().getGroupMembers().get(groupId);
 
         Log.e(TAG,"list="+list);
 	    adapter.clear();
@@ -478,7 +478,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
             public void onResponse(Message msg) {
                 if(msg.isResult()){
                     deleteGrop();
-                    ArrayList<Group> groupList = SuperWeChatApplication.getInstance().getGroupList();
+                    ArrayList<Group> groupList = FuLiCenterApplication.getInstance().getGroupList();
                     Log.e(TAG,"1 groupList.size="+groupList.size());
                     for (int i=0;i<groupList.size();i++){
                         if(groupList.get(i).getMGroupHxid().equals(groupId)){
@@ -903,7 +903,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 										public void run() {
                                             progressDialog.dismiss();
                                             Log.e(TAG,"deleteMembersFromGroup");
-                                            ArrayList<Member> list = SuperWeChatApplication.getInstance().getGroupMembers().get(groupId);
+                                            ArrayList<Member> list = FuLiCenterApplication.getInstance().getGroupMembers().get(groupId);
                                             if(list!=null){
                                                 list.remove(user);
                                                 mGroup.setMGroupAffiliationsCount(mGroup.getMGroupAffiliationsCount()-1);

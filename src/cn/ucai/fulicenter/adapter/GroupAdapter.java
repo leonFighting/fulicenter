@@ -30,8 +30,6 @@ import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,9 +127,6 @@ public class GroupAdapter extends BaseAdapter implements SectionIndexer {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.row_group, null);
 			}
-			Group group = getItem(position);
-			((TextView) convertView.findViewById(R.id.name)).setText(group.getMGroupName());
-			UserUtils.setGroupBeanAvatar(group.getMGroupHxid(),((NetworkImageView) convertView.findViewById(R.id.avatar)));
 		}
 
 		return convertView;

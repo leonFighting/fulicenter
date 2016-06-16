@@ -10,7 +10,7 @@ public interface I {
 		String NICK 								= 		"m_user_nick";					//用户昵称
 		String UN_READ_MSG_COUNT 					= 		"m_user_unread_msg_count";		//未读消息数量
 	}
-	
+
 	interface Contact {
 		String TABLE_NAME 							= 		"t_superwechat_contact";
 		String CONTACT_ID 							= 		"m_contact_id";					//主键
@@ -19,7 +19,7 @@ public interface I {
 		String CU_ID 								= 		"m_contact_cid";				//好友id
 		String CU_NAME 								= 		"m_contact_cname";				//好友账号
 	}
-	
+
 	interface Group {
 		String TABLE_NAME 							= 		"t_superwechat_group";
 		String GROUP_ID 							= 		"m_group_id";					// 主键
@@ -33,7 +33,7 @@ public interface I {
 		String IS_PUBLIC 							= 		"m_group_is_public";			//群组是否公开
 		String ALLOW_INVITES 						= 		"m_group_allow_invites";		//是否可以邀请
 	}
-	
+
 	interface Member {
 		String TABLE_NAME 							= 		"t_superwechat_member";
 		String MEMBER_ID 							= 		"m_member_id";					//主键
@@ -43,7 +43,7 @@ public interface I {
 		String GROUP_HX_ID 							= 		"m_member_group_hxid";			//群组环信id
 		String PERMISSION 							= 		"m_member_permission";			//用户对群组的权限\n0:普通用户\n1:群组所有者
 	}
-	
+
 	interface Avatar {
 		String TABLE_NAME 							= 		"t_superwechat_avatar";
 		String AVATAR_ID 							= 		"m_avatar_id";					//主键
@@ -52,7 +52,7 @@ public interface I {
 		String AVATAR_PATH 							= 		"m_avatar_path";				//保存路径
 		String AVATAR_TYPE 							= 		"m_avatar_type";				//头像类型：\n0:用户头像\n1:群组头像
 	}
-	
+
 	interface Location {
 		String TABLE_NAME 							= 		"t_superwechat_location";
 		String LOCATION_ID 							= 		"m_location_id";				//主键
@@ -65,8 +65,6 @@ public interface I {
 	}
 
 	String AVATAR_PATH 								= 		"//Users/clawpo/work/ucai/work/projects/SuperWeChat/teaching/201603/superwechatDB/";
-	String ISON8859_1 								= 		"iso8859-1";
-	String UTF_8 									= 		"utf-8";
 	String PAGE_ID 									= 		"page_id";						//分页的起始下标
 	String PAGE_SIZE 								= 		"page_size";					//分页的每页数量
 	int PAGE_ID_DEFAULT 							= 		0;								//分页的起始下标默认值
@@ -130,94 +128,327 @@ public interface I {
 	int MSG_LOCATION_UPDATE_FAIL					=		504;							//用户更新地理位置失败
 	int MSG_UNKNOW									=		999;							//未知错误
 
-	String KEY_REQUEST 								= 		"request";
-	/** 上传图片的类型：user_avatar或group_icon */
-	String AVATAR_TYPE 								= 		"avatarType";
-	/** 服务器状态的请求 */
-	String REQUEST_SERVERSTATUS 					= 		"server_status";
-	/** 客户端发送的注册请求 */
-	String REQUEST_REGISTER		 					= 		"register";
-	/**  发送取消注册的请求 */
-	String REQUEST_UNREGISTER 						= 		"unregister";
-	/** 客户端上传头像的请求 */
-	String REQUEST_UPLOAD_AVATAR 					= 		"upload_avatar";
 	/** 客户端更新用户昵称的请求 */
 	String REQUEST_UPDATE_USER_NICK 				= 		"update_nick";
 	/** 客户端修改密码的请求 */
 	String REQUEST_UPDATE_USER_PASSWORD 			= 		"update_password";
 	/** 客户端上传头像的请求 */
 	String REQUEST_UPLOAD_AVATAR_ID  		 		= 		"upload_avatar_id";
-	/** 客户端发送的登陆请求 */
-	String REQUEST_LOGIN 							= 		"login";
-	/** 客户端发送的下载用户头像请求 */
-	String REQUEST_DOWNLOAD_AVATAR	 				= 		"download_avatar";
-	/** 客户端发送的下载群组头像请求 */
-	String REQUEST_DOWNLOAD_GROUP_AVATAR 			= 		"download_group_avatar";
-	/** 客户端发送的下载联系人请求 */
-	String REQUEST_DOWNLOAD_CONTACTS			 	= 		"download_contacts";
 	/** 客户端发送的下载联系人所有集合请求 */
 	String REQUEST_DOWNLOAD_CONTACT_ALL_LIST 		= 		"download_contact_all_list";
-	/** 客户端发送的下载联系人集合请求 */
-	String REQUEST_DOWNLOAD_CONTACT_LIST 			= 		"download_contact_list";
-	/** 客户端发送的删除联系人请求 */
-	String REQUEST_DELETE_CONTACT 					= 		"delete_contact";
-	/** 客户端发送的添加联系人请求 */
-	String REQUEST_ADD_CONTACT 						= 		"add_contact";
-	/** 客户端发送的查找用户请求 */
-	String REQUEST_FIND_USER 						= 		"find_user";
 	/** 客户端发送的根据用户名模糊查找用户请求 */
 	String REQUEST_FIND_USERS 						= 		"find_users";
 	/** 客户端发送的根据用户昵称模糊查找用户请求 */
 	String REQUEST_FIND_USERS_BY_NICK 				= 		"find_users_by_nick";
 	/** 客户端发送的根据用户昵称模糊查找用户请求 */
 	String REQUEST_FIND_USERS_FOR_SEARCH			= 		"find_users_for_search";
-	/** 客户端发送的下载联系人请求 */
-	String REQUEST_DOWNLOAD_CONTACT 				= 		"download_contacts";
-	/** 客户端发送的上传位置请求 */
-	String REQUEST_UPLOAD_LOCATION 					= 		"upload_location";
-	/** 客户端发送的更新位置请求 */
-	String REQUEST_UPDATE_LOCATION 					= 		"update_location";
-	/** 客户端发送的下载位置请求 */
-	String REQUEST_DOWNLOAD_LOCATION 				= 		"download_location";
-	/** 客户端发送的创建群组请求 */
-	String REQUEST_CREATE_GROUP			 			= 		"create_group";
 	/** 客户端发送的添加群成员请求 */
 	String REQUEST_ADD_GROUP_MEMBER_BY_USERNAME		= 		"add_group_member_by_username";
 	/** 客户端发送的添加群成员请求 */
-	String REQUEST_ADD_GROUP_MEMBER 				= 		"add_group_member";
-	/** 客户端发送的添加多个群成员请求 */
-	String REQUEST_ADD_GROUP_MEMBERS		 		= 		"add_group_members";
-	/** 客户端发送的更新群名称请求 */
-	String REQUEST_UPDATE_GROUP_NAME 				= 		"update_group_name";
-	/** 客户端发送的下载多个群成员请求 */
-	String REQUEST_DOWNLOAD_GROUP_MEMBERS 			= 		"download_group_members";
-	/** 客户端发送的下载多个群成员请求 */
 	String REQUEST_DOWNLOAD_GROUP_MEMBERS_BY_LIMIT 	= 		"download_group_members_by_limit";
 	/** 客户端发送的下载多个群成员请求 */
 	String REQUEST_DOWNLOAD_GROUP_MEMBERS_BY_HXID 	= 		"download_group_members_by_hxid";
 	/** 客户端发送的下载多个群成员请求 */
 	String REQUEST_DOWNLOAD_GROUP_MEMBERS_BY_HXID_LIMIT 	= 		"download_group_members_by_hxid_limit";
-	/** 客户端发送的删除群成员请求 */
-	String REQUEST_DELETE_GROUP_MEMBER 				= 		"delete_group_member";
 	/** 客户端发送的删除多个群成员请求 */
 	String REQUEST_DELETE_GROUP_MEMBERS 			= 		"delete_group_members";
-	/** 客户端发送的删除群组请求 */
-	String REQUEST_DELETE_GROUP 					= 		"delete_group";
-	/** 客户端发送的下载群组请求 */
-	String REQUEST_DOWNLOAD_GROUPS 					= 		"download_groups";
-	/** 客户端发送的下载公开裙请求 */
-	String REQUEST_FIND_PUBLIC_GROUPS 				= 		"download_public_groups";
-	/** 客户端发送的根据群组名称模糊查找群组请求 */
-	String REQUEST_FIND_GROUP 						= 		"find_group_by_group_name";
 	/** 客户端发送的根据群组账号查找群组请求 */
 	String REQUEST_FIND_GROUP_BY_ID					= 		"find_group_by_group_id";
 	/** 客户端发送的根据群组环信id查找群组请求 */
 	String REQUEST_FIND_GROUP_BY_HXID 				= 		"find_group_by_group_hxid";
 	/** 客户端发送的根据群组环信id查找公开群组请求 */
 	String REQUEST_FIND_PUBLIC_GROUP_BY_HXID 		= 		"find_public_group_by_group_hxid";
-    String DOWNLOAD_USER_AVATAR_URL                 =       SuperWeChatApplication.SERVER_ROOT
-            +  "?" + KEY_REQUEST + "=" + REQUEST_DOWNLOAD_AVATAR + "&" + AVATAR_TYPE + "=";
-    /** 客户端发送的根据根据群组环信id下载群组头像的请求 */
-    String DOWNLOAD_GROUP_AVATAR_URL                 =       SuperWeChatApplication.SERVER_ROOT
-            +  "?" + KEY_REQUEST + "=" + REQUEST_DOWNLOAD_GROUP_AVATAR + "&time=123" + "&" + AVATAR_TYPE + "=";
+	/** 上传图片的类型：user_avatar或group_icon */
+	public static final String AVATAR_TYPE = "avatarType";
+	public static final String FILE_NAME="file_name";
+
+
+	    /**新品的cat id*/
+	    public final int CAT_ID=0;
+
+	/** 每行显示的数量columNum*/
+	public static final int COLUM_NUM = 2;
+
+
+	/** 表示列表项布局的两种类型*/
+	public static final int TYPE_ITEM=0;
+	public static final int TYPE_FOOTER=1;
+
+	/** BeeColud APP ID */
+	public static final String BEE_COLUD_APP_ID = "3539b590-4859-4128-87a3-5fb8b86b94f6";
+	/** BeeColud APP Secret*/
+	public static final String BEE_COLUD_APP_SECRET = "c75c74e1-105e-437c-9be9-84c4ddee4d5f";
+	/** BeeColud APP Test Secret*/
+	public static final String BEE_COLUD_APP_SECRET_TEST = "06eb1210-0eeb-41df-99e3-1ffb9eb87b99";
+	/** weixin APP ID */
+	public static final String WEIXIN_APP_ID = "wxf1aa465362b4c8f1";
+	// 如果使用PayPal需要在支付之前设置client id和应用secret
+	public static final String PAYPAL_CLIENT_ID = "AVT1Ch18aTIlUJIeeCxvC7ZKQYHczGwiWm8jOwhrREc4a5FnbdwlqEB4evlHPXXUA67RAAZqZM0H8TCR";
+	public static final String PAYPAL_SECRET = "EL-fkjkEUyxrwZAmrfn46awFXlX-h2nRkyCVhhpeVdlSRuhPJKXx3ZvUTTJqPQuAeomXA8PZ2MkX24vF";
+
+	//商户名称
+	public static final String MERCHANT_NAME = "福利社";
+
+	//货币单位
+	public static final String CURRENCY_TYPE_CNY = "CNY";
+	public static final String CURRENCY_TYPE_USD = "USD";
+
+	class Cart{
+		public static final String ID="id";
+		public static final String GOODS_ID="goods_id";
+		public static final String GOODS_THUMB="goodsThumb";
+		public static final String USER_NAME="userName";
+		/**购物车中该商品的件数*/
+		public static final String COUNT="count";
+		/**商品是否已被选中*/
+		public static final String IS_CHECKED="isChecked";
+	}
+
+
+	class Collect{
+		/** 商品id*/
+		public static final String ID="id";
+
+		public static final String GOODS_ID="goods_id";
+
+		public static final String USER_NAME="userName";
+
+		/** 商品的中文名称*/
+		public static final String GOODS_NAME="goodsName";
+		/** 商品的英文名称*/
+		public static final String GOODS_ENGLISH_NAME="goodsEnglishName";
+		public static final String GOODS_THUMB="goodsThumb";
+		public static final String GOODS_IMG="goodsImg";
+		public static final String ADD_TIME="addTime";
+	}
+
+	class Boutique{
+		public static final String TABLE_NAME="tb_boutique";
+		public static final String ID="id";
+		public static final String CAT_ID="catId";
+		public static final String TITLE="title";
+		public static final String DESCRIPTION="description";
+		public static final String NAME="name";
+		public static final String IMAGE_URL="imageurl";
+	}
+
+	class NewAndBoutiqueGood{
+		public static final String CAT_ID="cat_id";
+		/** 颜色id*/
+		public static final String COLOR_ID="color_id";
+		/** 颜色名*/
+		public static final String COLOR_NAME="color_name";
+		/** 颜色代码*/
+		public static final String COLOR_CODE="color_code";
+		/** 导购链接*/
+		public static final String COLOR_URL="color_url";
+	}
+
+	class CategoryGroup{
+		public static final String ID="id";
+		public static final String NAME="name";
+		public static final String IMAGE_URL="imageurl";
+	}
+
+	class CategoryChild extends CategoryGroup{
+		public static final String PARENT_ID="parent_id";
+		public static final String CAT_ID="catId";
+	}
+
+	class CategoryGood{
+		public static final String TABLE_NAME="tb_category_good";
+		public static final String ID="id";
+		/** 商品id*/
+		public static final String GOODS_ID="goods_id";
+		/** 所属类别的id*/
+		public static final String CAT_ID="cat_id";
+		/** 商品的中文名称*/
+		public static final String GOODS_NAME="goods_name";
+		/** 商品的英文名称*/
+		public static final String GOODS_ENGLISH_NAME="goods_english_name";
+		/** 商品简介*/
+		public static final String GOODS_BRIEF="goods_brief";
+		/** 商品原始价格*/
+		public static final String SHOP_PRICE="shop_price";
+		/** 商品的RMB价格 */
+		public static final String CURRENT_PRICE="currency_price";
+		/** 商品折扣价格 */
+		public static final String PROMOTE_PRICE="promote_price";
+		/** 人民币折扣价格*/
+		public static final String RANK_PRICE="rank_price";
+		/**是否折扣*/
+		public static final String IS_PROMOTE="is_promote";
+		/** 商品缩略图地址*/
+		public static final String GOODS_THUMB="goods_thumb";
+		/** 商品图片地址*/
+		public static final String GOODS_IMG="goods_img";
+		/** 分享地址*/
+		public static final String ADD_TIME="add_time";
+		/** 分享地址*/
+		public static final String SHARE_URL="share_url";
+	}
+
+	class Property{
+		public static final String ID="id";
+		public static final String goodsId="goods_id";
+		public static final String COLOR_ID="colorid";
+		public static final String COLOR_NAME="colorname";
+		public static final String COLOR_CODE="colorcode";
+		public static final String COLOR_IMG="colorimg";
+		public static final String COLOR_URL="colorurl";
+	}
+
+	class Album{
+		public static final String TABLE_NAME="tb_album";
+		public static final String ID="id";
+		public static final String PID="pid";
+		public static final String IMG_ID="img_id";
+		public static final String IMG_URL="img_url";
+		public static final String THUMB_URL="thumb_url";
+		public static final String IMG_DESC="img_desc";
+	}
+
+	class Color{
+		public static final String TABLE_NAME="tb_color";
+		public static final String COLOR_ID="colorid";
+		public static final String CAT_ID="cat_id";
+		public static final String COLOR_NAME="colorname";
+		public static final String COLOR_CODE="colorcode";
+		public static final String COLOR_IMG="colorimg";
+	}
+
+
+	public static final String KEY_REQUEST = "request";
+	public static final String REQUEST_SERVERSTATUS = "server_status";
+	/**
+	 * 客户端发送的注册请求
+	 */
+	public static final String REQUEST_REGISTER = "register";
+	/**
+	 * 发送取消注册的请求
+	 */
+	public static final String REQUEST_UNREGISTER = "unregister";
+
+	/**
+	 * 客户端上传头像的请求
+	 */
+	public static final String REQUEST_UPLOAD_AVATAR = "upload_avatar";
+	/**
+	 * 客户端发送的登陆请求
+	 */
+	public static final String REQUEST_LOGIN = "login";
+	public static final String REQUEST_DOWNLOAD_AVATAR = "download_avatar";
+	public static final String REQUEST_DOWNLOAD_GROUP_AVATAR = "download_group_avatar";
+	//    public static final String DOWNLOAD_AVATAR_URL = FuLiCenterApplication.SERVER_ROOT +"?request="+REQUEST_DOWNLOAD_AVATAR+"&avatar=";
+	public static final String ISON8859_1 = "iso8859-1";
+	public static final String UTF_8 = "utf-8";
+	public static final String REQUEST_DOWNLOAD_CONTACTS = "download_contacts";
+	public static final String REQUEST_DOWNLOAD_CONTACT_LIST = "download_contact_list";
+	public static final String REQUEST_DELETE_CONTACT = "delete_contact";
+	public static final String REQUEST_ADD_CONTACT = "add_contact";
+	public static final String REQUEST_FIND_USER = "find_user";
+	public static final String REQUEST_DOWNLOAD_CONTACT = "download_contacts";
+	public static final String REQUEST_UPLOAD_LOCATION = "upload_location";
+	public static final String REQUEST_DOWNLOAD_LOCATION = "download_location";
+	public static final String REQUEST_CREATE_GROUP = "create_group";
+	public static final String REQUEST_ADD_GROUP_MEMBER = "add_group_member";
+	public static final String REQUEST_ADD_GROUP_MEMBERS = "add_group_members";
+	public static final String REQUEST_UPDATE_GROUP_NAME = "update_group_name";
+	public static final String REQUEST_DOWNLOAD_GROUP_MEMBERS = "download_group_members";
+	public static final String REQUEST_DELETE_GROUP_MEMBER = "delete_group_member";
+	public static final String REQUEST_DELETE_GROUP = "delete_group";
+	public static final String REQUEST_DOWNLOAD_GROUPS = "download_groups";
+	public static final String REQUEST_FIND_PUBLIC_GROUPS = "download_public_groups";
+	public static final String REQUEST_FIND_GROUP = "find_group_by_group_name";
+	String REQUEST_FIND_CHARGE = "find_charge";
+
+	/** 从服务端查询精选首页的数据*/
+	String REQUEST_FIND_BOUTIQUES="find_boutiques";
+	/** 从服务端查询新品或精选的商品*/
+	String REQUEST_FIND_NEW_BOUTIQUE_GOODS="find_new_boutique_goods";
+
+	/** 从服务端下载tb_category_parent表的数据*/
+	String REQUEST_FIND_CATEGORY_GROUP="find_category_group";
+
+	/** 从服务端下载tb_category_child表的数据*/
+	String REQUEST_FIND_CATEGORY_CHILDREN="find_category_children";
+
+	/** 从服务端下载tb_category_good表的数据*/
+	String REQUEST_FIND_GOOD_DETAILS="find_good_details";
+
+	/** 从服务端下载一组商品详情的数据*/
+	String REQUEST_FIND_GOODS_DETAILS="find_goods_details";
+
+	/** 下载指定小类别的颜色列表*/
+	String REQUEST_FIND_COLOR_LIST="find_color_list";
+
+	/** 查询是否已收藏*/
+	String REQUEST_IS_COLLECT="is_collect";
+	/** 添加收藏*/
+	String REQUEST_ADD_COLLECT="add_collect";
+	/** 删除收藏*/
+	String REQUEST_DELETE_COLLECT="delete_collect";
+	/** 下载收藏的商品信息*/
+	String REQUEST_FIND_COLLECTS="find_collects";
+	/** 下载收藏的商品数量信息*/
+	String REQUEST_FIND_COLLECT_COUNT="find_collect_count";
+
+	String REQUEST_ADD_CART="add_cart";
+
+	String REQUEST_FIND_CARTS="find_carts";
+
+	String REQUEST_DELETE_CART="delete_cart";
+
+	String REQUEST_UPDATE_CART="update_cart";
+
+	/**下载新品首页商品图片*/
+	String REQUEST_DOWNLOAD_NEW_GOOD = "download_new_good";
+
+	/**下载商品属性颜色的图片*/
+	String REQUEST_DOWNLOAD_COLOR_IMG = "download_color_img";
+
+	/** 下载商品相册图像的URL*/
+	String DOWNLOAD_AVATAR_URL=FuLiCenterApplication.SERVER_ROOT+
+			"?request="+REQUEST_DOWNLOAD_AVATAR+"&avatar=";
+
+	/** 下载商品相册图像的请求*/
+	String REQUEST_DOWNLOAD_ALBUM_IMG="download_album_img_url";
+	/** 下载商品相册图像的接口*/
+	String DOWNLOAD_ALBUM_IMG_URL=FuLiCenterApplication.SERVER_ROOT+
+			"?request="+REQUEST_DOWNLOAD_ALBUM_IMG+"&img_url=";
+
+	/** 下载精选首页图像的请求*/
+	String REQUEST_DOWNLOAD_BOUTIQUE_IMG="download_boutique_img";
+	/** 下载精选首页图像的接口*/
+	String DOWNLOAD_BOUTIQUE_IMG_URL=FuLiCenterApplication.SERVER_ROOT+
+			"?request="+REQUEST_DOWNLOAD_BOUTIQUE_IMG+"&"+Boutique.IMAGE_URL+"=";
+
+	/** 下载分类商品大类图像的请求*/
+	String REQUEST_DOWNLOAD_CATEGORY_GROUP_IMAGE="download_category_group_image";
+	/** 下载分类商品大类图像的接口*/
+	String DOWNLOAD_DOWNLOAD_CATEGORY_GROUP_IMAGE_URL=FuLiCenterApplication.SERVER_ROOT+
+			"?request="+REQUEST_DOWNLOAD_CATEGORY_GROUP_IMAGE
+			+"&"+D.CategoryGroup.IMAGE_URL+"=";
+
+	/** 下载收藏商品图像的请求*/
+	String REQUEST_DOWNLOAD_GOODS_THUMB="download_goods_thumb";
+	/** 下载收藏商品图像的接口*/
+	String DOWNLOAD_GOODS_THUMB_URL=FuLiCenterApplication.SERVER_ROOT+
+			"?request="+REQUEST_DOWNLOAD_GOODS_THUMB
+			+"&"+Collect.GOODS_THUMB+"=";
+
+	/** 下载分类商品小类图像的请求*/
+	String REQUEST_DOWNLOAD_CATEGORY_CHILD_IMAGE="download_category_child_image";
+	/** 下载分类商品小类图像的接口*/
+	String DOWNLOAD_DOWNLOAD_CATEGORY_CHILD_IMAGE_URL=FuLiCenterApplication.SERVER_ROOT+
+			"?request="+REQUEST_DOWNLOAD_CATEGORY_GROUP_IMAGE
+			+"&"+D.CategoryChild.IMAGE_URL+"=";
+
+	String REQUEST_UPLOAD_NICK="upload_nick";
+	//壹收款支付请求
+	String REQUEST_PAY="pay";
+	/**壹收款服务端支付URL*/
+	String PAY_URL=FuLiCenterApplication.SERVER_ROOT+"?request="+REQUEST_PAY;
+	String DOWNLOAD_USER_AVATAR_URL                 =       FuLiCenterApplication.SERVER_ROOT
+			+  "?" + KEY_REQUEST + "=" + REQUEST_DOWNLOAD_AVATAR + "&" + AVATAR_TYPE + "=";
 }

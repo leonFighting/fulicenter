@@ -36,7 +36,7 @@ import java.io.File;
 
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.SuperWeChatApplication;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.Contact;
 import cn.ucai.fulicenter.bean.Group;
 import cn.ucai.fulicenter.bean.Message;
@@ -199,9 +199,9 @@ public class NewGroupActivity extends BaseActivity {
         boolean isExam = !memberCheckbox.isChecked();
         File file = new File(ImageUtils.getAvatarPath(activity, I.AVATAR_TYPE_GROUP_PATH),
                 avatarName + I.AVATAR_SUFFIX_JPG);
-        User user = SuperWeChatApplication.getInstance().getUser();
+        User user = FuLiCenterApplication.getInstance().getUser();
         OkHttpUtils<Group> utils = new OkHttpUtils<Group>();
-        utils.url(SuperWeChatApplication.SERVER_ROOT)//设置服务端根地址
+        utils.url(FuLiCenterApplication.SERVER_ROOT)//设置服务端根地址
                 .addParam(I.KEY_REQUEST, I.REQUEST_CREATE_GROUP)//添加上传的请求参数
                 .addParam(I.Group.HX_ID,hxid)
                 .addParam(I.Group.NAME,groupName)
@@ -219,7 +219,7 @@ public class NewGroupActivity extends BaseActivity {
                             if(contacts!=null) {
                                 addGroupMembers(group, contacts);
                             }else{
-                                SuperWeChatApplication.getInstance().getGroupList().add(group);
+                                FuLiCenterApplication.getInstance().getGroupList().add(group);
                                 Intent intent = new Intent("update_group_list").putExtra("group",group);
                                 setResult(RESULT_OK,intent);
                                 progressDialog.dismiss();
@@ -270,7 +270,7 @@ public class NewGroupActivity extends BaseActivity {
                 if(message.isResult()){
                     progressDialog.dismiss();
                     Utils.showToast(mContext,Utils.getResourceString(mContext,I.MSG_GROUP_CREATE_SCUUESS),Toast.LENGTH_LONG);
-                    SuperWeChatApplication.getInstance().getGroupList().add(group);
+                    FuLiCenterApplication.getInstance().getGroupList().add(group);
                     Intent intent = new Intent("update_group_list").putExtra("group",group);
                     Utils.showToast(mContext,Utils.getResourceString(mContext,group.getMsg()),Toast.LENGTH_SHORT);
                     setResult(RESULT_OK,intent);
