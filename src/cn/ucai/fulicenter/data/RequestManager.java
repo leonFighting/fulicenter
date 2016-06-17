@@ -15,14 +15,16 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 
 import cn.ucai.fulicenter.FuLiCenterApplication;
+import cn.ucai.fulicenter.utils.MD5;
 
 public class RequestManager {
 	private static RequestQueue mRequestQueue;
 	private static ImageLoader mImageLoader;
     // 获取图片缓存类对象
     private static ImageLoader.ImageCache mImageCache = new ImageCacheUtil();
+    private static DiskLruImageCache mDiskCache;
 
-	private RequestManager() {
+    private RequestManager() {
 		// no instances
 	}
 
@@ -34,8 +36,8 @@ public class RequestManager {
 		// Use 1/8th of the available memory for this memory cache.
 		int cacheSize = 1024 * 1024 * memClass / 8;
 		mImageLoader = new ImageLoader(mRequestQueue, new BitmapLruCache(cacheSize));
-
-	}
+        mDiskCache = new DiskLruImageCache(context, "pic", cacheSize, Bitmap.CompressFormat.PNG, 100);
+    }
 
 	public static RequestQueue getRequestQueue() {
 		if (mRequestQueue != null) {
@@ -137,4 +139,25 @@ public class RequestManager {
         Resources res = FuLiCenterApplication.applicationContext.getResources();
         return BitmapFactory.decodeResource(res, resId);
     }
+
+    public static Bitmap getBitmap(String url) {
+        try {
+            return mDiskCache.getBitmap(createKey(url));
+        } catch (Exception e) {
+            throw new IllegalStateException("Disk Cache Not initializer");
+        }
+    }
+
+    public static void putBitmap(String url, Bitmap bitmap) {
+        try {
+            mDiskCache.putBitmap(createKey(url),bitmap);
+        } catch (Exception e) {
+            throw new IllegalStateException("Disk Cache Not initializer");
+        }
+    }
+
+    private static String createKey(String url) {
+        return MD5.getData(url);
+    }
+
 }
