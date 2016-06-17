@@ -15,6 +15,7 @@ package cn.ucai.fulicenter.utils;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.easemob.util.EMLog;
@@ -28,6 +29,7 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.data.RequestManager;
 
 public class ImageUtils {
+    public static final String TAG = ImageUtils.class.getName();
 //	public static String getThumbnailImagePath(String imagePath) {
 //		String path = imagePath.substring(0, imagePath.lastIndexOf("/") + 1);
 //		path += "th" + imagePath.substring(imagePath.lastIndexOf("/") + 1, imagePath.length());
@@ -87,5 +89,17 @@ public class ImageUtils {
         imageView.setImageUrl(url, RequestManager.getImageLoader());
         imageView.setDefaultImageResId(R.drawable.nopic);
         imageView.setErrorImageResId(R.drawable.nopic);
+    }
+
+    public static void setCategoryGroupImg(String imageUrl, NetworkImageView mnivCategoryImg) {
+        String url = I.DOWNLOAD_DOWNLOAD_CATEGORY_GROUP_IMAGE_URL + imageUrl;
+        Log.e(TAG,"setCategoryGroupImg,url="+url);
+        setThumb(url,mnivCategoryImg);
+    }
+
+    public static void setCategoryChildImg(String imageUrl, NetworkImageView mnivCategoryImg) {
+        String url = I.DOWNLOAD_DOWNLOAD_CATEGORY_CHILD_IMAGE_URL + imageUrl;
+        Log.e(TAG,"setCategoryChildImg,url="+url);
+        setThumb(url,mnivCategoryImg);
     }
 }
