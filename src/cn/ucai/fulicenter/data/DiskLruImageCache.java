@@ -181,9 +181,4 @@ public class DiskLruImageCache implements ImageCache  {
     public File getCacheFolder() {
         return mDiskCache.getDirectory();
     }
-
-
-    
-    
-
 }

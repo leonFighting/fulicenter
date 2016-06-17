@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +13,10 @@ import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.ArrayList;
 
+import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.BoutiqueDetailsActivity;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.utils.ImageUtils;
 import cn.ucai.fulicenter.view.FooterViewHolder;
@@ -25,6 +28,7 @@ public class BoutiqueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     Context mContext;
     ArrayList<BoutiqueBean> mBoutiqueList;
     BoutiqueViewHolder boutiqueViewHolder;
+
     public BoutiqueAdapter(Context mContext, ArrayList<BoutiqueBean> mBoutiqueList) {
         this.mContext = mContext;
         this.mBoutiqueList = mBoutiqueList;
@@ -50,12 +54,12 @@ public class BoutiqueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         RecyclerView.ViewHolder holder = null;
-        switch (viewType){
+        switch (viewType) {
             case I.TYPE_FOOTER:
-                holder = new FooterViewHolder(inflater.inflate(R.layout.item_footer,parent,false));
+                holder = new FooterViewHolder(inflater.inflate(R.layout.item_footer, parent, false));
                 break;
             case I.TYPE_ITEM:
-                holder = new BoutiqueViewHolder(inflater.inflate(R.layout.item_boutique,parent,false));
+                holder = new BoutiqueViewHolder(inflater.inflate(R.layout.item_boutique, parent, false));
                 break;
         }
         return holder;
@@ -63,46 +67,46 @@ public class BoutiqueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof FooterViewHolder){
+        if (holder instanceof FooterViewHolder) {
             ((FooterViewHolder) holder).tvFooter.setText(footerText);
             ((FooterViewHolder) holder).tvFooter.setVisibility(View.VISIBLE);
         }
-        if(holder instanceof BoutiqueViewHolder){
+        if (holder instanceof BoutiqueViewHolder) {
             boutiqueViewHolder = (BoutiqueViewHolder) holder;
             final BoutiqueBean boutique = mBoutiqueList.get(position);
+
             boutiqueViewHolder.mtvBoutiqueTitle.setText(boutique.getTitle());
             boutiqueViewHolder.mtvBoutiqueName.setText(boutique.getName());
             boutiqueViewHolder.mtvBoutiqueDesc.setText(boutique.getDescription());
-            ImageUtils.setNewGoodThumb(boutique.getImageurl(),boutiqueViewHolder.mnivBoutiqueImg);
 
-//            boutiqueViewHolder.mLayoutItemBoutique.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent=new Intent(mContext, BoutiqueChildActivity.class);
-//                    intent.putExtra(I.Boutique.ID, boutique.getId());
-//                    intent.putExtra(I.Boutique.NAME, boutique.getName());
-//                    mContext.startActivity(intent);
-//                }
-//            });
+            ImageUtils.setNewGoodThumb(boutique.getImageurl(), boutiqueViewHolder.mnivBoutiqueImg);
+            boutiqueViewHolder.mLayoutItemBoutique.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.startActivity(new Intent(mContext, BoutiqueDetailsActivity.class)
+                            .putExtra(D.Boutique.KEY_NAME, boutique.getName())
+                            .putExtra(D.Boutique.KEY_ID, boutique.getId()));
+                }
+            });
         }
     }
 
     @Override
     public int getItemCount() {
-        return mBoutiqueList==null?1:mBoutiqueList.size()+1;
+        return mBoutiqueList == null ? 1 : mBoutiqueList.size() + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(position==getItemCount()-1){
+        if (position == getItemCount() - 1) {
             return I.TYPE_FOOTER;
-        }else{
+        } else {
             return I.TYPE_ITEM;
         }
     }
 
     public void initItems(ArrayList<BoutiqueBean> list) {
-        if(mBoutiqueList!=null && !mBoutiqueList.isEmpty()){
+        if (mBoutiqueList != null && !mBoutiqueList.isEmpty()) {
             mBoutiqueList.clear();
         }
         mBoutiqueList.addAll(list);
