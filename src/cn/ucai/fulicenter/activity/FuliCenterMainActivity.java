@@ -11,9 +11,10 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.fragment.NewGoodFragment;
 
 public class FuliCenterMainActivity extends BaseActivity {
-    Fragment[] mFragments = new Fragment[2];
+    Fragment[] mFragments = new Fragment[3];
     NewGoodFragment mNewGoodFragment;
     BoutiqueFragment mBoutiqueFragment;
+    CategoryFragment mCategoryFragment;
 
     TextView mtvCartHint;
     RadioButton mRadioNewGood;
@@ -36,7 +37,9 @@ public class FuliCenterMainActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mNewGoodFragment)
                 .add(R.id.fragment_container,mBoutiqueFragment)
+                .add(R.id.fragment_container,mCategoryFragment)
                 .hide(mBoutiqueFragment)
+                .hide(mCategoryFragment)
 //                .add(R.id.fragment_container, contactListFragment)
 //                .hide(contactListFragment)
                 .show(mNewGoodFragment)
@@ -46,8 +49,10 @@ public class FuliCenterMainActivity extends BaseActivity {
     private void initFragment() {
         mNewGoodFragment = new NewGoodFragment();
         mBoutiqueFragment = new BoutiqueFragment();
+        mCategoryFragment = new CategoryFragment();
         mFragments[0] = mNewGoodFragment;
         mFragments[1] = mBoutiqueFragment;
+        mFragments[2] = mCategoryFragment;
 
     }
 
