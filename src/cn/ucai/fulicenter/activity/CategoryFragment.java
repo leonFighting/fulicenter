@@ -99,8 +99,7 @@ public class CategoryFragment extends Fragment {
                 i++;
                 Log.e(TAG, "mGroupList.size=" + mGroupList.size()+",i="+i);
                 if (mGroupList.size() == i) {
-                    mAdapter.addGroupItem(mGroupList);
-                    mAdapter.addChildItem(mChildList);
+                    mAdapter.addItems(mGroupList,mChildList);
                 }
             }
         };

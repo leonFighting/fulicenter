@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -12,7 +13,9 @@ import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.ArrayList;
 
+import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.CategoryDetailActivity;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CategoryGroupBean;
 import cn.ucai.fulicenter.utils.ImageUtils;
@@ -104,10 +107,17 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         } else {
             holder = (CategoryChildItemViewHolder) layout.getTag();
         }
-        CategoryChildBean child = getChild(i, i1);
+        final CategoryChildBean child = getChild(i, i1);
         holder.mtvCategoryChildName.setText(child.getName());
         ImageUtils.setCategoryChildImg(child.getImageUrl(), holder.mnivCategoryChildImg);
 
+        holder.mLayoutCategoryChild.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mContext.startActivity(new Intent(mContext, CategoryDetailActivity.class)
+                        .putExtra(I.CategoryChild.CAT_ID, child.getId()));
+            }
+        });
         return layout;
     }
 
@@ -116,12 +126,8 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    public void addGroupItem(ArrayList<CategoryGroupBean> mGroupList) {
+    public void addItems(ArrayList<CategoryGroupBean> mGroupList,ArrayList<ArrayList<CategoryChildBean>> mChildList) {
         this.mCategoryGroupList.addAll(mGroupList);
-        notifyDataSetChanged();
-    }
-
-    public void addChildItem(ArrayList<ArrayList<CategoryChildBean>> mChildList) {
         this.mCategoryChildList.addAll(mChildList);
         notifyDataSetChanged();
     }

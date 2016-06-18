@@ -14,6 +14,8 @@
 package cn.ucai.fulicenter.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 
@@ -85,7 +87,7 @@ public class ImageUtils {
         setThumb(url, ivColor);
     }
 
-    private static void setThumb(String url, NetworkImageView imageView) {
+    public static void setThumb(String url, NetworkImageView imageView) {
         imageView.setImageUrl(url, RequestManager.getImageLoader());
         imageView.setDefaultImageResId(R.drawable.nopic);
         imageView.setErrorImageResId(R.drawable.nopic);
@@ -102,4 +104,14 @@ public class ImageUtils {
         Log.e(TAG,"setCategoryChildImg,url="+url);
         setThumb(url,mnivCategoryImg);
     }
+
+    public static int getDrawableWidth(Context context,int resId){
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
+        return bitmap.getWidth();
+    }
+    public static int getDrawableHeight(Context context,int resId){
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
+        return bitmap.getHeight();
+    }
+
 }
