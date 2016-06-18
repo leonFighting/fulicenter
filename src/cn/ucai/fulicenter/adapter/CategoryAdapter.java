@@ -95,7 +95,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int i, int i1, boolean b, View layout, ViewGroup viewGroup) {
+    public View getChildView(final int i, int i1, boolean b, View layout, ViewGroup viewGroup) {
         CategoryChildItemViewHolder holder = null;
         if (layout == null) {
             layout = View.inflate(mContext, R.layout.item_category_child, null);
@@ -115,7 +115,9 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View view) {
                 mContext.startActivity(new Intent(mContext, CategoryDetailActivity.class)
-                        .putExtra(I.CategoryChild.CAT_ID, child.getId()));
+                        .putExtra(I.CategoryChild.CAT_ID, child.getId())
+                        .putExtra(I.CategoryGroup.NAME, getGroup(i).getName())
+                        .putExtra("childList", mCategoryChildList.get(i)));
             }
         });
         return layout;

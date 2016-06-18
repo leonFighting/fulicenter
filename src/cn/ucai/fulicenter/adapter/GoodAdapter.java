@@ -50,37 +50,37 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    private void sort(final int sortBy) {
+    private void sort(final int sortBy){
         Collections.sort(mGoodList, new Comparator<NewGoodBean>() {
             @Override
-            public int compare(NewGoodBean n1, NewGoodBean n2) {
-                int result = 0;
-                switch (sortBy) {
+            public int compare(NewGoodBean g1, NewGoodBean g2) {
+                int result =0;
+                switch (sortBy){
                     case I.SORT_BY_ADDTIME_ASC:
-                        result = (int) (n1.getAddTime() - n2.getAddTime());
+                        result = (int) (g1.getAddTime()-g2.getAddTime());
                         break;
                     case I.SORT_BY_ADDTIME_DESC:
-                        result = (int) (n2.getAddTime() - n1.getAddTime());
+                        result = (int) (g2.getAddTime()-g1.getAddTime());
                         break;
-                    case I.SORT_BY_PRICE_ASC: {
-                        int p1 = convertPrice(n1.getCurrencyPrice());
-                        int p2 = convertPrice(n2.getCurrencyPrice());
-                        result = p1 - p2;
+                    case I.SORT_BY_PRICE_ASC:
+                    {
+                        int p1 = convertPrice(g1.getCurrencyPrice());
+                        int p2 = convertPrice(g2.getCurrencyPrice());
+                        result = p1-p2;
                     }
                     break;
-                    case I.SORT_BY_PRICE_DESC: {
-                        int p1 = convertPrice(n1.getCurrencyPrice());
-                        int p2 = convertPrice(n2.getCurrencyPrice());
-                        result = p2 - p1;
+                    case I.SORT_BY_PRICE_DESC:
+                    {
+                        int p1 = convertPrice(g1.getCurrencyPrice());
+                        int p2 = convertPrice(g2.getCurrencyPrice());
+                        result = p2-p1;
                     }
                     break;
-
                 }
                 return result;
             }
-
-            private int convertPrice(String price) {
-                price = price.substring(price.indexOf("￥") + 1);
+            private int convertPrice(String price){
+                price = price.substring(price.indexOf("￥")+1);
                 int p1 = Integer.parseInt(price);
                 return p1;
             }

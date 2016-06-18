@@ -2,6 +2,7 @@ package cn.ucai.fulicenter.view;
 
 import android.app.Activity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import cn.ucai.fulicenter.R;
@@ -11,7 +12,7 @@ import cn.ucai.fulicenter.R;
  */
 public class DisplayUtils {
     public static void initBack(final Activity activity) {
-        View clickBack = activity.findViewById(R.id.layout_back_Title);
+        LinearLayout clickBack = (LinearLayout) activity.findViewById(R.id.layout_back_Title);
         clickBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
