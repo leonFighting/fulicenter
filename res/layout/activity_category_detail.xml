@@ -8,8 +8,8 @@
         android:id="@+id/layout_category_title"
         android:layout_width="match_parent"
         android:layout_height="40dp">
-        <?xml version="1.0" encoding="utf-8"?>
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@color/main_orange">
@@ -88,7 +88,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <include layout="@layout/commom_refresh_hint" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_category"
                 android:layout_width="match_parent"

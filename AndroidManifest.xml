@@ -54,12 +54,18 @@
             android:name=".activity.GoodDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" />
-        <activity
-            android:name=".activity.FuliCenterMainActivity"
-            android:launchMode="singleTask"
+        <activity android:name=".activity.BoutiqueDetailsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustPan" />
+            android:theme="@style/horizontal_slide" />
+        <activity android:name=".activity.CategoryDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" />
+        <activity
+        android:name=".activity.FuliCenterMainActivity"
+        android:launchMode="singleTask"
+        android:screenOrientation="portrait"
+        android:theme="@style/horizontal_slide"
+        android:windowSoftInputMode="adjustPan" />
         <!-- 开屏页 -->
         <activity
             android:name=".activity.SplashActivity"
@@ -334,7 +340,6 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="3ecea51f560650b1ed8a4b99808f52e8" />
 
-        <activity android:name=".activity.BoutiqueDetailsActivity"></activity>
     </application>
 
 </manifest>
