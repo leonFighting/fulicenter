@@ -14,10 +14,13 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.NetworkImageView;
 
 import cn.ucai.fulicenter.D;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.AlbumBean;
 import cn.ucai.fulicenter.bean.GoodDetailsBean;
+import cn.ucai.fulicenter.bean.MessageBean;
+import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.data.ApiParams;
 import cn.ucai.fulicenter.data.GsonRequest;
 import cn.ucai.fulicenter.utils.ImageUtils;
@@ -49,6 +52,10 @@ public class GoodDetailActivity extends BaseActivity {
 
     //当前轮播图片的颜色
     int mCurrentColor;
+
+    int goodId;
+    //商品是否被收藏
+    boolean isCollect;
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
@@ -59,7 +66,7 @@ public class GoodDetailActivity extends BaseActivity {
     }
 
     private void initData() {
-        int goodId = getIntent().getIntExtra(D.NewGood.KEY_GOODS_ID, 0);
+        goodId = getIntent().getIntExtra(D.NewGood.KEY_GOODS_ID, 0);
         try {
             String path = new ApiParams()
                     .with(D.NewGood.KEY_GOODS_ID, goodId + "")
@@ -146,5 +153,47 @@ public class GoodDetailActivity extends BaseActivity {
         WebSettings settings = mWebView.getSettings();
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setBuiltInZoomControls(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //判断是否商品已被收藏
+        judgeGoodCollect();
+    }
+
+    public void judgeGoodCollect() {
+        User user = FuLiCenterApplication.getInstance().getUser();
+        Log.e(TAG,"initCollectStatus,user="+user);
+        if(user!=null){
+            String userName = user.getMUserName();
+            try {
+                String path = new ApiParams().with(I.Collect.GOODS_ID, goodId+"")
+                        .with(I.User.USER_NAME, userName)
+                        .getRequestUrl(I.REQUEST_IS_COLLECT);
+                Log.e(TAG, "judgeGoodCollect,path=" + path);
+                executeRequest(new GsonRequest<MessageBean>(path,MessageBean.class,
+                        responseIsCollectListener(),errorListener()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            isCollect = false;
+            mivCollect.setImageResource(R.drawable.bg_collect_in);
+        }
+    }
+    private Response.Listener<MessageBean> responseIsCollectListener() {
+        return new Response.Listener<MessageBean>() {
+            @Override
+            public void onResponse(MessageBean messageBean) {
+                if(messageBean.isSuccess()){
+                    isCollect = true;
+                    mivCollect.setImageResource(R.drawable.bg_collect_out);
+                }else{
+                    isCollect = false;
+                    mivCollect.setImageResource(R.drawable.bg_collect_in);
+                }
+            }
+        };
     }
 }
