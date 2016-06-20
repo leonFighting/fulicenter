@@ -357,4 +357,9 @@ String REQUEST_FIND_CHARGE = "find_charge";
     String REQUEST_PAY="pay";
     /**壹收款服务端支付URL*/
     String PAY_URL= FuLiCenterApplication.SERVER_ROOT+"?request="+REQUEST_PAY;
+    String DOWNLOAD_USER_AVATAR_URL                 =       FuLiCenterApplication.SERVER_ROOT
+            +  "?" + KEY_REQUEST + "=" + REQUEST_DOWNLOAD_AVATAR + "&" + AVATAR_TYPE + "=";
+    /** 客户端发送的根据根据群组环信id下载群组头像的请求 */
+    String DOWNLOAD_GROUP_AVATAR_URL                 =       FuLiCenterApplication.SERVER_ROOT
+            +  "?" + KEY_REQUEST + "=" + REQUEST_DOWNLOAD_GROUP_AVATAR + "&" + AVATAR_TYPE + "=";
 }

@@ -39,7 +39,7 @@ import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.NewFriendsMsgActivity;
 import cn.ucai.fulicenter.bean.Group;
-import cn.ucai.fulicenter.bean.UserBean;
+import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.data.ApiParams;
 import cn.ucai.fulicenter.data.GsonRequest;
 import cn.ucai.fulicenter.db.InviteMessgeDao;
@@ -138,7 +138,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
                 String path = new ApiParams()
                         .with(I.User.USER_NAME,msg.getFrom())
                         .getRequestUrl(I.REQUEST_FIND_USER);
-                ((NewFriendsMsgActivity) context).executeRequest(new GsonRequest<UserBean>(path, UserBean.class,
+                ((NewFriendsMsgActivity) context).executeRequest(new GsonRequest<User>(path, User.class,
                         responseFindUserListener(holder.name),((NewFriendsMsgActivity) context).errorListener()));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -148,10 +148,10 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
         return convertView;
     }
 
-    private Response.Listener<UserBean> responseFindUserListener(final TextView name) {
-        return new Response.Listener<UserBean>() {
+    private Response.Listener<User> responseFindUserListener(final TextView name) {
+        return new Response.Listener<User>() {
             @Override
-            public void onResponse(UserBean user) {
+            public void onResponse(User user) {
                 if(user!=null){
                     UserUtils.setUserBeanNick(user,name);
                 }

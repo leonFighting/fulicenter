@@ -3,7 +3,7 @@ package cn.ucai.fulicenter.bean;
 /**
  * Contact entity. @author MyEclipse Persistence Tools
  */
-public class Contact extends UserBean implements java.io.Serializable {
+public class Contact extends User implements java.io.Serializable {
 	private static final long serialVersionUID = -2183229871248294573L;
 
 	/**
@@ -25,7 +25,7 @@ public class Contact extends UserBean implements java.io.Serializable {
 
 	/** full constructor */
 	public Contact(Integer MContactId, Integer MContactUserId, String MContactUserName,
-			Integer MContactCid, String MContactCname) {
+				   Integer MContactCid, String MContactCname) {
 		this.mcontactId = MContactId;
 		this.mcontactUserId = MContactUserId;
 		this.mcontactUserName = MContactUserName;

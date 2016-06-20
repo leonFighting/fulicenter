@@ -105,7 +105,7 @@ public class FuliCenterMainActivity extends BaseActivity {
                 if (FuLiCenterApplication.getInstance().getUser() != null) {
                     index = 4;
                 } else {
-                    gotoLogin();
+                    gotoLogin("personal");
                 }
                 break;
         }
@@ -121,8 +121,9 @@ public class FuliCenterMainActivity extends BaseActivity {
         }
     }
 
-    private void gotoLogin() {
-        startActivity(new Intent(this,LoginActivity.class));
+    private void gotoLogin(String action) {
+        Intent intent = new Intent(FuliCenterMainActivity.this,LoginActivity.class).putExtra("action",action);
+        startActivity(intent);
     }
 
     private void setRadioChecked(int index) {
@@ -136,24 +137,36 @@ public class FuliCenterMainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        String action = getIntent().getStringExtra("action");
+        Log.e(TAG, "onNewIntent,action=" +action);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         Log.e(TAG, "currentTabIndex="+currentTabIndex+",Index="+index);
         Log.e(TAG, "user=" + FuLiCenterApplication.getInstance().getUser());
-        if (FuLiCenterApplication.getInstance().getUser() != null) {
-            index = 4;
-            if (currentTabIndex != index) {
-                FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
-                trx.hide(mFragments[currentTabIndex]);
-                if (!mFragments[index].isAdded()) {
-                    trx.add(R.id.fragment_container, mFragments[index]);
-                }
-                trx.show(mFragments[index]).commit();
-                setRadioChecked(index);
-                currentTabIndex = index;
+        String action = getIntent().getStringExtra("action");
+        Log.e(TAG, "action=" +action);
+        if (action != null && FuLiCenterApplication.getInstance().getUser() != null) {
+            if (action.equals("personal")) {
+                index = 4;
             }
         } else {
             setRadioChecked(index);
+        }
+        if (currentTabIndex != index) {
+            FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+            trx.hide(mFragments[currentTabIndex]);
+            if (!mFragments[index].isAdded()) {
+                trx.add(R.id.fragment_container, mFragments[index]);
+            }
+            trx.show(mFragments[index]).commit();
+            setRadioChecked(index);
+            currentTabIndex = index;
         }
     }
 }

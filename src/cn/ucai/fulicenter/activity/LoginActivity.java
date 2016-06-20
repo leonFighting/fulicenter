@@ -34,6 +34,8 @@ import com.easemob.chat.EMGroupManager;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +56,7 @@ import cn.ucai.fulicenter.data.OkHttpUtils;
 import cn.ucai.fulicenter.db.EMUserDao;
 import cn.ucai.fulicenter.db.UserDao;
 import cn.ucai.fulicenter.domain.EMUser;
+import cn.ucai.fulicenter.listener.OnSetAvatarListener;
 import cn.ucai.fulicenter.task.DownloadContactListTask;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.MD5;
@@ -77,8 +80,9 @@ public class LoginActivity extends BaseActivity {
 
 	private String currentUsername;
 	private String currentPassword;
+    String action;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -289,6 +293,12 @@ public class LoginActivity extends BaseActivity {
 
                 @Override
                 public void onResponse(com.squareup.okhttp.Response response) throws IOException {
+                    String avatarPath = I.AVATAR_TYPE_USER_PATH + I.BACKSLASH
+                            + currentUsername + I.AVATAR_SUFFIX_JPG;
+                    File file = OnSetAvatarListener.getAvatarFile(mContext,avatarPath);
+                    FileOutputStream out = null;
+                    out = new FileOutputStream(file);
+                    utils.downloadFile(response,file,false);
                 }
             }).execute(null);
             runOnUiThread(new Runnable() {
@@ -324,9 +334,13 @@ public class LoginActivity extends BaseActivity {
             pd.dismiss();
         }
         // 进入主页面
-        Intent intent = new Intent(LoginActivity.this,
-                FuliCenterMainActivity.class);
-        startActivity(intent);
+        if(action!=null){
+            // 进入主页面
+            Intent intent = new Intent(LoginActivity.this,
+                    FuliCenterMainActivity.class).putExtra("action", action);
+            startActivity(intent);
+        }
+
 
         finish();
     }
@@ -378,11 +392,13 @@ public class LoginActivity extends BaseActivity {
         });
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (autoLogin) {
-			return;
-		}
-	}
+    @Override
+    protected void onResume() {
+        super.onResume();
+        action = getIntent().getStringExtra("action");
+        Log.e(TAG,"resume,action="+action);
+        if (autoLogin) {
+            return;
+        }
+    }
 }

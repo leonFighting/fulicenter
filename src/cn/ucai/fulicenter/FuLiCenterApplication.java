@@ -22,9 +22,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import cn.ucai.fulicenter.bean.CartBean;
+import cn.ucai.fulicenter.bean.Contact;
 import cn.ucai.fulicenter.bean.ContactBean;
 import cn.ucai.fulicenter.bean.User;
-import cn.ucai.fulicenter.bean.UserBean;
 import cn.ucai.fulicenter.data.RequestManager;
 
 public class FuLiCenterApplication extends Application {
@@ -123,9 +123,9 @@ public class FuLiCenterApplication extends Application {
 	/**全局的当前登录用户对象*/
 	private User user;
 	/**全局的当前登录用户的好友列表*/
-	private ArrayList<UserBean> contactList = new ArrayList<UserBean>();
-
-	private HashMap<String,UserBean> userList = new HashMap<String, UserBean>();
+	private ArrayList<Contact> contactList = new ArrayList<Contact>();
+	/**全局的当前登录用户的好友集合*/
+	private HashMap<String,Contact> userList = new HashMap<String, Contact>();
 	/**全局的当前登录用户的联系人集合列表*/
 	private HashMap<Integer,ContactBean> contacts = new HashMap<Integer, ContactBean>();
 	/**全局的当前登录用户的收藏商品数量*/
@@ -140,22 +140,21 @@ public class FuLiCenterApplication extends Application {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public ArrayList<UserBean> getContactList() {
+	public ArrayList<Contact> getContactList() {
 		return contactList;
 	}
 
-	public void setContactList(ArrayList<UserBean> contactList) {
+	public void setContactList(ArrayList<Contact> contactList) {
 		this.contactList = contactList;
 	}
 
-	public HashMap<String, UserBean> getUserList() {
+	public HashMap<String, Contact> getUserList() {
 		return userList;
 	}
 
-	public void setUserList(HashMap<String, UserBean> userList) {
+	public void setUserList(HashMap<String, Contact> userList) {
 		this.userList = userList;
 	}
-
 	public HashMap<Integer, ContactBean> getContacts() {
 		return contacts;
 	}

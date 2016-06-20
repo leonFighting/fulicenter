@@ -73,7 +73,7 @@ import cn.ucai.fulicenter.domain.InviteMessage;
 import cn.ucai.fulicenter.fragment.ChatAllHistoryFragment;
 import cn.ucai.fulicenter.fragment.ContactlistFragment;
 import cn.ucai.fulicenter.fragment.FindFragment;
-import cn.ucai.fulicenter.fragment.SettingsFragment;
+import cn.ucai.fulicenter.fragment.SettingsActivity;
 import cn.ucai.fulicenter.utils.CommonUtils;
 
 public class MainActivity extends BaseActivity implements EMEventListener {
@@ -89,7 +89,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	private ContactlistFragment contactListFragment;
 	// private ChatHistoryFragment chatHistoryFragment;
 	private ChatAllHistoryFragment chatHistoryFragment;
-	private SettingsFragment settingFragment;
+	private SettingsActivity settingFragment;
 	private FindFragment mFindFragment;
 	private Fragment[] fragments;
 	private int index;
@@ -149,9 +149,9 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		// 显示所有人消息记录的fragment
 		chatHistoryFragment = new ChatAllHistoryFragment();
 		contactListFragment = new ContactlistFragment();
-		settingFragment = new SettingsFragment();
+		settingFragment = new SettingsActivity();
 		mFindFragment = new FindFragment();
-		fragments = new Fragment[] { chatHistoryFragment, contactListFragment ,mFindFragment, settingFragment };
+		fragments = new Fragment[] { chatHistoryFragment, contactListFragment ,mFindFragment };
 		// 添加显示第一个fragment
 		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, chatHistoryFragment)
 				.add(R.id.fragment_container, contactListFragment).hide(contactListFragment).show(chatHistoryFragment)

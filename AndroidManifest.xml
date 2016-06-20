@@ -54,6 +54,10 @@
             android:name=".activity.GoodDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" />
+        <activity
+            android:name="cn.ucai.fulicenter.fragment.SettingsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" />
         <activity android:name=".activity.BoutiqueDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" />
