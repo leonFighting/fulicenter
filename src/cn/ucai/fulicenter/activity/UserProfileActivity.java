@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -25,21 +26,28 @@ import com.easemob.EMValueCallBack;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.FuLiCenterApplication;
+import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import cn.ucai.fulicenter.bean.Message;
-import cn.ucai.fulicenter.bean.UserBean;
+import cn.ucai.fulicenter.bean.User;
+import cn.ucai.fulicenter.data.ApiParams;
+import cn.ucai.fulicenter.data.GsonRequest;
 import cn.ucai.fulicenter.data.MultipartRequest;
+import cn.ucai.fulicenter.data.RequestManager;
+import cn.ucai.fulicenter.db.UserDao;
 import cn.ucai.fulicenter.domain.EMUser;
 import cn.ucai.fulicenter.listener.OnSetAvatarListener;
+import cn.ucai.fulicenter.utils.ImageUtils;
 import cn.ucai.fulicenter.utils.UserUtils;
 import cn.ucai.fulicenter.utils.Utils;
 
 public class UserProfileActivity extends BaseActivity implements OnClickListener{
-	
+
 	private static final int REQUESTCODE_PICK = 1;
 	private static final int REQUESTCODE_CUTTING = 2;
 	private NetworkImageView headAvatar;
@@ -49,20 +57,20 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	private TextView tvUsername;
 	private ProgressDialog dialog;
 	private RelativeLayout rlNickName;
-	
+
 	Activity mContext;
-    OnSetAvatarListener mOnSetAvatarListener;
-    String avatarName;
-	
+	OnSetAvatarListener mOnSetAvatarListener;/**上传头像对象*/
+	String avatarName;
+
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_user_profile);
-        mContext = this;
+		mContext = this;
 		initView();
 		initListener();
 	}
-	
+
 	private void initView() {
 		headAvatar = (NetworkImageView) findViewById(R.id.user_head_avatar);
 		headPhotoUpdate = (ImageView) findViewById(R.id.user_head_headphoto_update);
@@ -71,11 +79,11 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		rlNickName = (RelativeLayout) findViewById(R.id.rl_nickname);
 		iconRightArrow = (ImageView) findViewById(R.id.ic_right_arrow);
 	}
-	
+
 	private void initListener() {
 		Intent intent = getIntent();
 		String username = intent.getStringExtra("username");
-		String hxid = intent.getStringExtra("hxid");
+		String groupId = intent.getStringExtra("groupId");
 		boolean enableUpdate = intent.getBooleanExtra("setting", false);
 		if (enableUpdate) {
 			headPhotoUpdate.setVisibility(View.VISIBLE);
@@ -91,12 +99,13 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 			UserUtils.setCurrentUserBeanNick(tvNickName);
 			UserUtils.setCurrentUserAvatar(headAvatar);
 		} else {
-            if(hxid!=null){
-//                UserUtils.setGroupMemberNick(hxid,username,tvNickName);
-            }else{
-                UserUtils.setUserBeanNick(username, tvNickName);
-                UserUtils.setUserBeanAvatar(username, headAvatar);
-            }
+			if(groupId!=null){
+				UserUtils.setUserAvatar(UserUtils.getAvatarPath(username),headAvatar);
+//				UserUtils.setGroupMemberNick(groupId,username,tvNickName);
+			}else{
+				UserUtils.setUserBeanNick(username, tvNickName);
+//				UserUtils.setUserBeanAvatar(username, headAvatar);
+			}
 			tvUsername.setText(username);
 //			asyncFetchUserInfo(username);
 		}
@@ -105,55 +114,58 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.user_head_avatar:
+			case R.id.user_head_avatar:
+				mOnSetAvatarListener = new OnSetAvatarListener(mContext,R.id.layout_user_profile,
+						getAvatarUserName(),I.AVATAR_TYPE_USER_PATH);
 //			uploadHeadPhoto();
-			break;
-		case R.id.rl_nickname:
-			final EditText editText = new EditText(this);
-			new AlertDialog.Builder(this).setTitle(R.string.setting_nickname).setIcon(android.R.drawable.ic_dialog_info).setView(editText)
-					.setPositiveButton(R.string.dl_ok, new DialogInterface.OnClickListener() {
+				break;
+			case R.id.rl_nickname:
+				final EditText editText = new EditText(this);
+				new AlertDialog.Builder(this).setTitle(R.string.setting_nickname).setIcon(android.R.drawable.ic_dialog_info).setView(editText)
+						.setPositiveButton(R.string.dl_ok, new DialogInterface.OnClickListener() {
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							String nickString = editText.getText().toString();
-							if (TextUtils.isEmpty(nickString)) {
-								Toast.makeText(UserProfileActivity.this, getString(R.string.toast_nick_not_isnull), Toast.LENGTH_SHORT).show();
-								return;
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								String nickString = editText.getText().toString();
+								if (TextUtils.isEmpty(nickString)) {
+									Toast.makeText(UserProfileActivity.this, getString(R.string.toast_nick_not_isnull), Toast.LENGTH_SHORT).show();
+									return;
+								}
+								//修改用户昵称
+								updateUserNick(nickString);
 							}
-                            updateUserNick(nickString);
-						}
-					}).setNegativeButton(R.string.dl_cancel, null).show();
-			break;
-		default:
-			break;
+						}).setNegativeButton(R.string.dl_cancel, null).show();
+				break;
+			default:
+				break;
 		}
 
 	}
-	
+
 	public void asyncFetchUserInfo(String username){
 		((DemoHXSDKHelper) HXSDKHelper.getInstance()).getUserProfileManager().asyncGetUserInfo(username, new EMValueCallBack<EMUser>() {
-			
+
 			@Override
 			public void onSuccess(EMUser user) {
 				if (user != null) {
 					tvNickName.setText(user.getNick());
 					if(!TextUtils.isEmpty(user.getAvatar())){
-						 Picasso.with(UserProfileActivity.this).load(user.getAvatar()).placeholder(R.drawable.default_avatar).into(headAvatar);
+						Picasso.with(UserProfileActivity.this).load(user.getAvatar()).placeholder(R.drawable.default_avatar).into(headAvatar);
 					}else{
 						Picasso.with(UserProfileActivity.this).load(R.drawable.default_avatar).into(headAvatar);
 					}
 					UserUtils.saveUserInfo(user);
 				}
 			}
-			
+
 			@Override
 			public void onError(int error, String errorMsg) {
 			}
 		});
 	}
-	
-	
-	
+
+
+
 	private void uploadHeadPhoto() {
 		AlertDialog.Builder builder = new Builder(this);
 		builder.setTitle(R.string.dl_title_upload_photo);
@@ -163,46 +175,54 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 						switch (which) {
-						case 0:
-							Toast.makeText(UserProfileActivity.this, getString(R.string.toast_no_support),
-									Toast.LENGTH_SHORT).show();
-							break;
-						case 1:
-							Intent pickIntent = new Intent(Intent.ACTION_PICK,null);
-							pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-							startActivityForResult(pickIntent, REQUESTCODE_PICK);
-							break;
-						default:
-							break;
+							case 0:
+								Toast.makeText(UserProfileActivity.this, getString(R.string.toast_no_support),
+										Toast.LENGTH_SHORT).show();
+								break;
+							case 1:
+								Intent pickIntent = new Intent(Intent.ACTION_PICK,null);
+								pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+								startActivityForResult(pickIntent, REQUESTCODE_PICK);
+								break;
+							default:
+								break;
 						}
 					}
 				});
 		builder.create().show();
 	}
-	
+
+	//增加更新远端服务器昵称方法
 	private void updateUserNick(String nickName) {
-        dialog = ProgressDialog.show(this, getString(R.string.dl_update_nick), getString(R.string.dl_waiting));
-        try {
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+		dialog = ProgressDialog.show(this, getString(R.string.dl_update_nick), getString(R.string.dl_waiting));
+		try {
+			String path = new ApiParams()
+					.with(I.User.USER_NAME,FuLiCenterApplication.getInstance().getUserName())
+					.with(I.User.NICK,nickName)
+					.getRequestUrl(I.REQUEST_UPDATE_USER_NICK);
+			executeRequest(new GsonRequest<User>(path,User.class,
+					responseUpdateUserNickListener(nickName),errorListener()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    private Response.Listener<UserBean> responseUpdateUserNickListener() {
-        return new Response.Listener<UserBean>() {
-            @Override
-            public void onResponse(UserBean user) {
-//                if(user.isResult()){
-//                    updateRemoteNick(user.getMUserNick());
-//                }else{
-//                    Utils.showToast(mContext,Utils.getResourceString(mContext,user.getMsg()),Toast.LENGTH_SHORT);
-//                    dialog.dismiss();
-//                }
-            }
-        };
-    }
+	private Response.Listener<User> responseUpdateUserNickListener(final String nickname) {
+		return new Response.Listener<User>() {
+			@Override
+			public void onResponse(User user) {
+				if(user.isResult()){
+					updateRemoteNick(nickname);
+				}else{
+					Utils.showToast(mContext,Utils.getResourceString(mContext,user.getMsg()),Toast.LENGTH_SHORT);
+					dialog.dismiss();
+				}
+			}
+		};
+	}
 
-    private void updateRemoteNick(final String nickName) {
+	//更新环信服务器昵称
+	private void updateRemoteNick(final String nickName) {
 		new Thread(new Runnable() {
 
 			@Override
@@ -226,9 +246,13 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 							dialog.dismiss();
 							Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatenick_success), Toast.LENGTH_SHORT)
 									.show();
+							//更新:1.testView 2.当前用户昵称 3.全局用户昵称 4.本应用UserDao
 							tvNickName.setText(nickName);
-                            FuLiCenterApplication.currentUserNick = nickName;
-//                            FuLiCenterApplication.getInstance().getUser().setMUserNick(nickName);
+							FuLiCenterApplication.currentUserNick = nickName;
+							User user = FuLiCenterApplication.getInstance().getUser();
+							user.setMUserNick(nickName);
+							UserDao userDao = new UserDao(mContext);
+							userDao.updateUser(user);
 						}
 					});
 				}
@@ -236,57 +260,73 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		}).start();
 	}
 
+	//获取裁剪后结果
 	@Override
 	protected void onActivityResult(final int requestCode, int resultCode, final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-        Log.e("main","requestCode="+requestCode+",resultCode="+resultCode);
-        mOnSetAvatarListener.setAvatar(requestCode,data,headAvatar);
-        if(resultCode==RESULT_OK && requestCode == OnSetAvatarListener.REQUEST_CROP_PHOTO){
-            dialog = ProgressDialog.show(this, getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
-            uploadAvatarByMultipart();
-            dialog.show();
-        }
+		Log.e("main","requestCode="+requestCode+",resultCode="+resultCode);
+		mOnSetAvatarListener.setAvatar(requestCode,data,headAvatar);
+		if(resultCode==RESULT_OK && requestCode == OnSetAvatarListener.REQUEST_CROP_PHOTO){
+			dialog = ProgressDialog.show(this, getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
+			//清空缓存文件
+			RequestManager.getRequestQueue().getCache()
+					.remove(UserUtils.getAvatarPath(FuLiCenterApplication.getInstance().getUserName()));
+			uploadAvatarByMultipart();
+			dialog.show();
+		}
 	}
-    private final String boundary = "apiclient-" + System.currentTimeMillis();
-    private final String mimeType = "multipart/form-data;boundary=" + boundary;
-    private byte[] multipartBody;
-    private Bitmap bitmap;
-    private void uploadAvatarByMultipart(){
-        multipartBody = getImageBytes(bitmap);
-        String url = null;
-        try {
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        executeRequest(new MultipartRequest<Message>(url,Message.class,null,
-                uploadAvatarByMultipartListener(),errorListener(),mimeType, multipartBody));
-    }
+	private final String boundary = "apiclient-" + System.currentTimeMillis();
+	private final String mimeType = "multipart/form-data;boundary=" + boundary;
+	private byte[] multipartBody;
+	private Bitmap bitmap;
+	//使用volley框架上传头像，MultipartRequest发送post请求
+	private void uploadAvatarByMultipart(){
+		File file = new File(ImageUtils.getAvatarPath(mContext,I.AVATAR_TYPE_USER_PATH),
+				avatarName + I.AVATAR_SUFFIX_JPG);
+		String path = file.getAbsolutePath();
+		//通过文件转换成bitmap
+		bitmap = BitmapFactory.decodeFile(path);
+		multipartBody = getImageBytes(bitmap);
+		String url = null;
+		try {
+			url = new ApiParams()
+					.with(I.User.USER_NAME, FuLiCenterApplication.getInstance().getUserName())
+					.with(I.AVATAR_TYPE,I.AVATAR_TYPE_USER_PATH)
+					.getRequestUrl(I.REQUEST_UPLOAD_AVATAR);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		executeRequest(new MultipartRequest<Message>(url,Message.class,null,
+				uploadAvatarByMultipartListener(),errorListener(),mimeType, multipartBody));
+	}
 
-    private Response.Listener<Message> uploadAvatarByMultipartListener() {
-        return new Response.Listener<Message>() {
-            @Override
-            public void onResponse(Message result) {
-                if(result.isResult()){
-                    UserUtils.setCurrentUserAvatar(headAvatar);
-                    Utils.showToast(mContext,Utils.getResourceString(mContext,result.getMsg()),Toast.LENGTH_SHORT);
-                    dialog.dismiss();
-                }else{
-                    Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_fail),
-									Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                }
-            }
-        };
-    }
-    public byte[] getImageBytes(Bitmap bmp){
-        if(bmp==null)return null;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG,100,baos);
-        byte[] imageBytes = baos.toByteArray();
-        return imageBytes;
-    }
+	private Response.Listener<Message>  uploadAvatarByMultipartListener() {
+		return new Response.Listener<Message>() {
+			@Override
+			public void onResponse(Message result) {
+				if(result.isResult()){
+					UserUtils.setCurrentUserAvatar(headAvatar);
+					Utils.showToast(mContext,Utils.getResourceString(mContext,result.getMsg()),Toast.LENGTH_SHORT);
+					dialog.dismiss();
+				}else{
+					Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_fail),
+							Toast.LENGTH_SHORT).show();
+					dialog.dismiss();
+				}
+			}
+		};
+	}
 
-//	public void startPhotoZoom(Uri uri) {
+	//bitmap转换二进制
+	public byte[] getImageBytes(Bitmap bmp){
+		if(bmp==null)return null;
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		bmp.compress(Bitmap.CompressFormat.JPEG,100,baos);
+		byte[] imageBytes = baos.toByteArray();
+		return imageBytes;
+	}
+
+	//	public void startPhotoZoom(Uri uri) {
 //		Intent intent = new Intent("com.android.camera.action.CROP");
 //		intent.setDataAndType(uri, "image/*");
 //		intent.putExtra("crop", true);
@@ -349,8 +389,8 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 //		bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
 //		return baos.toByteArray();
 //	}
-    private String getUserName() {
-        avatarName = System.currentTimeMillis()+"";
-        return avatarName;
-    }
+	private String getAvatarUserName() {
+		avatarName = System.currentTimeMillis()+"";
+		return avatarName;
+	}
 }

@@ -23,7 +23,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easemob.EMCallBack;
@@ -41,6 +40,7 @@ import cn.ucai.fulicenter.activity.LoginActivity;
 import cn.ucai.fulicenter.activity.OfflinePushNickActivity;
 import cn.ucai.fulicenter.activity.UserProfileActivity;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
+import cn.ucai.fulicenter.view.DisplayUtils;
 
 /**
  * 设置界面
@@ -50,6 +50,7 @@ import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
  */
 public class SettingsActivity extends BaseActivity implements OnClickListener {
 	SettingsActivity mContext;
+
 	/**
 	 * 设置新消息通知布局
 	 */
@@ -103,12 +104,12 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 	/**
 	 * 声音和震动中间的那条线
 	 */
-	private TextView textview1, textview2;
+//    private TextView textview1, textview2;
 
 	private LinearLayout blacklistContainer;
-	
+
 	private LinearLayout userProfileContainer;
-	
+
 	/**
 	 * 退出按钮
 	 */
@@ -117,9 +118,9 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 	private RelativeLayout rl_switch_chatroom_leave;
 	private ImageView iv_switch_room_owner_leave_allow;
 	private ImageView iv_switch_room_owner_leave_disallow;
-	
+
 	private EMChatOptions chatOptions;
- 
+
 	/**
 	 * 诊断
 	 */
@@ -128,16 +129,17 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 	 * iOS离线推送昵称
 	 */
 	private LinearLayout pushNick;
-	
+
 	DemoHXSDKModel model;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mContext = this;
 		setContentView(R.layout.fragment_conversation_settings);
+		mContext = this;
+
 		if(savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
-            return;
+			return;
 		rl_switch_notification = (RelativeLayout) findViewById(R.id.rl_switch_notification);
 		rl_switch_sound = (RelativeLayout) findViewById(R.id.rl_switch_sound);
 		rl_switch_vibrate = (RelativeLayout) findViewById(R.id.rl_switch_vibrate);
@@ -152,24 +154,25 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 		iv_switch_close_vibrate = (ImageView) findViewById(R.id.iv_switch_close_vibrate);
 		iv_switch_open_speaker = (ImageView) findViewById(R.id.iv_switch_open_speaker);
 		iv_switch_close_speaker = (ImageView) findViewById(R.id.iv_switch_close_speaker);
-		
+
 		iv_switch_room_owner_leave_allow = (ImageView) findViewById(R.id.iv_switch_chatroom_owner_leave_allow);
 		iv_switch_room_owner_leave_disallow = (ImageView) findViewById(R.id.iv_switch_chatroom_owner_leave_not_allow);
-		
-		
+
+		DisplayUtils.initBackWithTitle(mContext,getResources().getString(R.string.setting));
+
 		logoutBtn = (Button) findViewById(R.id.btn_logout);
 		if(!TextUtils.isEmpty(EMChatManager.getInstance().getCurrentUser())){
 			logoutBtn.setText(getString(R.string.button_logout) + "(" + EMChatManager.getInstance().getCurrentUser() + ")");
 		}
 
-		textview1 = (TextView) findViewById(R.id.textview1);
-		textview2 = (TextView) findViewById(R.id.textview2);
-		
+//        textview1 = (TextView) findViewById(R.id.textview1);
+//        textview2 = (TextView) findViewById(R.id.textview2);
+
 		blacklistContainer = (LinearLayout) findViewById(R.id.ll_black_list);
 		userProfileContainer = (LinearLayout) findViewById(R.id.ll_user_profile);
 		llDiagnose=(LinearLayout) findViewById(R.id.ll_diagnose);
 		pushNick=(LinearLayout) findViewById(R.id.ll_set_push_nick);
-		
+
 		blacklistContainer.setOnClickListener(this);
 		userProfileContainer.setOnClickListener(this);
 		rl_switch_notification.setOnClickListener(this);
@@ -180,11 +183,11 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 		llDiagnose.setOnClickListener(this);
 		pushNick.setOnClickListener(this);
 		rl_switch_chatroom_leave.setOnClickListener(this);
-		
+
 		chatOptions = EMChatManager.getInstance().getChatOptions();
-		
+
 		model = (DemoHXSDKModel) HXSDKHelper.getInstance().getModel();
-		
+
 		// 震动和声音总开关，来消息时，是否允许此开关打开
 		// the vibrate and sound notification are allowed or not?
 		if (model.getSettingMsgNotification()) {
@@ -194,7 +197,7 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 			iv_switch_open_notification.setVisibility(View.INVISIBLE);
 			iv_switch_close_notification.setVisibility(View.VISIBLE);
 		}
-		
+
 		// 是否打开声音
 		// sound notification is switched on or not?
 		if (model.getSettingMsgSound()) {
@@ -204,7 +207,7 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 			iv_switch_open_sound.setVisibility(View.INVISIBLE);
 			iv_switch_close_sound.setVisibility(View.VISIBLE);
 		}
-		
+
 		// 是否打开震动
 		// vibrate notification is switched on or not?
 		if (model.getSettingMsgVibrate()) {
@@ -227,122 +230,122 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 
 		// 是否允许聊天室owner leave
 		if(model.isChatroomOwnerLeaveAllowed()){
-		    iv_switch_room_owner_leave_allow.setVisibility(View.VISIBLE);
-		    iv_switch_room_owner_leave_disallow.setVisibility(View.INVISIBLE);
+			iv_switch_room_owner_leave_allow.setVisibility(View.VISIBLE);
+			iv_switch_room_owner_leave_disallow.setVisibility(View.INVISIBLE);
 		}else{
-		    iv_switch_room_owner_leave_allow.setVisibility(View.INVISIBLE);
-            iv_switch_room_owner_leave_disallow.setVisibility(View.VISIBLE);
+			iv_switch_room_owner_leave_allow.setVisibility(View.INVISIBLE);
+			iv_switch_room_owner_leave_disallow.setVisibility(View.VISIBLE);
 		}
 	}
 
-	
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.rl_switch_notification:
-			if (iv_switch_open_notification.getVisibility() == View.VISIBLE) {
-				iv_switch_open_notification.setVisibility(View.INVISIBLE);
-				iv_switch_close_notification.setVisibility(View.VISIBLE);
-				rl_switch_sound.setVisibility(View.GONE);
-				rl_switch_vibrate.setVisibility(View.GONE);
-				textview1.setVisibility(View.GONE);
-				textview2.setVisibility(View.GONE);
-				chatOptions.setNotificationEnable(false);
-				EMChatManager.getInstance().setChatOptions(chatOptions);
+			case R.id.rl_switch_notification:
+				if (iv_switch_open_notification.getVisibility() == View.VISIBLE) {
+					iv_switch_open_notification.setVisibility(View.INVISIBLE);
+					iv_switch_close_notification.setVisibility(View.VISIBLE);
+					rl_switch_sound.setVisibility(View.GONE);
+					rl_switch_vibrate.setVisibility(View.GONE);
+//                    textview1.setVisibility(View.GONE);
+//                    textview2.setVisibility(View.GONE);
+					chatOptions.setNotificationEnable(false);
+					EMChatManager.getInstance().setChatOptions(chatOptions);
 
-				HXSDKHelper.getInstance().getModel().setSettingMsgNotification(false);
-			} else {
-				iv_switch_open_notification.setVisibility(View.VISIBLE);
-				iv_switch_close_notification.setVisibility(View.INVISIBLE);
-				rl_switch_sound.setVisibility(View.VISIBLE);
-				rl_switch_vibrate.setVisibility(View.VISIBLE);
-				textview1.setVisibility(View.VISIBLE);
-				textview2.setVisibility(View.VISIBLE);
-				chatOptions.setNotificationEnable(true);
-				EMChatManager.getInstance().setChatOptions(chatOptions);
-				HXSDKHelper.getInstance().getModel().setSettingMsgNotification(true);
-			}
-			break;
-		case R.id.rl_switch_sound:
-			if (iv_switch_open_sound.getVisibility() == View.VISIBLE) {
-				iv_switch_open_sound.setVisibility(View.INVISIBLE);
-				iv_switch_close_sound.setVisibility(View.VISIBLE);
-				chatOptions.setNoticeBySound(false);
-				EMChatManager.getInstance().setChatOptions(chatOptions);
-				HXSDKHelper.getInstance().getModel().setSettingMsgSound(false);
-			} else {
-				iv_switch_open_sound.setVisibility(View.VISIBLE);
-				iv_switch_close_sound.setVisibility(View.INVISIBLE);
-				chatOptions.setNoticeBySound(true);
-				EMChatManager.getInstance().setChatOptions(chatOptions);
-				HXSDKHelper.getInstance().getModel().setSettingMsgSound(true);
-			}
-			break;
-		case R.id.rl_switch_vibrate:
-			if (iv_switch_open_vibrate.getVisibility() == View.VISIBLE) {
-				iv_switch_open_vibrate.setVisibility(View.INVISIBLE);
-				iv_switch_close_vibrate.setVisibility(View.VISIBLE);
-				chatOptions.setNoticedByVibrate(false);
-				EMChatManager.getInstance().setChatOptions(chatOptions);
-				HXSDKHelper.getInstance().getModel().setSettingMsgVibrate(false);
-			} else {
-				iv_switch_open_vibrate.setVisibility(View.VISIBLE);
-				iv_switch_close_vibrate.setVisibility(View.INVISIBLE);
-				chatOptions.setNoticedByVibrate(true);
-				EMChatManager.getInstance().setChatOptions(chatOptions);
-				HXSDKHelper.getInstance().getModel().setSettingMsgVibrate(true);
-			}
-			break;
-		case R.id.rl_switch_speaker:
-			if (iv_switch_open_speaker.getVisibility() == View.VISIBLE) {
-				iv_switch_open_speaker.setVisibility(View.INVISIBLE);
-				iv_switch_close_speaker.setVisibility(View.VISIBLE);
-				chatOptions.setUseSpeaker(false);
-				EMChatManager.getInstance().setChatOptions(chatOptions);
-				HXSDKHelper.getInstance().getModel().setSettingMsgSpeaker(false);
-			} else {
-				iv_switch_open_speaker.setVisibility(View.VISIBLE);
-				iv_switch_close_speaker.setVisibility(View.INVISIBLE);
-				chatOptions.setUseSpeaker(true);
-				EMChatManager.getInstance().setChatOptions(chatOptions);
-				HXSDKHelper.getInstance().getModel().setSettingMsgVibrate(true);
-			}
-			break;
-		case R.id.rl_switch_chatroom_owner_leave:
-		    if(this.iv_switch_room_owner_leave_allow.getVisibility() == View.VISIBLE){
-		        iv_switch_room_owner_leave_allow.setVisibility(View.INVISIBLE);
-                iv_switch_room_owner_leave_disallow.setVisibility(View.VISIBLE);
-                chatOptions.allowChatroomOwnerLeave(false);
-                EMChatManager.getInstance().setChatOptions(chatOptions);
-                model.allowChatroomOwnerLeave(false);
+					HXSDKHelper.getInstance().getModel().setSettingMsgNotification(false);
+				} else {
+					iv_switch_open_notification.setVisibility(View.VISIBLE);
+					iv_switch_close_notification.setVisibility(View.INVISIBLE);
+					rl_switch_sound.setVisibility(View.VISIBLE);
+					rl_switch_vibrate.setVisibility(View.VISIBLE);
+//                    textview1.setVisibility(View.VISIBLE);
+//                    textview2.setVisibility(View.VISIBLE);
+					chatOptions.setNotificationEnable(true);
+					EMChatManager.getInstance().setChatOptions(chatOptions);
+					HXSDKHelper.getInstance().getModel().setSettingMsgNotification(true);
+				}
+				break;
+			case R.id.rl_switch_sound:
+				if (iv_switch_open_sound.getVisibility() == View.VISIBLE) {
+					iv_switch_open_sound.setVisibility(View.INVISIBLE);
+					iv_switch_close_sound.setVisibility(View.VISIBLE);
+					chatOptions.setNoticeBySound(false);
+					EMChatManager.getInstance().setChatOptions(chatOptions);
+					HXSDKHelper.getInstance().getModel().setSettingMsgSound(false);
+				} else {
+					iv_switch_open_sound.setVisibility(View.VISIBLE);
+					iv_switch_close_sound.setVisibility(View.INVISIBLE);
+					chatOptions.setNoticeBySound(true);
+					EMChatManager.getInstance().setChatOptions(chatOptions);
+					HXSDKHelper.getInstance().getModel().setSettingMsgSound(true);
+				}
+				break;
+			case R.id.rl_switch_vibrate:
+				if (iv_switch_open_vibrate.getVisibility() == View.VISIBLE) {
+					iv_switch_open_vibrate.setVisibility(View.INVISIBLE);
+					iv_switch_close_vibrate.setVisibility(View.VISIBLE);
+					chatOptions.setNoticedByVibrate(false);
+					EMChatManager.getInstance().setChatOptions(chatOptions);
+					HXSDKHelper.getInstance().getModel().setSettingMsgVibrate(false);
+				} else {
+					iv_switch_open_vibrate.setVisibility(View.VISIBLE);
+					iv_switch_close_vibrate.setVisibility(View.INVISIBLE);
+					chatOptions.setNoticedByVibrate(true);
+					EMChatManager.getInstance().setChatOptions(chatOptions);
+					HXSDKHelper.getInstance().getModel().setSettingMsgVibrate(true);
+				}
+				break;
+			case R.id.rl_switch_speaker:
+				if (iv_switch_open_speaker.getVisibility() == View.VISIBLE) {
+					iv_switch_open_speaker.setVisibility(View.INVISIBLE);
+					iv_switch_close_speaker.setVisibility(View.VISIBLE);
+					chatOptions.setUseSpeaker(false);
+					EMChatManager.getInstance().setChatOptions(chatOptions);
+					HXSDKHelper.getInstance().getModel().setSettingMsgSpeaker(false);
+				} else {
+					iv_switch_open_speaker.setVisibility(View.VISIBLE);
+					iv_switch_close_speaker.setVisibility(View.INVISIBLE);
+					chatOptions.setUseSpeaker(true);
+					EMChatManager.getInstance().setChatOptions(chatOptions);
+					HXSDKHelper.getInstance().getModel().setSettingMsgVibrate(true);
+				}
+				break;
+			case R.id.rl_switch_chatroom_owner_leave:
+				if(this.iv_switch_room_owner_leave_allow.getVisibility() == View.VISIBLE){
+					iv_switch_room_owner_leave_allow.setVisibility(View.INVISIBLE);
+					iv_switch_room_owner_leave_disallow.setVisibility(View.VISIBLE);
+					chatOptions.allowChatroomOwnerLeave(false);
+					EMChatManager.getInstance().setChatOptions(chatOptions);
+					model.allowChatroomOwnerLeave(false);
 
-		    }else{
-		        iv_switch_room_owner_leave_allow.setVisibility(View.VISIBLE);
-                iv_switch_room_owner_leave_disallow.setVisibility(View.INVISIBLE);
-                chatOptions.allowChatroomOwnerLeave(true);
-                EMChatManager.getInstance().setChatOptions(chatOptions);
-                model.allowChatroomOwnerLeave(true);
-		    }
-		    break;
-		case R.id.btn_logout: //退出登陆
-			logout();
-			break;
-		case R.id.ll_black_list:
-			startActivity(new Intent(mContext, BlacklistActivity.class));
-			break;
-		case R.id.ll_diagnose:
-			startActivity(new Intent(mContext, DiagnoseActivity.class));
-			break;
-		case R.id.ll_set_push_nick:
-			startActivity(new Intent(mContext, OfflinePushNickActivity.class));
-			break;
-		case R.id.ll_user_profile:
-			startActivity(new Intent(mContext, UserProfileActivity.class).putExtra("setting", true));
-			break;
-		default:
-			break;
+				}else{
+					iv_switch_room_owner_leave_allow.setVisibility(View.VISIBLE);
+					iv_switch_room_owner_leave_disallow.setVisibility(View.INVISIBLE);
+					chatOptions.allowChatroomOwnerLeave(true);
+					EMChatManager.getInstance().setChatOptions(chatOptions);
+					model.allowChatroomOwnerLeave(true);
+				}
+				break;
+			case R.id.btn_logout: //退出登陆
+				logout();
+				break;
+			case R.id.ll_black_list:
+				startActivity(new Intent(mContext, BlacklistActivity.class));
+				break;
+			case R.id.ll_diagnose:
+				startActivity(new Intent(mContext, DiagnoseActivity.class));
+				break;
+			case R.id.ll_set_push_nick:
+				startActivity(new Intent(mContext, OfflinePushNickActivity.class));
+				break;
+			case R.id.ll_user_profile:
+				startActivity(new Intent(mContext, UserProfileActivity.class).putExtra("setting", true));
+				break;
+			default:
+				break;
 		}
-		
+
 	}
 
 	void logout() {
@@ -352,45 +355,49 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 		pd.setCanceledOnTouchOutside(false);
 		pd.show();
 		DemoHXSDKHelper.getInstance().logout(true,new EMCallBack() {
-			
+
 			@Override
 			public void onSuccess() {
 				runOnUiThread(new Runnable() {
 					public void run() {
-                        FuLiCenterApplication instance = FuLiCenterApplication.getInstance();
-                        instance.getContactList().clear();
-                        instance.getUserList().clear();
-						instance.setUser(null);
+						FuLiCenterApplication instance = FuLiCenterApplication.getInstance();
+						instance.getContactList().clear();
+						instance.getUserList().clear();
+						instance.getContacts().clear();
+						instance.getCartList().clear();
 						instance.setUserName(null);
-						instance.setCollectCount(0);
+						instance.setUser(null);
+						sendStickyBroadcast(new Intent("update_user"));
+						sendStickyBroadcast(new Intent("update_cart"));
 						pd.dismiss();
 						// 重新显示登陆页面
 						finish();
-						startActivity(new Intent(mContext, LoginActivity.class));
-						
+						startActivity(new Intent(mContext, LoginActivity.class).putExtra("action","person"));
+
 					}
 				});
 			}
-			
+
 			@Override
 			public void onProgress(int progress, String status) {
-				
+
 			}
-			
+
 			@Override
 			public void onError(int code, String message) {
 				runOnUiThread(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
 						pd.dismiss();
 						Toast.makeText(mContext, "unbind devicetokens failed", Toast.LENGTH_SHORT).show();
-						
-						
+
+
 					}
 				});
 			}
 		});
 	}
+
 }

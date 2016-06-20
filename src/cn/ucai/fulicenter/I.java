@@ -15,7 +15,6 @@ public interface I {
     public static final String PAGE_ID = "page_id";
     public static final String PAGE_SIZE = "page_size";
     /** 上传图片的类型：user_avatar或group_icon */
-    public static final String AVATAR_TYPE = "avatarType";
     public static final String FILE_NAME="file_name";
     
     public static final int PAGE_ID_DEFAULT = 0;
@@ -226,48 +225,6 @@ public interface I {
     }
 
 
-    public static final String KEY_REQUEST = "request";
-    public static final String REQUEST_SERVERSTATUS = "server_status";
-    /**
-     * 客户端发送的注册请求
-     */
-    public static final String REQUEST_REGISTER = "register";
-    /**
-     * 发送取消注册的请求
-     */
-    public static final String REQUEST_UNREGISTER = "unregister";
-
-    /**
-     * 客户端上传头像的请求
-     */
-    public static final String REQUEST_UPLOAD_AVATAR = "upload_avatar";
-    /**
-     * 客户端发送的登陆请求
-     */
-    public static final String REQUEST_LOGIN = "login";
-    public static final String REQUEST_DOWNLOAD_AVATAR = "download_avatar";
-    public static final String REQUEST_DOWNLOAD_GROUP_AVATAR = "download_group_avatar";
-//    public static final String DOWNLOAD_AVATAR_URL = FuLiCenterApplication.SERVER_ROOT +"?request="+REQUEST_DOWNLOAD_AVATAR+"&avatar=";
-    public static final String ISON8859_1 = "iso8859-1";
-    public static final String UTF_8 = "utf-8";
-    public static final String REQUEST_DOWNLOAD_CONTACTS = "download_contacts";
-    public static final String REQUEST_DOWNLOAD_CONTACT_LIST = "download_contact_list";
-    public static final String REQUEST_DELETE_CONTACT = "delete_contact";
-    public static final String REQUEST_ADD_CONTACT = "add_contact";
-    public static final String REQUEST_FIND_USER = "find_user";
-    public static final String REQUEST_DOWNLOAD_CONTACT = "download_contacts";
-    public static final String REQUEST_UPLOAD_LOCATION = "upload_location";
-    public static final String REQUEST_DOWNLOAD_LOCATION = "download_location";
-    public static final String REQUEST_CREATE_GROUP = "create_group";
-    public static final String REQUEST_ADD_GROUP_MEMBER = "add_group_member";
-    public static final String REQUEST_ADD_GROUP_MEMBERS = "add_group_members";
-    public static final String REQUEST_UPDATE_GROUP_NAME = "update_group_name";
-    public static final String REQUEST_DOWNLOAD_GROUP_MEMBERS = "download_group_members";
-    public static final String REQUEST_DELETE_GROUP_MEMBER = "delete_group_member";
-    public static final String REQUEST_DELETE_GROUP = "delete_group";
-    public static final String REQUEST_DOWNLOAD_GROUPS = "download_groups";
-    public static final String REQUEST_FIND_PUBLIC_GROUPS = "download_public_groups";
-    public static final String REQUEST_FIND_GROUP = "find_group_by_group_name";
 String REQUEST_FIND_CHARGE = "find_charge";
     
     /** 从服务端查询精选首页的数据*/
@@ -315,10 +272,7 @@ String REQUEST_FIND_CHARGE = "find_charge";
     /**下载商品属性颜色的图片*/
     String REQUEST_DOWNLOAD_COLOR_IMG = "download_color_img";
     
-    /** 下载商品相册图像的URL*/
-    String DOWNLOAD_AVATAR_URL= FuLiCenterApplication.SERVER_ROOT+
-        "?request="+REQUEST_DOWNLOAD_AVATAR+"&avatar=";
-    
+
     /** 下载商品相册图像的请求*/
     String REQUEST_DOWNLOAD_ALBUM_IMG="download_album_img_url";
     /** 下载商品相册图像的接口*/
@@ -357,6 +311,91 @@ String REQUEST_FIND_CHARGE = "find_charge";
     String REQUEST_PAY="pay";
     /**壹收款服务端支付URL*/
     String PAY_URL= FuLiCenterApplication.SERVER_ROOT+"?request="+REQUEST_PAY;
+    String KEY_REQUEST 								= 		"request";
+    /** 上传图片的类型：user_avatar或group_icon */
+    String AVATAR_TYPE 								= 		"avatarType";
+    /** 服务器状态的请求 */
+    String REQUEST_SERVERSTATUS 					= 		"server_status";
+    /** 客户端发送的注册请求 */
+    String REQUEST_REGISTER		 					= 		"register";
+    /**  发送取消注册的请求 */
+    String REQUEST_UNREGISTER 						= 		"unregister";
+    /** 客户端上传头像的请求 */
+    String REQUEST_UPLOAD_AVATAR 					= 		"upload_avatar";
+    /** 客户端更新用户昵称的请求 */
+    String REQUEST_UPDATE_USER_NICK 				= 		"update_nick";
+    /** 客户端修改密码的请求 */
+    String REQUEST_UPDATE_USER_PASSWORD 			= 		"update_password";
+    /** 客户端上传头像的请求 */
+    String REQUEST_UPLOAD_AVATAR_ID  		 		= 		"upload_avatar_id";
+    /** 客户端发送的登陆请求 */
+    String REQUEST_LOGIN 							= 		"login";
+    /** 客户端发送的下载用户头像请求 */
+    String REQUEST_DOWNLOAD_AVATAR	 				= 		"download_avatar";
+    /** 客户端发送的下载群组头像请求 */
+    String REQUEST_DOWNLOAD_GROUP_AVATAR 			= 		"download_group_avatar";
+    /** 客户端发送的下载联系人请求 */
+    String REQUEST_DOWNLOAD_CONTACTS			 	= 		"download_contacts";
+    /** 客户端发送的下载联系人所有集合请求 */
+    String REQUEST_DOWNLOAD_CONTACT_ALL_LIST 		= 		"download_contact_all_list";
+    /** 客户端发送的下载联系人集合请求 */
+    String REQUEST_DOWNLOAD_CONTACT_LIST 			= 		"download_contact_list";
+    /** 客户端发送的删除联系人请求 */
+    String REQUEST_DELETE_CONTACT 					= 		"delete_contact";
+    /** 客户端发送的添加联系人请求 */
+    String REQUEST_ADD_CONTACT 						= 		"add_contact";
+    /** 客户端发送的查找用户请求 */
+    String REQUEST_FIND_USER 						= 		"find_user";
+    /** 客户端发送的根据用户名模糊查找用户请求 */
+    String REQUEST_FIND_USERS 						= 		"find_users";
+    /** 客户端发送的根据用户昵称模糊查找用户请求 */
+    String REQUEST_FIND_USERS_BY_NICK 				= 		"find_users_by_nick";
+    /** 客户端发送的根据用户昵称模糊查找用户请求 */
+    String REQUEST_FIND_USERS_FOR_SEARCH			= 		"find_users_for_search";
+    /** 客户端发送的下载联系人请求 */
+    String REQUEST_DOWNLOAD_CONTACT 				= 		"download_contacts";
+    /** 客户端发送的上传位置请求 */
+    String REQUEST_UPLOAD_LOCATION 					= 		"upload_location";
+    /** 客户端发送的更新位置请求 */
+    String REQUEST_UPDATE_LOCATION 					= 		"update_location";
+    /** 客户端发送的下载位置请求 */
+    String REQUEST_DOWNLOAD_LOCATION 				= 		"download_location";
+    /** 客户端发送的创建群组请求 */
+    String REQUEST_CREATE_GROUP			 			= 		"create_group";
+    /** 客户端发送的添加群成员请求 */
+    String REQUEST_ADD_GROUP_MEMBER 				= 		"add_group_member";
+    /** 客户端发送的添加多个群成员请求 */
+    String REQUEST_ADD_GROUP_MEMBERS		 		= 		"add_group_members";
+    /** 客户端发送的添加群成员请求 */
+    String REQUEST_ADD_GROUP_MEMBER_BY_USERNAME		= 		"add_group_member_by_username";
+    /** 客户端发送的更新群名称请求 */
+    String REQUEST_UPDATE_GROUP_NAME 				= 		"update_group_name";
+    /** 客户端发送的下载多个群成员请求 */
+    String REQUEST_DOWNLOAD_GROUP_MEMBERS 			= 		"download_group_members";
+    /** 客户端发送的下载多个群成员请求 */
+    String REQUEST_DOWNLOAD_GROUP_MEMBERS_BY_LIMIT 	= 		"download_group_members_by_limit";
+    /** 客户端发送的下载多个群成员请求 */
+    String REQUEST_DOWNLOAD_GROUP_MEMBERS_BY_HXID 	= 		"download_group_members_by_hxid";
+    /** 客户端发送的下载多个群成员请求 */
+    String REQUEST_DOWNLOAD_GROUP_MEMBERS_BY_HXID_LIMIT 	= 		"download_group_members_by_hxid_limit";
+    /** 客户端发送的删除群成员请求 */
+    String REQUEST_DELETE_GROUP_MEMBER 				= 		"delete_group_member";
+    /** 客户端发送的删除多个群成员请求 */
+    String REQUEST_DELETE_GROUP_MEMBERS 			= 		"delete_group_members";
+    /** 客户端发送的删除群组请求 */
+    String REQUEST_DELETE_GROUP 					= 		"delete_group";
+    /** 客户端发送的下载群组请求 */
+    String REQUEST_DOWNLOAD_GROUPS 					= 		"download_groups";
+    /** 客户端发送的下载公开裙请求 */
+    String REQUEST_FIND_PUBLIC_GROUPS 				= 		"download_public_groups";
+    /** 客户端发送的根据群组名称模糊查找群组请求 */
+    String REQUEST_FIND_GROUP 						= 		"find_group_by_group_name";
+    /** 客户端发送的根据群组账号查找群组请求 */
+    String REQUEST_FIND_GROUP_BY_ID					= 		"find_group_by_group_id";
+    /** 客户端发送的根据群组环信id查找群组请求 */
+    String REQUEST_FIND_GROUP_BY_HXID 				= 		"find_group_by_group_hxid";
+    /** 客户端发送的根据群组环信id查找公开群组请求 */
+    String REQUEST_FIND_PUBLIC_GROUP_BY_HXID 		= 		"find_public_group_by_group_hxid";
     String DOWNLOAD_USER_AVATAR_URL                 =       FuLiCenterApplication.SERVER_ROOT
             +  "?" + KEY_REQUEST + "=" + REQUEST_DOWNLOAD_AVATAR + "&" + AVATAR_TYPE + "=";
     /** 客户端发送的根据根据群组环信id下载群组头像的请求 */

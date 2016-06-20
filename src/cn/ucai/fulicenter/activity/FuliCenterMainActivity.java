@@ -158,6 +158,10 @@ public class FuliCenterMainActivity extends BaseActivity {
         } else {
             setRadioChecked(index);
         }
+        if (currentTabIndex == 4 && FuLiCenterApplication.getInstance().getUser() == null) {
+            index =0;
+            Log.e(TAG, "退出index="+index);
+        }
         if (currentTabIndex != index) {
             FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
             trx.hide(mFragments[currentTabIndex]);

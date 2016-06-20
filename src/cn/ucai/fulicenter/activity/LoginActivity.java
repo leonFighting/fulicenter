@@ -335,6 +335,7 @@ public class LoginActivity extends BaseActivity {
         }
         // 进入主页面
         if(action!=null){
+            sendStickyBroadcast(new Intent("update_user"));
             // 进入主页面
             Intent intent = new Intent(LoginActivity.this,
                     FuliCenterMainActivity.class).putExtra("action", action);

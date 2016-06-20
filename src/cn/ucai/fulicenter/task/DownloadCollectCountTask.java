@@ -7,8 +7,11 @@ import android.util.Log;
 import com.android.volley.Response;
 
 import cn.ucai.fulicenter.FuLiCenterApplication;
+import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.activity.BaseActivity;
 import cn.ucai.fulicenter.bean.MessageBean;
+import cn.ucai.fulicenter.bean.User;
+import cn.ucai.fulicenter.data.ApiParams;
 import cn.ucai.fulicenter.data.GsonRequest;
 
 /**
@@ -26,12 +29,12 @@ public class DownloadCollectCountTask extends BaseActivity {
 
     private void initPath(){
         try {
-//            UserBean user = FuLiCenterApplication.getInstance().getUser();
-//            if(user!=null) {
-//                path = new ApiParams()
-//                        .with(I.User.USER_NAME, user.getUserName())
-//                        .getRequestUrl(I.REQUEST_FIND_COLLECT_COUNT);
-//            }
+            User user = FuLiCenterApplication.getInstance().getUser();
+            if(user!=null) {
+                path = new ApiParams()
+                        .with(I.User.USER_NAME, user.getMUserName())
+                        .getRequestUrl(I.REQUEST_FIND_COLLECT_COUNT);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

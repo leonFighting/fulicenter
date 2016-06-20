@@ -68,7 +68,6 @@ import cn.ucai.fulicenter.bean.Contact;
 import cn.ucai.fulicenter.db.EMUserDao;
 import cn.ucai.fulicenter.db.InviteMessgeDao;
 import cn.ucai.fulicenter.domain.EMUser;
-import cn.ucai.fulicenter.utils.UserUtils;
 import cn.ucai.fulicenter.widget.Sidebar;
 
 /**
@@ -515,7 +514,7 @@ public class ContactlistFragment extends Fragment {
             mContactList.add(0, newFriends);
         }
         for (Contact contact: mContactList) {
-            UserUtils.setUserHearder(contact.getMContactCname(),contact);
+//            UserUtils.setUserHearder(contact.getMContactCname(),contact);
         }
         // 排序
         Collections.sort(this.mContactList, new Comparator<Contact>() {
