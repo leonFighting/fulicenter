@@ -48,16 +48,17 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import cn.ucai.fulicenter.bean.Message;
 import cn.ucai.fulicenter.bean.User;
+import cn.ucai.fulicenter.data.ApiParams;
+import cn.ucai.fulicenter.data.GsonRequest;
 import cn.ucai.fulicenter.data.OkHttpUtils;
 import cn.ucai.fulicenter.db.EMUserDao;
 import cn.ucai.fulicenter.db.UserDao;
 import cn.ucai.fulicenter.domain.EMUser;
-import cn.ucai.fulicenter.task.DownloadAllGroupTask;
 import cn.ucai.fulicenter.task.DownloadContactListTask;
-import cn.ucai.fulicenter.task.DownloadPublicGroupTask;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.MD5;
 import cn.ucai.fulicenter.utils.Utils;
+import cn.ucai.fulicenter.view.DisplayUtils;
 
 /**
  * 登陆页面
@@ -84,7 +85,7 @@ public class LoginActivity extends BaseActivity {
 		// 如果用户名密码都有，直接进入主页面
 		if (DemoHXSDKHelper.getInstance().isLogined()) {
 			autoLogin = true;
-			startActivity(new Intent(LoginActivity.this, MainActivity.class));
+			startActivity(new Intent(LoginActivity.this, FuliCenterMainActivity.class));
 
 			return;
 		}
@@ -93,7 +94,7 @@ public class LoginActivity extends BaseActivity {
 
 		usernameEditText = (EditText) findViewById(R.id.username);
 		passwordEditText = (EditText) findViewById(R.id.password);
-
+        DisplayUtils.initBackWithTitle(this,"账户登录");
 		setListener();
 
 		if (FuLiCenterApplication.getInstance().getUserName() != null) {
@@ -209,6 +210,32 @@ public class LoginActivity extends BaseActivity {
 	}
 
     private void loginAppServer() {
+        UserDao dao = new UserDao(mContext);
+        User user = dao.findUserByUserName(currentUsername);
+        if(user!=null) {
+            if(user.getMUserPassword().equals(MD5.getData(currentPassword))){
+                saveUser(user);
+                loginSuccess();
+            } else {
+                pd.dismiss();
+                Toast.makeText(getApplicationContext(), getString(R.string.Login_failed),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            //volley login server
+            try {
+                String path = new ApiParams()
+                        .with(I.User.USER_NAME,currentUsername)
+                        .with(I.User.PASSWORD,currentPassword)
+                        .getRequestUrl(I.REQUEST_LOGIN);
+                Log.e(TAG,"path = "+ path);
+                executeRequest(new GsonRequest<User>(path, User.class,
+                        responseListener(), errorListener()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
 
     }
 
@@ -216,15 +243,16 @@ public class LoginActivity extends BaseActivity {
         return new Response.Listener<User>() {
             @Override
             public void onResponse(User userBean) {
-				if(userBean.isResult()){
-					saveUser(userBean);
-					userBean.setMUserPassword(MD5.getData(userBean.getMUserPassword()));
-					UserDao dao = new UserDao(mContext);
-					loginSuccess();
-				}else{
-					pd.dismiss();
-					Utils.showToast(mContext,Utils.getResourceString(mContext,userBean.getMsg()),Toast.LENGTH_LONG);
-				}
+                if(userBean.isResult()){
+                    saveUser(userBean);
+                    userBean.setMUserPassword(MD5.getData(userBean.getMUserPassword()));
+                    UserDao dao = new UserDao(mContext);
+                    dao.addUser(userBean);
+                    loginSuccess();
+                }else{
+                    pd.dismiss();
+                    Utils.showToast(mContext,Utils.getResourceString(mContext,userBean.getMsg()),Toast.LENGTH_LONG);
+                }
             }
         };
     }
@@ -239,7 +267,10 @@ public class LoginActivity extends BaseActivity {
         FuLiCenterApplication.currentUserNick = user.getMUserNick();
     }
 
+
     private void loginSuccess() {
+        FuLiCenterApplication.getInstance().setUserName(currentUsername);
+        FuLiCenterApplication.getInstance().setPassword(currentPassword);
         try {
             // ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
             // ** manually load all local groups and
@@ -266,11 +297,6 @@ public class LoginActivity extends BaseActivity {
                     Log.e(TAG,"start download contact,group,public group");
                     //下载联系人集合
                     new DownloadContactListTask(mContext,currentUsername).execute();
-                    //下载群组集合
-                    new DownloadAllGroupTask(mContext,currentUsername).execute();
-                    //下载公开群组集合
-                    new DownloadPublicGroupTask(mContext,currentUsername,
-                            I.PAGE_ID_DEFAULT,I.PAGE_SIZE_DEFAULT).execute();
                 }
             });
 
@@ -299,7 +325,7 @@ public class LoginActivity extends BaseActivity {
         }
         // 进入主页面
         Intent intent = new Intent(LoginActivity.this,
-                MainActivity.class);
+                FuliCenterMainActivity.class);
         startActivity(intent);
 
         finish();

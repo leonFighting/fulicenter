@@ -4,7 +4,7 @@ package cn.ucai.fulicenter.bean;
 /**
  * Member entity. @author MyEclipse Persistence Tools
  */
-public class Member extends User implements java.io.Serializable {
+public class Member extends UserBean implements java.io.Serializable {
 	private static final long serialVersionUID = 6913484375413577556L;
 
 	// Fields

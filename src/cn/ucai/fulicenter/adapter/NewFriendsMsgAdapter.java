@@ -39,12 +39,11 @@ import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.NewFriendsMsgActivity;
 import cn.ucai.fulicenter.bean.Group;
-import cn.ucai.fulicenter.bean.User;
+import cn.ucai.fulicenter.bean.UserBean;
 import cn.ucai.fulicenter.data.ApiParams;
 import cn.ucai.fulicenter.data.GsonRequest;
 import cn.ucai.fulicenter.db.InviteMessgeDao;
 import cn.ucai.fulicenter.domain.InviteMessage;
-import cn.ucai.fulicenter.task.DownloadAllGroupMembersTask;
 import cn.ucai.fulicenter.utils.UserUtils;
 
 public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
@@ -139,7 +138,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
                 String path = new ApiParams()
                         .with(I.User.USER_NAME,msg.getFrom())
                         .getRequestUrl(I.REQUEST_FIND_USER);
-                ((NewFriendsMsgActivity) context).executeRequest(new GsonRequest<User>(path, User.class,
+                ((NewFriendsMsgActivity) context).executeRequest(new GsonRequest<UserBean>(path, UserBean.class,
                         responseFindUserListener(holder.name),((NewFriendsMsgActivity) context).errorListener()));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -149,10 +148,10 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
         return convertView;
     }
 
-    private Response.Listener<User> responseFindUserListener(final TextView name) {
-        return new Response.Listener<User>() {
+    private Response.Listener<UserBean> responseFindUserListener(final TextView name) {
+        return new Response.Listener<UserBean>() {
             @Override
-            public void onResponse(User user) {
+            public void onResponse(UserBean user) {
                 if(user!=null){
                     UserUtils.setUserBeanNick(user,name);
                 }
@@ -220,7 +219,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
             @Override
             public void onResponse(Group group) {
                 if(group!=null && group.isResult()){
-                    new DownloadAllGroupMembersTask(context,group.getMGroupHxid()).execute();
+//                    new DownloadAllGroupMembersTask(context,group.getMGroupHxid()).execute();
                     try {
                         final String str2 = context.getResources().getString(R.string.Has_agreed_to);
                         EMGroupManager.getInstance().acceptApplication(msg.getFrom(), msg.getGroupId());

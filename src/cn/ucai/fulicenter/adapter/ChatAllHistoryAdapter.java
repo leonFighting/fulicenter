@@ -45,7 +45,6 @@ import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
-import cn.ucai.fulicenter.bean.Group;
 import cn.ucai.fulicenter.domain.RobotUser;
 import cn.ucai.fulicenter.utils.DateUtils;
 import cn.ucai.fulicenter.utils.SmileUtils;
@@ -102,9 +101,9 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 		if (conversation.getType() == EMConversationType.GroupChat) {
 			// 群聊消息，显示群聊头像
 //			holder.avatar.setImageResource(R.drawable.group_icon);
-            Group group = UserUtils.getGroupBeanFromHXID(username);
+//            Group group = UserUtils.getGroupBeanFromHXID(username);
 //			EMGroup group = EMGroupManager.getInstance().getGroup(username);
-			holder.name.setText(group != null ? group.getMGroupName() : username);
+//			holder.name.setText(group != null ? group.getMGroupName() : username);
 		} else if(conversation.getType() == EMConversationType.ChatRoom){
 		    holder.avatar.setImageResource(R.drawable.group_icon);
             EMChatRoom room = EMChatManager.getInstance().getChatRoom(username);

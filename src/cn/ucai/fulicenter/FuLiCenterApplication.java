@@ -21,10 +21,10 @@ import com.easemob.EMCallBack;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import cn.ucai.fulicenter.bean.Contact;
-import cn.ucai.fulicenter.bean.Group;
-import cn.ucai.fulicenter.bean.Member;
+import cn.ucai.fulicenter.bean.CartBean;
+import cn.ucai.fulicenter.bean.ContactBean;
 import cn.ucai.fulicenter.bean.User;
+import cn.ucai.fulicenter.bean.UserBean;
 import cn.ucai.fulicenter.data.RequestManager;
 
 public class FuLiCenterApplication extends Application {
@@ -123,15 +123,15 @@ public class FuLiCenterApplication extends Application {
 	/**全局的当前登录用户对象*/
 	private User user;
 	/**全局的当前登录用户的好友列表*/
-	private ArrayList<Contact> contactList = new ArrayList<Contact>();
-	/**全局的当前登录用户的好友集合*/
-	private HashMap<String,Contact> userList = new HashMap<String, Contact>();
-	/**全局的群组集合*/
-	private ArrayList<Group> groupList = new ArrayList<Group>();
-	/**全局的当前公共群列表*/
-	private ArrayList<Group> publicGroupList = new ArrayList<Group>();
-	/**全局的群组成员列表*/
-	private HashMap<String,ArrayList<Member>> groupMembers = new HashMap<String, ArrayList<Member>>();
+	private ArrayList<UserBean> contactList = new ArrayList<UserBean>();
+
+	private HashMap<String,UserBean> userList = new HashMap<String, UserBean>();
+	/**全局的当前登录用户的联系人集合列表*/
+	private HashMap<Integer,ContactBean> contacts = new HashMap<Integer, ContactBean>();
+	/**全局的当前登录用户的收藏商品数量*/
+	private int collectCount = 0;
+	/**全局的当前登录用户的购物车集合列表*/
+	private ArrayList<CartBean> cartList = new ArrayList<CartBean>();
 
 	public User getUser() {
 		return user;
@@ -140,44 +140,43 @@ public class FuLiCenterApplication extends Application {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-	public ArrayList<Contact> getContactList() {
+	public ArrayList<UserBean> getContactList() {
 		return contactList;
 	}
 
-	public void setContactList(ArrayList<Contact> contactList) {
+	public void setContactList(ArrayList<UserBean> contactList) {
 		this.contactList = contactList;
 	}
 
-	public HashMap<String, Contact> getUserList() {
+	public HashMap<String, UserBean> getUserList() {
 		return userList;
 	}
 
-	public void setUserList(HashMap<String, Contact> userList) {
+	public void setUserList(HashMap<String, UserBean> userList) {
 		this.userList = userList;
 	}
 
-	public ArrayList<Group> getGroupList() {
-		return groupList;
+	public HashMap<Integer, ContactBean> getContacts() {
+		return contacts;
 	}
 
-	public void setGroupList(ArrayList<Group> groupList) {
-		this.groupList = groupList;
+	public void setContacts(HashMap<Integer, ContactBean> contacts) {
+		this.contacts = contacts;
 	}
 
-	public ArrayList<Group> getPublicGroupList() {
-		return publicGroupList;
+	public int getCollectCount() {
+		return collectCount;
 	}
 
-	public void setPublicGroupList(ArrayList<Group> publicGroupList) {
-		this.publicGroupList = publicGroupList;
+	public void setCollectCount(int collectCount) {
+		this.collectCount = collectCount;
 	}
 
-	public HashMap<String, ArrayList<Member>> getGroupMembers() {
-		return groupMembers;
+	public ArrayList<CartBean> getCartList() {
+		return cartList;
 	}
 
-	public void setGroupMembers(HashMap<String, ArrayList<Member>> groupMembers) {
-		this.groupMembers = groupMembers;
+	public void setCartList(ArrayList<CartBean> cartList) {
+		this.cartList = cartList;
 	}
 }

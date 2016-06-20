@@ -63,13 +63,9 @@ import java.util.UUID;
 
 import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
-import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import cn.ucai.fulicenter.bean.Contact;
-import cn.ucai.fulicenter.data.ApiParams;
-import cn.ucai.fulicenter.data.GsonRequest;
 import cn.ucai.fulicenter.db.EMUserDao;
 import cn.ucai.fulicenter.db.InviteMessgeDao;
 import cn.ucai.fulicenter.domain.EMUser;
@@ -79,7 +75,6 @@ import cn.ucai.fulicenter.fragment.ContactlistFragment;
 import cn.ucai.fulicenter.fragment.FindFragment;
 import cn.ucai.fulicenter.fragment.SettingsFragment;
 import cn.ucai.fulicenter.utils.CommonUtils;
-import cn.ucai.fulicenter.utils.Utils;
 
 public class MainActivity extends BaseActivity implements EMEventListener {
 
@@ -536,7 +531,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		public void onContactAdded(List<String> usernameList) {
 			// 保存增加的联系人
 			Map<String, EMUser> localUsers = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList();
-            HashMap<String, Contact> userList = FuLiCenterApplication.getInstance().getUserList();
+//            HashMap<String, Contact> userList = FuLiCenterApplication.getInstance().getUserList();
             Map<String, EMUser> toAddUsers = new HashMap<String, EMUser>();
             ArrayList<String> toAddUserNames = new ArrayList<String>();
             boolean isAdd = false;
@@ -547,9 +542,9 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 					userDao.saveContact(user);
                     isAdd = true;
 				}
-                if (!userList.containsKey(username)) {
-                    toAddUserNames.add(username);
-                }
+//                if (!userList.containsKey(username)) {
+//                    toAddUserNames.add(username);
+//                }
 				toAddUsers.put(username, user);
 			}
 			localUsers.putAll(toAddUsers);
@@ -571,17 +566,17 @@ public class MainActivity extends BaseActivity implements EMEventListener {
             return new Response.Listener<Contact>() {
                 @Override
                 public void onResponse(Contact contact) {
-                    if(contact!=null && contact.isResult()){
-                        ArrayList<Contact> contactList = FuLiCenterApplication.getInstance().getContactList();
-                        HashMap<String, Contact> userList = FuLiCenterApplication.getInstance().getUserList();
-                        contactList.add(contact);
-                        userList.put(contact.getMContactCname(),contact);
-                        mContext.sendStickyBroadcast(new Intent("update_contact_list"));
-                        Utils.showToast(mContext,R.string.Add_buddy_success,Toast.LENGTH_SHORT);
-                    } else {
-                        Utils.showToast(mContext,Utils.getResourceString(mContext,contact.getMsg()),
-                                Toast.LENGTH_SHORT);
-                    }
+//                    if(contact!=null && contact.isResult()){
+////                        ArrayList<Contact> contactList = FuLiCenterApplication.getInstance().getContactList();
+////                        HashMap<String, Contact> userList = FuLiCenterApplication.getInstance().getUserList();
+////                        contactList.add(contact);
+////                        userList.put(contact.getMContactCname(),contact);
+//                        mContext.sendStickyBroadcast(new Intent("update_contact_list"));
+//                        Utils.showToast(mContext,R.string.Add_buddy_success,Toast.LENGTH_SHORT);
+//                    } else {
+//                        Utils.showToast(mContext,Utils.getResourceString(mContext,contact.getMsg()),
+//                                Toast.LENGTH_SHORT);
+//                    }
                 }
             };
         }
@@ -590,15 +585,15 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		public void onContactDeleted(final List<String> usernameList) {
 			// 被删除
 			Map<String, EMUser> localUsers = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList();
-            HashMap<String, Contact> userList = FuLiCenterApplication.getInstance().getUserList();
+//            HashMap<String, Contact> userList = FuLiCenterApplication.getInstance().getUserList();
             ArrayList<String> toDeleteUserNames = new ArrayList<String>();
             for (String username : usernameList) {
 				localUsers.remove(username);
 				userDao.deleteContact(username);
 				inviteMessgeDao.deleteMessage(username);
-                if(userList.containsKey(username)){
-                    toDeleteUserNames.add(username);
-                }
+//                if(userList.containsKey(username)){
+//                    toDeleteUserNames.add(username);
+//                }
 			}
 			runOnUiThread(new Runnable() {
 				public void run() {
@@ -624,14 +619,14 @@ public class MainActivity extends BaseActivity implements EMEventListener {
                 @Override
                 public void onResponse(Boolean response) {
                     if(response){
-                        HashMap<String, Contact> userList = FuLiCenterApplication.getInstance().getUserList();
-                        if(userList.containsKey(name)){
-                            ArrayList<Contact> contactList = FuLiCenterApplication.getInstance().getContactList();
-                            Contact contact = userList.get(name);
-                            contactList.remove(contact);
-                            userList.remove(name);
-                            mContext.sendBroadcast(new Intent("update_contact_list"));
-                        }
+//                        HashMap<String, Contact> userList = FuLiCenterApplication.getInstance().getUserList();
+//                        if(userList.containsKey(name)){
+//                            ArrayList<Contact> contactList = FuLiCenterApplication.getInstance().getContactList();
+//                            Contact contact = userList.get(name);
+//                            contactList.remove(contact);
+//                            userList.remove(name);
+//                            mContext.sendBroadcast(new Intent("update_contact_list"));
+//                        }
                     }
                 }
             };

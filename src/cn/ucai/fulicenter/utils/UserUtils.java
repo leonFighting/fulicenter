@@ -9,17 +9,14 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.easemob.util.HanziToPinyin;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-
 import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import cn.ucai.fulicenter.bean.Contact;
-import cn.ucai.fulicenter.bean.Group;
-import cn.ucai.fulicenter.bean.Member;
 import cn.ucai.fulicenter.bean.User;
+import cn.ucai.fulicenter.bean.UserBean;
 import cn.ucai.fulicenter.data.RequestManager;
 import cn.ucai.fulicenter.domain.EMUser;
 
@@ -45,7 +42,7 @@ public class UserUtils {
     }
 
     public static Contact getUserBeanInfo(String username) {
-        Contact contact = FuLiCenterApplication.getInstance().getUserList().get(username);
+        Contact contact = (Contact) FuLiCenterApplication.getInstance().getUserList().get(username);
         return contact;
     }
 
@@ -67,8 +64,8 @@ public class UserUtils {
         if(contact != null && contact.getMContactCname() != null){
         }
     }
-    public static void setUserBeanAvatar(User user, NetworkImageView imageView) {
-        if(user!=null && user.getMUserName()!=null) {
+    public static void setUserBeanAvatar(UserBean user, NetworkImageView imageView) {
+        if(user!=null && user.getUserName()!=null) {
         }
     }
 
@@ -112,38 +109,11 @@ public class UserUtils {
     	}
     }
 
-    public static void setGroupMemberNick(String hxid, String username,TextView textView){
-        if(hxid!=null && username!=null){
-            Member groupMember = getGroupMember(hxid, username);
-            if(groupMember!=null){
-                if(groupMember.getMUserNick()!=null){
-                    textView.setText(groupMember.getMUserNick());
-                }else if(groupMember.getMMemberUserName()!=null){
-                    textView.setText(groupMember.getMMemberUserName());
-                }else{
-                    textView.setText(username);
-                }
-            }
-        }
-    }
-
-    private static Member getGroupMember(String hxid, String username) {
-        ArrayList<Member> members = FuLiCenterApplication.getInstance().getGroupMembers().get(hxid);
-        if(members!=null){
-            for (Member member:members){
-                if(member.getMMemberUserName().equals(username)){
-                    return member;
-                }
-            }
-        }
-        return null;
-    }
-
     public static void setUserBeanNick(String username,TextView textView) {
         Contact contact = getUserBeanInfo(username);
         if(contact!=null){
-            if(contact.getMUserNick()!=null){
-                textView.setText(contact.getMUserNick());
+            if(contact.getNick()!=null){
+                textView.setText(contact.getNick());
             } else if(contact.getMContactCname()!=null){
                 textView.setText(contact.getMContactCname());
             }
@@ -151,12 +121,12 @@ public class UserUtils {
             textView.setText(username);
         }
     }
-    public static void setUserBeanNick(User user,TextView textView) {
+    public static void setUserBeanNick(UserBean user, TextView textView) {
         if(user!=null){
-            if(user.getMUserNick()!=null){
-                textView.setText(user.getMUserNick());
-            } else if(user.getMUserName()!=null){
-                textView.setText(user.getMUserName());
+            if(user.getNick()!=null){
+                textView.setText(user.getNick());
+            } else if(user.getUserName()!=null){
+                textView.setText(user.getUserName());
             }
         }
     }
@@ -198,10 +168,10 @@ public class UserUtils {
      */
     public static void setUserHearder(String username, Contact user) {
         String headerName = null;
-        if (!TextUtils.isEmpty(user.getMUserNick())) {
-            headerName = user.getMUserNick();
-        } else if(!TextUtils.isEmpty(user.getMUserName())) {
-            headerName = user.getMUserName();
+        if (!TextUtils.isEmpty(user.getNick())) {
+            headerName = user.getNick();
+        } else if(!TextUtils.isEmpty(user.getUserName())) {
+            headerName = user.getUserName();
         } else {
             headerName = user.getMContactCname();
         }
@@ -220,17 +190,17 @@ public class UserUtils {
         }
     }
 
-    public static Group getGroupBeanFromHXID(String hxid) {
-        if(hxid!=null && !hxid.isEmpty()) {
-            ArrayList<Group> groupList = FuLiCenterApplication.getInstance().getGroupList();
-            for (Group group:groupList){
-                if(group.getMGroupHxid().equals(hxid)){
-                    return group;
-                }
-            }
-        }
-        return null;
-    }
+//    public static Group getGroupBeanFromHXID(String hxid) {
+//        if(hxid!=null && !hxid.isEmpty()) {
+//            ArrayList<Group> groupList = FuLiCenterApplication.getInstance().getGroupList();
+//            for (Group group:groupList){
+//                if(group.getMGroupHxid().equals(hxid)){
+//                    return group;
+//                }
+//            }
+//        }
+//        return null;
+//    }
 
     private static void setGroupAvatar(String url, NetworkImageView imageView) {
         if(url==null || url.isEmpty()) return;

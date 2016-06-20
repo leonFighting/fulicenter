@@ -38,7 +38,6 @@ import android.text.ClipboardManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -94,8 +93,8 @@ import java.util.List;
 import java.util.Map;
 
 import cn.ucai.fulicenter.DemoHXSDKHelper;
-import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.FuLiCenterApplication;
+import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.ExpressionAdapter;
 import cn.ucai.fulicenter.adapter.ExpressionPagerAdapter;
 import cn.ucai.fulicenter.adapter.MessageAdapter;
@@ -103,9 +102,7 @@ import cn.ucai.fulicenter.adapter.VoicePlayClickListener;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import cn.ucai.fulicenter.applib.model.GroupRemoveListener;
 import cn.ucai.fulicenter.bean.Group;
-import cn.ucai.fulicenter.bean.Member;
 import cn.ucai.fulicenter.domain.RobotUser;
-import cn.ucai.fulicenter.task.DownloadAllGroupMembersTask;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ImageUtils;
 import cn.ucai.fulicenter.utils.SmileUtils;
@@ -412,7 +409,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 			toChatUsername = getIntent().getStringExtra("groupId");
 
 			if(chatType == CHATTYPE_GROUP){
-			    onGroupViewCreation();
+//			    onGroupViewCreation();
 			}else{ 
 			    onChatRoomViewCreation();
 			}
@@ -518,36 +515,36 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
         });
 	}
 	
-	protected void onGroupViewCreation(){
-        ArrayList<Member> members = FuLiCenterApplication.getInstance().getGroupMembers().get(toChatUsername);
-        if(members==null){
-            new DownloadAllGroupMembersTask(ChatActivity.this,toChatUsername).execute();
-        }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ArrayList<Group> groupList = FuLiCenterApplication.getInstance().getGroupList();
-                for (Group g:groupList){
-                    if (g.getMGroupHxid().equals(toChatUsername)){
-                        mGroup = g;
-                        Log.e(TAG,"mgroup="+mGroup);
-                    }
-                }
-            }
-        }).start();
-
-        group = EMGroupManager.getInstance().getGroup(toChatUsername);
-        
-        if (group != null){
-            ((TextView) findViewById(R.id.name)).setText(group.getGroupName());
-        }else{
-            ((TextView) findViewById(R.id.name)).setText(toChatUsername);
-        }
-        registerGroupMemberUpdate();
-        // 监听当前会话的群聊解散被T事件
-        groupListener = new GroupListener();
-        EMGroupManager.getInstance().addGroupChangeListener(groupListener);
-	}
+//	protected void onGroupViewCreation(){
+////        ArrayList<Member> members = FuLiCenterApplication.getInstance().getGroupMembers().get(toChatUsername);
+////        if(members==null){
+//            new DownloadAllGroupMembersTask(ChatActivity.this,toChatUsername).execute();
+//        }
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                ArrayList<Group> groupList = FuLiCenterApplication.getInstance().getGroupList();
+//                for (Group g:groupList){
+//                    if (g.getMGroupHxid().equals(toChatUsername)){
+//                        mGroup = g;
+//                        Log.e(TAG,"mgroup="+mGroup);
+//                    }
+//                }
+//            }
+//        }).start();
+//
+//        group = EMGroupManager.getInstance().getGroup(toChatUsername);
+//
+//        if (group != null){
+//            ((TextView) findViewById(R.id.name)).setText(group.getGroupName());
+//        }else{
+//            ((TextView) findViewById(R.id.name)).setText(toChatUsername);
+//        }
+//        registerGroupMemberUpdate();
+//        // 监听当前会话的群聊解散被T事件
+//        groupListener = new GroupListener();
+//        EMGroupManager.getInstance().addGroupChangeListener(groupListener);
+//	}
 
     protected void onChatRoomViewCreation(){
         

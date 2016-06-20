@@ -27,7 +27,6 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.exceptions.EaseMobException;
 
-import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.Group;
 
@@ -140,7 +139,7 @@ public class GroupSimpleDetailActivity extends BaseActivity {
      private void showGroupDetail() {
          progressBar.setVisibility(View.INVISIBLE);
          //获取详情成功，并且自己不在群中，才让加入群聊按钮可点击
-         if(!FuLiCenterApplication.getInstance().getGroupList().contains(group))
+//         if(!FuLiCenterApplication.getInstance().getGroupList().contains(group))
              btn_add_group.setEnabled(true);
          tv_name.setText(group.getMGroupName());
          tv_admin.setText(group.getMGroupOwner());

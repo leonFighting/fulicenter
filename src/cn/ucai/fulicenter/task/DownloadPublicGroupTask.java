@@ -9,7 +9,6 @@ import com.android.volley.Response;
 import java.util.ArrayList;
 
 import cn.ucai.fulicenter.I;
-import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.activity.BaseActivity;
 import cn.ucai.fulicenter.bean.Group;
 import cn.ucai.fulicenter.data.ApiParams;
@@ -57,16 +56,16 @@ public class DownloadPublicGroupTask extends BaseActivity {
                 if(groups!=null){
                     Log.e(TAG,"DownloadPublicGroup,groups size="+groups.length);
                     ArrayList<Group> list = Utils.array2List(groups);
-                    ArrayList<Group> publicGroupList =
-                            FuLiCenterApplication.getInstance().getPublicGroupList();
-                    for(Group g:list){
-                        if(!publicGroupList.contains(g)){
-                            publicGroupList.add(g);
-                        }
+//                    ArrayList<Group> publicGroupList =
+//                            FuLiCenterApplication.getInstance().getPublicGroupList();
+//                    for(Group g:list){
+//                        if(!publicGroupList.contains(g)){
+//                            publicGroupList.add(g);
+//                        }
                     }
                     mContext.sendStickyBroadcast(new Intent("update_public_group"));
                 }
-            }
+//            }
         };
     }
 }

@@ -21,15 +21,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.adapter.ContactAdapter;
 import cn.ucai.fulicenter.bean.Contact;
 import cn.ucai.fulicenter.widget.Sidebar;
@@ -78,21 +71,21 @@ public class PickContactNoCheckboxActivity extends BaseActivity {
 
 	private void getContactList() {
 		contactList.clear();
-		Map<String, Contact> users = FuLiCenterApplication.getInstance().getUserList();
-		Iterator<Entry<String, Contact>> iterator = users.entrySet().iterator();
-		while (iterator.hasNext()) {
-			Entry<String, Contact> entry = iterator.next();
-			if (!entry.getKey().equals(Constant.NEW_FRIENDS_USERNAME) && !entry.getKey().equals(Constant.GROUP_USERNAME) && !entry.getKey().equals(Constant.CHAT_ROOM) && !entry.getKey().equals(Constant.CHAT_ROBOT))
-				contactList.add(entry.getValue());
-		}
-		// 排序
-		Collections.sort(contactList, new Comparator<Contact>() {
-
-			@Override
-			public int compare(Contact lhs, Contact rhs) {
-				return lhs.getMUserNick().compareTo(rhs.getMUserNick());
-			}
-		});
+//		Map<String, Contact> users = FuLiCenterApplication.getInstance().getUserList();
+//		Iterator<Entry<String, Contact>> iterator = users.entrySet().iterator();
+//		while (iterator.hasNext()) {
+//			Entry<String, Contact> entry = iterator.next();
+//			if (!entry.getKey().equals(Constant.NEW_FRIENDS_USERNAME) && !entry.getKey().equals(Constant.GROUP_USERNAME) && !entry.getKey().equals(Constant.CHAT_ROOM) && !entry.getKey().equals(Constant.CHAT_ROBOT))
+//				contactList.add(entry.getValue());
+//		}
+//		// 排序
+//		Collections.sort(contactList, new Comparator<Contact>() {
+//
+//			@Override
+//			public int compare(Contact lhs, Contact rhs) {
+//				return lhs.getMUserNick().compareTo(rhs.getMUserNick());
+//			}
+//		});
 	}
 
 }

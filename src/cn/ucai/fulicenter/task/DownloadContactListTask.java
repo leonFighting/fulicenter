@@ -7,9 +7,7 @@ import android.util.Log;
 import com.android.volley.Response;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.activity.BaseActivity;
 import cn.ucai.fulicenter.bean.Contact;
 import cn.ucai.fulicenter.data.GsonRequest;
@@ -40,19 +38,19 @@ public class DownloadContactListTask extends BaseActivity {
                 if(contacts!=null){
                     Log.e(TAG,"DownloadContactList,contacts size="+contacts.length);
                     ArrayList<Contact> list = Utils.array2List(contacts);
-                    ArrayList<Contact> contactList =
-                            FuLiCenterApplication.getInstance().getContactList();
-                    contactList.clear();
-                    contactList.addAll(list);
-                    HashMap<String, Contact> userList =
-                            FuLiCenterApplication.getInstance().getUserList();
-                    userList.clear();
-                    for(Contact c:list){
-                        userList.put(c.getMContactCname(),c);
+//                    ArrayList<Contact> contactList =
+//                            FuLiCenterApplication.getInstance().getContactList();
+//                    contactList.clear();
+//                    contactList.addAll(list);
+//                    HashMap<String, Contact> userList =
+//                            FuLiCenterApplication.getInstance().getUserList();
+//                    userList.clear();
+//                    for(Contact c:list){
+//                        userList.put(c.getMContactCname(),c);
                     }
                     mContext.sendStickyBroadcast(new Intent("update_contact_list"));
                 }
-            }
+//            }
         };
     }
 }

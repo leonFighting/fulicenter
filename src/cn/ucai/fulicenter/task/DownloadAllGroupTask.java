@@ -9,7 +9,6 @@ import com.android.volley.Response;
 import java.util.ArrayList;
 
 import cn.ucai.fulicenter.I;
-import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.activity.BaseActivity;
 import cn.ucai.fulicenter.bean.Group;
 import cn.ucai.fulicenter.data.ApiParams;
@@ -51,10 +50,10 @@ public class DownloadAllGroupTask extends BaseActivity {
                 if(groups!=null){
                     Log.e(TAG,"DownloadAllGroup,groups size="+groups.length);
                     ArrayList<Group> list = Utils.array2List(groups);
-                    ArrayList<Group> groupList =
-                            FuLiCenterApplication.getInstance().getGroupList();
-                    groupList.clear();
-                    groupList.addAll(list);
+//                    ArrayList<Group> groupList =
+//                            FuLiCenterApplication.getInstance().getGroupList();
+//                    groupList.clear();
+//                    groupList.addAll(list);
 //                    for (Group group:groupList){
 //                        String groupName = group.getMGroupName();
 //                        String header = "";

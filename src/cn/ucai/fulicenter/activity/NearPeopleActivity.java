@@ -18,14 +18,13 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.SDKInitializer;
-import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.utils.DistanceUtil;
 
 import java.util.ArrayList;
 
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.User;
+import cn.ucai.fulicenter.bean.UserBean;
 import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.utils.Utils;
 
@@ -93,8 +92,8 @@ public class NearPeopleActivity extends BaseActivity {
             mCurrentLocation = location;
             //将当前用户的位置信息上传至服务器，然后从服务器再下载所有联系人的位置信息
             User user = FuLiCenterApplication.getInstance().getUser();
-            user.setMLocationLatitude(location.getLatitude());
-            user.setMLocationLongitude(location.getLongitude());
+//            user.setMLocationLatitude(location.getLatitude());
+//            user.setMLocationLongitude(location.getLongitude());
             Log.i("main", "latitude:"+location.getLatitude()+",longitude:"+location.getLongitude());
 //            new UploadLocationTask();
         }
@@ -130,27 +129,27 @@ public class NearPeopleActivity extends BaseActivity {
         Context context;
         ArrayList<NearUserBean> nearUsers;
         ImageLoader imageLoader;
-        User myUser;
+        UserBean myUser;
         
-        public NearPeopleAdapter(Context context, ArrayList<User> users) {
+        public NearPeopleAdapter(Context context, ArrayList<UserBean> users) {
             super();
             this.context = context;
             imageLoader=ImageLoader.getInstance(context);
-            myUser= FuLiCenterApplication.getInstance().getUser();
-            ArrayList<NearUserBean> list = createNearUsers(users,myUser);
+//            myUser= FuLiCenterApplication.getInstance().getUser();
+//            ArrayList<NearUserBean> list = createNearUsers(users,myUser);
             this.nearUsers = new ArrayList<NearUserBean>();
-            this.nearUsers.addAll(list);
+//            this.nearUsers.addAll(list);
         }
 
         /** 将UserBean集合转换为NearUserBean集合*/
-        private ArrayList<NearUserBean> createNearUsers(ArrayList<User> users, User myUser) {
+        private ArrayList<NearUserBean> createNearUsers(ArrayList<User> users, UserBean myUser) {
             ArrayList<NearUserBean> nearUsers=new ArrayList<NearUserBean>();
             for(User user:users){
-                LatLng myLatLng=new LatLng(myUser.getMLocationLatitude(), myUser.getMLocationLongitude());
-                LatLng contactLatLng=new LatLng(user.getMLocationLatitude(),user.getMLocationLongitude());
-                int distance=(int) DistanceUtil.getDistance(myLatLng,contactLatLng);
-                NearUserBean nearUser=new NearUserBean(user,distance);
-                nearUsers.add(nearUser);
+//                LatLng myLatLng=new LatLng(myUser.getMLocationLatitude(), myUser.getMLocationLongitude());
+//                LatLng contactLatLng=new LatLng(user.getMLocationLatitude(),user.getMLocationLongitude());
+//                int distance=(int) DistanceUtil.getDistance(myLatLng,contactLatLng);
+//                NearUserBean nearUser=new NearUserBean(user,distance);
+//                nearUsers.add(nearUser);
             }
             return nearUsers;
         }
@@ -185,7 +184,7 @@ public class NearPeopleActivity extends BaseActivity {
                 holder=(ViewHolder) convertView.getTag();
             }
             NearUserBean user=getItem(position);
-            holder.tvNick.setText(user.getUser().getMUserNick());
+//            holder.tvNick.setText(user.getUser().getMUserNick());
             holder.tvDistance.setText(user.getDistance()+"米");
             return convertView;
         }
@@ -196,12 +195,12 @@ public class NearPeopleActivity extends BaseActivity {
         }
         /** 包含与当前用户距离的Bean*/
         class NearUserBean{
-            User user;
+            UserBean user;
             int distance;
-            public User getUser() {
+            public UserBean getUser() {
                 return user;
             }
-            public void setUser(User user) {
+            public void setUser(UserBean user) {
                 this.user = user;
             }
             public int getDistance() {
@@ -210,7 +209,7 @@ public class NearPeopleActivity extends BaseActivity {
             public void setDistance(int distance) {
                 this.distance = distance;
             }
-            public NearUserBean(User user, int distance) {
+            public NearUserBean(UserBean user, int distance) {
                 super();
                 this.user = user;
                 this.distance = distance;
@@ -225,7 +224,7 @@ public class NearPeopleActivity extends BaseActivity {
          * 将新下载的用户集合添加至原有集合
          * @param users
          */
-        public void addUsers(ArrayList<User> users) {
+        public void addUsers(ArrayList<UserBean> users) {
 //            ArrayList<NearUser> list = createNearUsers(users, myUser);
 //            this.nearUsers.addAll(list);
 //            notifyDataSetChanged();
@@ -239,9 +238,9 @@ public class NearPeopleActivity extends BaseActivity {
      *
      */
     class UploadLocationTask extends AsyncTask<Void, Void, Boolean>{
-        User user;
+        UserBean user;
         
-        public UploadLocationTask(User user) {
+        public UploadLocationTask(UserBean user) {
             super();
             this.user = user;
         }
@@ -262,15 +261,15 @@ public class NearPeopleActivity extends BaseActivity {
      * @author yao
      *
      */
-    class DownloadLocationTask extends AsyncTask<Void, Void, ArrayList<User>>{
+    class DownloadLocationTask extends AsyncTask<Void, Void, ArrayList<UserBean>>{
         @Override
-        protected ArrayList<User> doInBackground(Void... params) {
+        protected ArrayList<UserBean> doInBackground(Void... params) {
             String userName= FuLiCenterApplication.getInstance().getUserName();
-            ArrayList<User> users=null;//NetUtil.downloadLocation(userName, mPageId, PAGE_SIZE);
+            ArrayList<UserBean> users=null;//NetUtil.downloadLocation(userName, mPageId, PAGE_SIZE);
             return users;
         }
         @Override
-        protected void onPostExecute(ArrayList<User> users) {
+        protected void onPostExecute(ArrayList<UserBean> users) {
             if(users!=null){
                 if(mAdapter==null){
                     mAdapter=new NearPeopleAdapter(mInstance, users);

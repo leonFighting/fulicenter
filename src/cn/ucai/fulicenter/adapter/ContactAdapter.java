@@ -108,29 +108,29 @@ public class ContactAdapter extends BaseAdapter implements SectionIndexer{
 		}
 		//显示申请与通知item
 		if(username.equals(Constant.NEW_FRIENDS_USERNAME)){
-		    holder.nameTextview.setText(user.getMUserNick());
+//		    holder.nameTextview.setText(user.getMUserNick());
 		    holder.avatar.setDefaultImageResId(R.drawable.new_friends_icon);
 			holder.avatar.setImageUrl("", RequestManager.getImageLoader());
             int unreadMsgCount = ((DemoHXSDKHelper) HXSDKHelper.getInstance())
                     .getContactList().get(Constant.NEW_FRIENDS_USERNAME).getUnreadMsgCount();
-            if(user.getMUserUnreadMsgCount() > 0 || unreadMsgCount>0){
-			    holder.unreadMsgView.setVisibility(View.VISIBLE);
-//			    holder.unreadMsgView.setText(user.getUnreadMsgCount()+"");
-			}else{
-			    holder.unreadMsgView.setVisibility(View.INVISIBLE);
-			}
+//            if(user.getMUserUnreadMsgCount() > 0 || unreadMsgCount>0){
+//			    holder.unreadMsgView.setVisibility(View.VISIBLE);
+////			    holder.unreadMsgView.setText(user.getUnreadMsgCount()+"");
+//			}else{
+//			    holder.unreadMsgView.setVisibility(View.INVISIBLE);
+//			}
 		}else if(username.equals(Constant.GROUP_USERNAME)){
 			//群聊item
-		    holder.nameTextview.setText(user.getMUserNick());
+//		    holder.nameTextview.setText(user.getMUserNick());
 		    holder.avatar.setDefaultImageResId(R.drawable.groups_icon);
             holder.avatar.setImageUrl("", RequestManager.getImageLoader());
 		}else if(username.equals(Constant.CHAT_ROOM)){
             //群聊item
-            holder.nameTextview.setText(user.getMUserNick());
+//            holder.nameTextview.setText(user.getMUserNick());
             holder.avatar.setImageResource(R.drawable.groups_icon);
 		}else if(username.equals(Constant.CHAT_ROBOT)){
 			//Robot item
-			holder.nameTextview.setText(user.getMUserNick());
+//			holder.nameTextview.setText(user.getMUserNick());
 			holder.avatar.setImageResource(R.drawable.groups_icon);
 		}else{
 //		    holder.nameTextview.setText(user.getNick());
@@ -225,23 +225,23 @@ public class ContactAdapter extends BaseAdapter implements SectionIndexer{
 				for(int i=0;i<count;i++){
 					final Contact user = mOriginalList.get(i);
 					String username = user.getMContactCname();
-                    String nick = UserUtils.getPinYinFromHanZi(user.getMUserNick());
+//                    String nick = UserUtils.getPinYinFromHanZi(user.getMUserNick());
 					
-					if(username.contains(prefixString) || nick.contains(prefixString)){
-						newValues.add(user);
-					}
-					else{
-						 final String[] words = username.split(" ");
-	                     final int wordCount = words.length;
-	
-	                     // Start at index 0, in case valueText starts with space(s)
-	                     for (int k = 0; k < wordCount; k++) {
-	                         if (words[k].startsWith(prefixString)) {
-	                             newValues.add(user);
-	                             break;
-	                         }
-	                     }
-					}
+//					if(username.contains(prefixString) || nick.contains(prefixString)){
+//						newValues.add(user);
+//					}
+//					else{
+//						 final String[] words = username.split(" ");
+//	                     final int wordCount = words.length;
+//
+//	                     // Start at index 0, in case valueText starts with space(s)
+//	                     for (int k = 0; k < wordCount; k++) {
+//	                         if (words[k].startsWith(prefixString)) {
+//	                             newValues.add(user);
+//	                             break;
+//	                         }
+//	                     }
+//					}
 				}
 				results.values=newValues;
 				results.count=newValues.size();

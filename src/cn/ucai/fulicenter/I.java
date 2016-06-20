@@ -4,7 +4,12 @@ package cn.ucai.fulicenter;
  * Created by sks on 2016/4/5.
  */
 public interface I {
-
+    String BACKSLASH								= 		"/";							//反斜杠
+    String AVATAR_TYPE_USER_PATH					= 		"user_avatar";					//用户头像保存目录
+    String AVATAR_TYPE_GROUP_PATH 					=		"group_icon";					//群组头像保存目录
+    String AVATAR_SUFFIX_PNG						=		".png";							//PNG图片后缀名
+    String AVATAR_SUFFIX_JPG						=		".jpg";							//JPG图片后缀名
+    String MSG_PREFIX_MSG							= 		"msg_";
 
     public static final String AVATAR_PATH = "D:/project/github/SuperWeChat_Database/";
     public static final String PAGE_ID = "page_id";
@@ -193,23 +198,32 @@ public interface I {
         public static final String COLOR_CODE="colorcode";
         public static final String COLOR_IMG="colorimg";
     }
-    public static class User {
-        public static final String ID = "id";
-        public static final String UID = "uid";
-        public static final String USER_NAME = "userName";
-        public static final String NICK = "nick";
-        public static final String AVATAR = "avatar";
-        public static final String HEADER = "header";
-        public static final String PASSWORD = "password";
-        public static final String UN_READ_MSG_COUNT = "unreadMsgCount";
+    interface User {
+        String TABLE_NAME							=		"t_superwechat_user";
+        String USER_ID 								= 		"m_user_id";					//主键
+        String USER_NAME 							= 		"m_user_name";					//用户账号
+        String PASSWORD 							= 		"m_user_password";				//用户密码
+        String NICK 								= 		"m_user_nick";					//用户昵称
+        String UN_READ_MSG_COUNT 					= 		"m_user_unread_msg_count";		//未读消息数量
     }
 
-    public static class Contact extends User {
-        public static final String NAME = "name";
-        public static final String MYUID = "myuid";
-        public static final String CUID = "cuid";
+    interface Contact {
+        String TABLE_NAME 							= 		"t_superwechat_contact";
+        String CONTACT_ID 							= 		"m_contact_id";					//主键
+        String USER_ID 								= 		"m_contact_user_id";			//用户id
+        String USER_NAME 							= 		"m_contact_user_name";			//用户账号
+        String CU_ID 								= 		"m_contact_cid";				//好友id
+        String CU_NAME 								= 		"m_contact_cname";				//好友账号
     }
 
+    interface Avatar {
+        String TABLE_NAME 							= 		"t_superwechat_avatar";
+        String AVATAR_ID 							= 		"m_avatar_id";					//主键
+        String USER_ID 								= 		"m_avatar_user_id";				//用户id或者群组id
+        String USER_NAME 							= 		"m_avatar_user_name";			//用户账号或者群组账号
+        String AVATAR_PATH 							= 		"m_avatar_path";				//保存路径
+        String AVATAR_TYPE 							= 		"m_avatar_type";				//头像类型：\n0:用户头像\n1:群组头像
+    }
 
 
     public static final String KEY_REQUEST = "request";

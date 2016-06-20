@@ -17,7 +17,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -26,22 +25,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
 import com.android.volley.toolbox.NetworkImageView;
 import com.easemob.chat.EMContactManager;
 
-import java.util.HashMap;
-
 import cn.ucai.fulicenter.DemoHXSDKHelper;
-import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
-import cn.ucai.fulicenter.bean.Contact;
-import cn.ucai.fulicenter.bean.User;
-import cn.ucai.fulicenter.data.ApiParams;
-import cn.ucai.fulicenter.data.GsonRequest;
-import cn.ucai.fulicenter.utils.UserUtils;
 
 public class AddContactActivity extends BaseActivity{
 	private EditText editText;
@@ -79,72 +68,72 @@ public class AddContactActivity extends BaseActivity{
 	}
 
 	private void setListener() {
-		setSearchContactListener();
+//		setSearchContactListener();
 		setAddContactListener();
 	}
 	
 	
-	/**
-	 * 查找contact
-	 */
-	public void setSearchContactListener() {
-		findViewById(R.id.search).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String name = editText.getText().toString();
+//	/**
+//	 * 查找contact
+//	 */
+//	public void setSearchContactListener() {
+//		findViewById(R.id.search).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                final String name = editText.getText().toString();
+//
+//                if(TextUtils.isEmpty(name)) {
+//                    String st = getResources().getString(R.string.Please_enter_a_username);
+//                    startActivity(new Intent(mContext, AlertDialog.class).putExtra("msg", st));
+//                    return;
+//                }
+//
+//                if(FuLiCenterApplication.getInstance().getUserName().equals(nameText.getText().toString())){
+//                    String str = getString(R.string.not_add_myself);
+//                    startActivity(new Intent(mContext, AlertDialog.class).putExtra("msg", str));
+//                    return;
+//                }
+//                toAddUsername = name;
+//
+//                try {
+//                    String path = new ApiParams()
+//                            .with(I.User.USER_NAME,toAddUsername)
+//                            .getRequestUrl(I.REQUEST_FIND_USER);
+//                    executeRequest(new GsonRequest<UserBean>(path, UserBean.class,
+//                            responseFindUserListener(),errorListener()));
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//
+//	}
 
-                if(TextUtils.isEmpty(name)) {
-                    String st = getResources().getString(R.string.Please_enter_a_username);
-                    startActivity(new Intent(mContext, AlertDialog.class).putExtra("msg", st));
-                    return;
-                }
-
-                if(FuLiCenterApplication.getInstance().getUserName().equals(nameText.getText().toString())){
-                    String str = getString(R.string.not_add_myself);
-                    startActivity(new Intent(mContext, AlertDialog.class).putExtra("msg", str));
-                    return;
-                }
-                toAddUsername = name;
-
-                try {
-                    String path = new ApiParams()
-                            .with(I.User.USER_NAME,toAddUsername)
-                            .getRequestUrl(I.REQUEST_FIND_USER);
-                    executeRequest(new GsonRequest<User>(path, User.class,
-                            responseFindUserListener(),errorListener()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-	}
-
-    private Response.Listener<User> responseFindUserListener() {
-        return new Response.Listener<User>() {
-            @Override
-            public void onResponse(User user) {
-                if(user!=null){
-                    mtvNothing.setVisibility(View.GONE);
-                    HashMap<String, Contact> userList =
-                            FuLiCenterApplication.getInstance().getUserList();
-                    if (userList.containsKey(user.getMUserName())){
-                        Intent intent = new Intent();
-                        intent.setClass(mContext, UserProfileActivity.class);
-                        intent.putExtra("username", user.getMUserName());
-                        mContext.startActivity(intent);
-                    } else {
-                        //服务器存在此用户，显示此用户和添加按钮
-                        searchedUserLayout.setVisibility(View.VISIBLE);
-                        UserUtils.setUserBeanAvatar(user,avatar);
-                        UserUtils.setUserBeanNick(user,nameText);
-                    }
-                } else {
-                    mtvNothing.setVisibility(View.VISIBLE);
-                }
-            }
-        };
-    }
+//    private Response.Listener<UserBean> responseFindUserListener() {
+//        return new Response.Listener<UserBean>() {
+//            @Override
+//            public void onResponse(UserBean user) {
+//                if(user!=null){
+//                    mtvNothing.setVisibility(View.GONE);
+//                    HashMap<String, Contact> userList =
+//                            FuLiCenterApplication.getInstance().getUserList();
+//                    if (userList.containsKey(user.getMUserName())){
+//                        Intent intent = new Intent();
+//                        intent.setClass(mContext, UserProfileActivity.class);
+//                        intent.putExtra("username", user.getMUserName());
+//                        mContext.startActivity(intent);
+//                    } else {
+//                        //服务器存在此用户，显示此用户和添加按钮
+//                        searchedUserLayout.setVisibility(View.VISIBLE);
+//                        UserUtils.setUserBeanAvatar(user,avatar);
+//                        UserUtils.setUserBeanNick(user,nameText);
+//                    }
+//                } else {
+//                    mtvNothing.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        };
+//    }
 
     /**
 	 *  添加contact

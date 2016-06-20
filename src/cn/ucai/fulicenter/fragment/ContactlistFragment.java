@@ -50,12 +50,10 @@ import com.easemob.util.EMLog;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
-import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.AddContactActivity;
 import cn.ucai.fulicenter.activity.ChatActivity;
@@ -398,10 +396,10 @@ public class ContactlistFragment extends Fragment {
             @Override
             public void onResponse(Boolean response) {
                 if(response){
-                    ArrayList<Contact> contactList = FuLiCenterApplication.getInstance().getContactList();
-                    HashMap<String, Contact> userList = FuLiCenterApplication.getInstance().getUserList();
+//                    ArrayList<Contact> contactList = FuLiCenterApplication.getInstance().getContactList();
+//                    HashMap<String, Contact> userList = FuLiCenterApplication.getInstance().getUserList();
                     contactList.remove(tobeDeleteUser);
-                    userList.remove(tobeDeleteUser.getMContactCname());
+//                    userList.remove(tobeDeleteUser.getMContactCname());
                 }
             }
         };
@@ -496,23 +494,23 @@ public class ContactlistFragment extends Fragment {
 	private void getContactList() {
         mContactList.clear();
 		//获取本地好友列表
-        ArrayList<Contact> contactList = FuLiCenterApplication.getInstance().getContactList();
-        mContactList.addAll(contactList);
+//        ArrayList<Contact> contactList = FuLiCenterApplication.getInstance().getContactList();
+//        mContactList.addAll(contactList);
         // 添加"群聊"
         Contact groupUser = new Contact();
         String strGroup = getActivity().getString(R.string.group_chat);
         groupUser.setMContactCname(Constant.GROUP_USERNAME);
-        groupUser.setMUserName(Constant.GROUP_USERNAME);
-        groupUser.setMUserNick(strGroup);
+//        groupUser.setMUserName(Constant.GROUP_USERNAME);
+//        groupUser.setMUserNick(strGroup);
         if(mContactList.indexOf(groupUser)==-1){
             mContactList.add(0, groupUser);
         }
         // 添加user"申请与通知"
         Contact newFriends = new Contact();
         newFriends.setMContactCname(Constant.NEW_FRIENDS_USERNAME);
-        newFriends.setMUserName(Constant.NEW_FRIENDS_USERNAME);
+//        newFriends.setMUserName(Constant.NEW_FRIENDS_USERNAME);
         String strChat = getActivity().getString(R.string.Application_and_notify);
-        newFriends.setMUserNick(strChat);
+//        newFriends.setMUserNick(strChat);
         if(mContactList.indexOf(newFriends)==-1){
             mContactList.add(0, newFriends);
         }

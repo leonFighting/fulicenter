@@ -40,7 +40,7 @@ public class User extends Location implements java.io.Serializable {
 
 	/** full constructor */
 	public User(Integer MUserId, String MUserName, String MUserPassword, String MUserNick,
-			Integer MUserUnreadMsgCount) {
+				Integer MUserUnreadMsgCount) {
 		this(MUserId, MUserName, MUserPassword, MUserNick);
 		this.muserUnreadMsgCount = MUserUnreadMsgCount;
 	}

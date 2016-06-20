@@ -31,7 +31,7 @@ import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import cn.ucai.fulicenter.bean.Message;
-import cn.ucai.fulicenter.bean.User;
+import cn.ucai.fulicenter.bean.UserBean;
 import cn.ucai.fulicenter.data.MultipartRequest;
 import cn.ucai.fulicenter.domain.EMUser;
 import cn.ucai.fulicenter.listener.OnSetAvatarListener;
@@ -92,7 +92,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 			UserUtils.setCurrentUserAvatar(headAvatar);
 		} else {
             if(hxid!=null){
-                UserUtils.setGroupMemberNick(hxid,username,tvNickName);
+//                UserUtils.setGroupMemberNick(hxid,username,tvNickName);
             }else{
                 UserUtils.setUserBeanNick(username, tvNickName);
                 UserUtils.setUserBeanAvatar(username, headAvatar);
@@ -188,16 +188,16 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
         }
     }
 
-    private Response.Listener<User> responseUpdateUserNickListener() {
-        return new Response.Listener<User>() {
+    private Response.Listener<UserBean> responseUpdateUserNickListener() {
+        return new Response.Listener<UserBean>() {
             @Override
-            public void onResponse(User user) {
-                if(user.isResult()){
-                    updateRemoteNick(user.getMUserNick());
-                }else{
-                    Utils.showToast(mContext,Utils.getResourceString(mContext,user.getMsg()),Toast.LENGTH_SHORT);
-                    dialog.dismiss();
-                }
+            public void onResponse(UserBean user) {
+//                if(user.isResult()){
+//                    updateRemoteNick(user.getMUserNick());
+//                }else{
+//                    Utils.showToast(mContext,Utils.getResourceString(mContext,user.getMsg()),Toast.LENGTH_SHORT);
+//                    dialog.dismiss();
+//                }
             }
         };
     }
@@ -228,7 +228,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 									.show();
 							tvNickName.setText(nickName);
                             FuLiCenterApplication.currentUserNick = nickName;
-                            FuLiCenterApplication.getInstance().getUser().setMUserNick(nickName);
+//                            FuLiCenterApplication.getInstance().getUser().setMUserNick(nickName);
 						}
 					});
 				}

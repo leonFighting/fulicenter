@@ -37,7 +37,6 @@ import com.easemob.util.EMLog;
 import java.util.ArrayList;
 
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.adapter.GroupAdapter;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import cn.ucai.fulicenter.bean.Group;
@@ -163,7 +162,7 @@ public class GroupsActivity extends BaseActivity {
     }
 
     private void initData() {
-        grouplist = FuLiCenterApplication.getInstance().getGroupList();
+//        grouplist = FuLiCenterApplication.getInstance().getGroupList();
         groupAdapter = new GroupAdapter(this, 1, grouplist);
         groupListView.setAdapter(groupAdapter);
     }
@@ -191,7 +190,7 @@ public class GroupsActivity extends BaseActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		grouplist = FuLiCenterApplication.getInstance().getGroupList();
+//		grouplist = FuLiCenterApplication.getInstance().getGroupList();
 		groupAdapter = new GroupAdapter(this, 1, grouplist);
 		groupListView.setAdapter(groupAdapter);
 		groupAdapter.notifyDataSetChanged();
@@ -212,7 +211,7 @@ public class GroupsActivity extends BaseActivity {
 	
 	public void refresh() {
 		if (groupListView != null && groupAdapter != null) {
-			grouplist = FuLiCenterApplication.getInstance().getGroupList();
+//			grouplist = FuLiCenterApplication.getInstance().getGroupList();
 			groupAdapter = new GroupAdapter(GroupsActivity.this, 1,
 					grouplist);
 			groupListView.setAdapter(groupAdapter);
@@ -233,11 +232,11 @@ public class GroupsActivity extends BaseActivity {
         public void onReceive(Context context, Intent intent) {
             Log.e(TAG,"groupAdapter.getCount()="+groupAdapter.getCount());
             if(groupAdapter.getCount()>=3){
-                ArrayList<Group> list = FuLiCenterApplication.getInstance().getGroupList();
-                if(!grouplist.containsAll(list)){
-                    groupAdapter.initList(list);
-					groupAdapter.notifyDataSetChanged();
-                }
+//                ArrayList<Group> list = FuLiCenterApplication.getInstance().getGroupList();
+//                if(!grouplist.containsAll(list)){
+//                    groupAdapter.initList(list);
+//					groupAdapter.notifyDataSetChanged();
+//                }
             }
         }
     }
