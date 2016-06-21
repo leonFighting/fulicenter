@@ -20,7 +20,6 @@ public class CartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout=View.inflate(getActivity(), R.layout.fragment_cart, null);
         mContext = getActivity();
-
         return layout;
     }
 }
