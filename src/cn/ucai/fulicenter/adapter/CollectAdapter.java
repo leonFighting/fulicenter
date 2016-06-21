@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,11 @@ import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.ArrayList;
 
+import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.CollectActivity;
+import cn.ucai.fulicenter.activity.GoodDetailActivity;
 import cn.ucai.fulicenter.bean.CollectBean;
 import cn.ucai.fulicenter.utils.ImageUtils;
 import cn.ucai.fulicenter.view.FooterViewHolder;
@@ -78,6 +81,13 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             collectViewHolder.tvName.setText(collect.getGoodsName());
             ImageUtils.setNewGoodThumb(collect.getGoodsThumb(), collectViewHolder.iv);
 
+            collectViewHolder.layoutItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.startActivity(new Intent(mContext, GoodDetailActivity.class)
+                    .putExtra(D.NewGood.KEY_GOODS_ID,collect.getGoodsId()));
+                }
+            });
         }
     }
 
