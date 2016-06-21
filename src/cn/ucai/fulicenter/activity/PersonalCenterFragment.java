@@ -63,6 +63,12 @@ public class PersonalCenterFragment extends Fragment {
         myClickListener = new MyClickListener();
         mtvSettings.setOnClickListener(myClickListener);
         mLyaoutCenterUserInfo.setOnClickListener(myClickListener);
+        mLayoutCenterCollect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mContext,CollectActivity.class));
+            }
+        });
     }
 
     class MyClickListener implements View.OnClickListener {
