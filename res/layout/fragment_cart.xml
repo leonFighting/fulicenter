@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="合计：￥2.50"
+            android:text="合计:￥2.50"
             android:textColor="#f09"
             android:textSize="18sp" />
 
@@ -38,7 +38,7 @@
             android:gravity="center"
             android:layout_centerVertical="true"
             android:background="@color/cart_buy_bg"
-            android:text="购买"
+            android:text="买买买"
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
             android:textSize="18sp"
@@ -65,8 +65,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical|center_horizontal"
-        android:text="购物车空空如也"
+        android:text="逛了半天啥也不买!"
         android:textSize="18sp"
-        android:textColor="@color/orange" />
+        android:textColor="#000" />
 
 </RelativeLayout>

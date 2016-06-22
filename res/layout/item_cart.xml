@@ -6,9 +6,69 @@
     android:layout_marginBottom="8dp"
     android:orientation="vertical">
     <CheckBox
+        android:id="@+id/cbSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        style="@style/CustomCheckboxTheme"
+        android:checked="true" />
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/niv_good_thumb"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/cbSelect"
+        android:layout_centerInParent="true"
+        android:src="@drawable/nopic"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+    <TextView
+        android:id="@+id/tv_good_name"
+        android:layout_marginTop="5dp"
+        android:text="蹦沙卡拉卡！！！"
+        android:textSize="15sp"
+        android:textColor="#F90"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/niv_good_thumb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/ivAddCart"
+        android:src="@drawable/add_cart"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/tv_good_name"
+        android:layout_toRightOf="@id/niv_good_thumb"
+        android:layout_width="25dp"
+        android:layout_height="25dp" />
     <TextView
+        android:id="@+id/tvCartCount"
+        android:text="(2)"
+        android:textColor="#f0ff0090"
+        android:textSize="18sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/tv_good_name"
+        android:layout_toRightOf="@id/ivAddCart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/ivDelCart"
+        android:src="@drawable/del_cart"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/tv_good_name"
+        android:layout_toRightOf="@id/tvCartCount"
+        android:layout_width="25dp"
+        android:layout_height="25dp" />
+
+    <TextView
+        android:id="@+id/tvCartPrice"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="10dp"
+        android:textColor="#F90"
+        android:textSize="20sp"
+        android:text="¥250"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
