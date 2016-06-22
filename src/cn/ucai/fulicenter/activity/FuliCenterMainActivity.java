@@ -1,6 +1,9 @@
 package cn.ucai.fulicenter.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.fragment.NewGoodFragment;
+import cn.ucai.fulicenter.utils.Utils;
 
 public class FuliCenterMainActivity extends BaseActivity {
     public static final String TAG = FuliCenterMainActivity.class.getName();
@@ -55,6 +59,7 @@ public class FuliCenterMainActivity extends BaseActivity {
 //                .hide(contactListFragment)
                 .show(mNewGoodFragment)
                 .commit();
+        registerCartChangedReceiver();
     }
 
     private void initFragment() {
@@ -99,7 +104,11 @@ public class FuliCenterMainActivity extends BaseActivity {
                 index = 2;
                 break;
             case R.id.layout_cart:
-                index = 3;
+                if(FuLiCenterApplication.getInstance().getUser() != null) {
+                    index = 3;
+                }else{
+                    gotoLogin("cart");
+                }
                 break;
             case R.id.layout_personal_center:
                 if (FuLiCenterApplication.getInstance().getUser() != null) {
@@ -155,6 +164,9 @@ public class FuliCenterMainActivity extends BaseActivity {
             if (action.equals("personal")) {
                 index = 4;
             }
+            if(action.equals("cart")){
+                index = 3;
+            }
         } else {
             setRadioChecked(index);
         }
@@ -171,6 +183,38 @@ public class FuliCenterMainActivity extends BaseActivity {
             trx.show(mFragments[index]).commit();
             setRadioChecked(index);
             currentTabIndex = index;
+        }
+    }
+
+
+    CartChangedReceiver mCartChangedReceiver;
+
+    class CartChangedReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int count= Utils.sumCartCount();
+            Log.e(TAG,"CartChangedReceiver,count = "+count);
+            if(count>0){
+                //显示购物车中的商品件数
+                mtvCartHint.setText(""+count);
+                mtvCartHint.setVisibility(View.VISIBLE);
+            } else {
+                mtvCartHint.setVisibility(View.GONE);
+            }
+        }
+    }
+    private void registerCartChangedReceiver() {
+        mCartChangedReceiver=new CartChangedReceiver();
+        IntentFilter filter=new IntentFilter("update_cart");
+        filter.addAction("update_user");
+        registerReceiver(mCartChangedReceiver, filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mCartChangedReceiver!=null){
+            unregisterReceiver(mCartChangedReceiver);
         }
     }
 }

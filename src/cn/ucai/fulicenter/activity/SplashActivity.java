@@ -15,6 +15,7 @@ import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.db.UserDao;
+import cn.ucai.fulicenter.task.DownloadCartListTask;
 import cn.ucai.fulicenter.task.DownloadCollectCountTask;
 import cn.ucai.fulicenter.task.DownloadContactListTask;
 
@@ -56,6 +57,7 @@ public class SplashActivity extends BaseActivity {
             FuLiCenterApplication.getInstance().setUser(user);
             new DownloadContactListTask(mContext, username).execute();
             new DownloadCollectCountTask(mContext).execute();
+            new DownloadCartListTask(mContext, username, 0, 10).execute();
         }
 
         new Thread(new Runnable() {

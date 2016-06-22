@@ -57,6 +57,7 @@ import cn.ucai.fulicenter.db.EMUserDao;
 import cn.ucai.fulicenter.db.UserDao;
 import cn.ucai.fulicenter.domain.EMUser;
 import cn.ucai.fulicenter.listener.OnSetAvatarListener;
+import cn.ucai.fulicenter.task.DownloadCartListTask;
 import cn.ucai.fulicenter.task.DownloadContactListTask;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.MD5;
@@ -306,7 +307,8 @@ public class LoginActivity extends BaseActivity {
                 public void run() {
                     Log.e(TAG,"start download contact,group,public group");
                     //下载联系人集合
-                    new DownloadContactListTask(mContext,currentUsername).execute();
+                    new DownloadContactListTask(mContext, currentUsername).execute();
+                    new DownloadCartListTask(mContext, currentUsername, 0, 10).execute();
                 }
             });
 

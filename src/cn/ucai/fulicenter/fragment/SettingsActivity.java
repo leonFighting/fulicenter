@@ -368,6 +368,7 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 						instance.setUserName(null);
 						instance.setUser(null);
 						sendStickyBroadcast(new Intent("update_user"));
+
 						sendStickyBroadcast(new Intent("update_cart"));
 						pd.dismiss();
 						// 重新显示登陆页面
