@@ -98,6 +98,11 @@ public class ImageUtils {
         Log.e(TAG,"setCategoryGroupImg,url="+url);
         setThumb(url,mnivCategoryImg);
     }
+    public static void setCartImg(String imageUrl, NetworkImageView mnivCategoryImg) {
+        String url = I.DOWNLOAD_GOODS_THUMB_URL + imageUrl;
+        Log.e(TAG,"setCartImg,url="+url);
+        setThumb(url,mnivCategoryImg);
+    }
 
     public static void setCategoryChildImg(String imageUrl, NetworkImageView mnivCategoryImg) {
         String url = I.DOWNLOAD_DOWNLOAD_CATEGORY_CHILD_IMAGE_URL + imageUrl;

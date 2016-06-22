@@ -1,6 +1,9 @@
 package cn.ucai.fulicenter.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,11 +17,14 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.toolbox.NetworkImageView;
 
+import java.util.ArrayList;
+
 import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.AlbumBean;
+import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.GoodDetailsBean;
 import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.bean.User;
@@ -72,6 +78,21 @@ public class GoodDetailActivity extends BaseActivity {
     }
 
     private void setListener() {
+        setCollectClickListener();
+        setCartClickListener();
+        registerCartChangedReceiver();
+    }
+
+    private void setCartClickListener() {
+        mivAddCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.addCart(mContext,mGoodDetails);
+            }
+        });
+    }
+
+    private void setCollectClickListener() {
         mivCollect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -229,6 +250,24 @@ public class GoodDetailActivity extends BaseActivity {
         super.onResume();
         //判断是否商品已被收藏
         initCollectStatus();
+        initCartCount();
+    }
+
+    private void initCartCount() {
+        ArrayList<CartBean> cartList = FuLiCenterApplication.getInstance().getCartList();
+        if(cartList!=null&&cartList.size()>0){
+            mtvCartCount.setVisibility(View.VISIBLE);
+            int count=Utils.sumCartCount();
+            Log.e(TAG,"CartChangedReceiver.count="+count);
+            mtvCartCount.setText(""+count);
+        }
+//        if (count > 0) {
+//            mtvCartCount.setVisibility(View.VISIBLE);
+//            mtvCartCount.setText(""+count);
+//        } else {
+//            mtvCartCount.setVisibility(View.GONE);
+//            mtvCartCount.setText("0");
+//        }
     }
 
     public void initCollectStatus() {
@@ -266,5 +305,27 @@ public class GoodDetailActivity extends BaseActivity {
                 }
             }
         };
+    }
+
+    CartChangedReceiver mCartChangedReceiver;
+    class CartChangedReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            initCartCount();
+        }
+    }
+
+    private void registerCartChangedReceiver() {
+        mCartChangedReceiver=new CartChangedReceiver();
+        IntentFilter filter=new IntentFilter("update_cart");
+        registerReceiver(mCartChangedReceiver, filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mCartChangedReceiver!=null){
+            unregisterReceiver(mCartChangedReceiver);
+        }
     }
 }
